@@ -17,6 +17,8 @@
     "gulp": "^3.8.10",
     "gulp-browserify": "^0.5.1",
     "gulp-concat": "^2.4.3",
-    "reactify": "^1.0.0"
+    "gulp-livereload": "^3.7.0",
+    "reactify": "^1.0.0",
+    "st": "^0.5.2"
   }
 }
