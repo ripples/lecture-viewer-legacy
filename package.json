@@ -1,0 +1,22 @@
+{
+  "name": "lecture-viewer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "assign": "^0.1.7",
+    "keymirror": "^0.1.1",
+    "react": "^0.12.2"
+  },
+  "devDependencies": {
+    "gulp": "^3.8.10",
+    "gulp-browserify": "^0.5.1",
+    "gulp-concat": "^2.4.3",
+    "reactify": "^1.0.0"
+  }
+}
