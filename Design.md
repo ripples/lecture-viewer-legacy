@@ -20,6 +20,7 @@
 ##View Course##
 
 - **Media Player** (Similar to the existing version) with the Video Player large and on top, and board + slides underneath.  The user may choose to collapse and hide or click to show any of the components.  They may also click one of the smaller media views to swap it into the large frame.  Pause, Playback, and sound controls will all be available.
+- When a user leaves this page, the application needs to save the video time so that when they return, they can pick up where they left off.
 - **Bookmarks** list specific to this lecture.  Click one to seek to that portion of the video (and keep all sub players in sync).  This list can be shown or hidden.
 - **Synchronized Comment Feed** shows comments by users at specific timestamps to the right of the screen (think: Soundcloud).
 - **Comment/Reply input field** where you may leave comment  (Automatically includes a link to the X:XX time unless the user backspaces). The user may also reply to a comment from this field.
