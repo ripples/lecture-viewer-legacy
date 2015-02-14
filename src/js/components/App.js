@@ -8,7 +8,7 @@ var App = React.createClass({
 
     getInitialState : function() {
         return {
-            description: "This is the app description."
+            description: "This is the Application description."
         }
     },
 
