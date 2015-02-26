@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "assign": "^0.1.7",
+    "flux": "^2.0.1",
     "keymirror": "^0.1.1",
     "react": "^0.12.2"
   },

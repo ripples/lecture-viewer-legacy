@@ -1,4 +1,9 @@
 var React = require('React');
-var App = require('./components/App')
+var CoursePage = require('./pages/CoursePage');
 
-React.render(<App name="Flux Application"/>, document.getElementById('app'));
+// TODO : Implement Routing
+
+React.render(
+  <div>
+    <CoursePage/>
+  </div>, document.getElementById('app'));
