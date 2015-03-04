@@ -7,7 +7,7 @@ TODO : Login + Signup + Forgot Password
 Left Sidebar
   Header
     Logo
-    Notification Badge                                 @ON_CLICK -> FILL <Content> WITH <Notification List>
+    Notification Badge                                 @ON_CLICK -> FILL <Content> WITH <Notifications>
     Hide Sidebar Button                                @ON_CLICK -> @TOGGLE_VISIBILIY <Left Sidebar>
   Content
     @OPTION_1 (DEFAULT)
@@ -56,13 +56,13 @@ Main Context
   Content
     @OPTION_1 (DEFAULT)
       View Lecture
-        Media Players
+        Media Players TODO (more concrete)
       Right Sidebar
         Header
+          Hide Sidebar Button                          @ON_CLICK -> @TOGGLE_VISIBILIY <Right Sidebar>
           Tab Bar
             Bookmarks Tab                              @ON_CLICK -> FILL <Content> WITH <Bookmarks>
             Comments Tab                               @ON_CLICK -> FILL <Content> WITH <Comments>
-          Hide Sidebar Button                          @ON_CLICK -> @TOGGLE_VISIBILIY <Right Sidebar>
         Content
           @OPTION_A (DEFAULT)
             Comments
@@ -100,7 +100,7 @@ Main Context
                   Timestamp
                   Delete (HIDDEN)                      @ON_CLICK -> @REMOVE <Bookmark Item> FROM <Bookmark List> -> @ACTION : DELETE_BOOKMARK
               Add Bookmark Button                      @ON_CLICK -> @TOGGLE_VISIBILIY <Add Bookmark Container>
-              Add Bookmark Container (HIDDEN)
+              Add Bookmark (HIDDEN)
                 Input Textfield
                 Confirm Button                         @ON_CLICK -> @APPEND_NEW <Bookmark Item> TO <Bookmark List> -> @ACTION : CREATE_BOOKMARK
                 Cancel Button                          @ON_CLICK -> @RESET <Add Bookmark Input> -> @TOGGLE_VISIBILIY <Add Bookmark Container>
@@ -113,3 +113,27 @@ Main Context
     @OPTION_4
       Settings
         TODO
+
+ACTIONS:
+
+  SIGNUP
+  LOGIN
+  LOGOUT
+  RESET_PASSWORD
+
+  REPLY_BEGIN (parent_comment_id)
+  REPLY_CANCEL (parent_comment_id)
+  REPLY_SUBMIT (parent_comment_id, replyBody)
+
+  MARK_AS_READ (notification_id)
+  MARK_ALL_AS_READ ([notification_id])
+  SEEK_TO_TIME (time)
+  CREATE_COMMENT (course_id, lecture_id, parent_comment_id, date, timestamp, body)
+  CREATE_BOOKMARK (course_id, lecture_id, date, timestamp, label)
+  DELETE_BOOKMARK (bookmark_id
+
+  ***INSTRUCTOR_ONLY***
+  CREATE_COURSE (title, description, identifier, semester, year, [email], date_created)
+  CREATE_LECTURE (type, ordinal?, title, date_created, media?)
+  ADD_USERS (course_id, [email])
+  REMOVE_USERS (course_id, [user_id])
