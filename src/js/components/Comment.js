@@ -41,7 +41,7 @@ var Comment = React.createClass({
         <button className={toggleRepliesButtonStyle} onClick={this._onToggleReplies()}>{n} {pluralize('Reply', n)}</button>;
     }
 
-    var repliesList = this.props.replies.map(function(reply) {
+    var repliesListItems = this.props.replies.map(function(reply) {
       return <li><Reply author={reply.author} datePosted={reply.date} replyBody={reply.body}></li>
     });
 
@@ -63,7 +63,7 @@ var Comment = React.createClass({
         {toggleRepliesButton}
         <div className={repliesListStyle}>
           <ol>
-            {repliesList}
+            {repliesListItems}
           </ol>
         </div>
       </div>

@@ -8,7 +8,6 @@ function CreateStoreMixin(stores) {
       for(store in stores) {
         store.addChangeListener(this.handleStoresChanged)
       }
-
       this.setState(this.getStateFromStores(this.props));
     },
 

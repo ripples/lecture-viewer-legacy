@@ -6,13 +6,16 @@ module.exports = {
     // Define sets of actions that the Stores will listen for
     ActionTypes: keyMirror({
 
-        /*** EXAMPLES ***/
+      REPLY_BEGIN,
+      REPLY_CANCEL,
+      REPLY_SUBMIT,
+      MARK_NOTIFICATION_AS_READ,
+      MARK_ALL_NOTIFICATION_AS_READ,
+      SEEK_TO_TIME,
+      CREATE_COMMENT,
+      CREATE_BOOKMARK,
+      DELETE_BOOKMARK
 
-        // CLICK_THREAD: null,
-        // CREATE_MESSAGE: null,
-        // RECEIVE_RAW_CREATED_MESSAGE: null,
-        // RECEIVE_RAW_MESSAGES: null
-
-        /****************/
+      // TODO : ? Edit Reply/Comment/Bookmark
     }),
 };
