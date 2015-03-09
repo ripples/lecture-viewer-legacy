@@ -1,25 +1,39 @@
 var React = require('react');
+var CommentActionCreator = require('../actions/CommentActionCreator');
 
 var ReplyEditor = React.createClass({
 
   propTypes: {
-    parent_comment_id: React.PropTypes.number.isRequired,
+    _onClose: React.PropTypes.func.isRequired,
+    _onSubmit: React.PropTypes.func.isRequired
   },
 
   getInitialState: function() {
     return {
-      isInvalid: false;
+      replyBody: '',
+      isInvalid: false,
+      labelContent: ''
     };
   },
 
-  _onCancelReply: function() {
-    // TODO : Create REPLY_CANCEL Action
+  _onCancelReply: function(e) {
+    e.preventDefault();
+    CommentActionCreator.cancelReply();
+    this.props._onClose();
   },
 
-  _onSubmitReply: function() {
+  _onSubmitReply: function(e) {
+    e.preventDefault();
     var replyBody = this.state.replyBody;
+
     // TODO : Perform error-checking
-    // TODO : Create REPLY_SUBMIT Action
+
+    this.props._onSubmit(replyBody);
+    this.props._onClose();
+  },
+
+  _handleChange: function(e) {
+    this.setState({replyBody: e.target.value});
   },
 
   render: function() {
@@ -27,15 +41,17 @@ var ReplyEditor = React.createClass({
     var invalidReplyLabel = (this.state.isInvalid) ?
       <label className='reply-editor__label--invalid' for='reply-body'>{this.state.labelContent}</label> : '';
 
-    // TODO : Disable 'Submit' if there is no text entered
+    // TODO : Place this on the Submit button to change whether it is disabled
+    // var replyButtonState = (this.state.replyBody.length > 0 && !this.state.isInvalid) ? 'disabled' : '';
+    // {replyButtonState}
 
     return (
       <div className='reply-editor'>
-        <form action={this._onReply()}>
+        <form>
           {invalidReplyLabel}
-          <textarea className='reply-editor__input' id='reply-body' name='reply' value={this.state.replyBody}></textarea>
-          <input className='reply-editor__submit-button' type='submit' value='Reply'>
-          <button className='reply-editor__cancel-button' onClick={this._onCancel()}>Cancel</button>
+          <textarea className='reply-editor__input' id='reply-body' name='reply' onChange={this._handleChange}></textarea>
+          <input type='submit' className='reply-editor__submit-button' value='Reply' onClick={this._onSubmitReply}/>
+          <button className='reply-editor__cancel-button' onClick={this._onCancelReply}>Cancel</button>
         </form>
       </div>
     );

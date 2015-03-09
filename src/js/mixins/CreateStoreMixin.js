@@ -5,15 +5,15 @@ function CreateStoreMixin(stores) {
     },
 
     componentDidMount: function() {
-      for(store in stores) {
-        store.addChangeListener(this.handleStoresChanged)
+      for(var i=0; i<stores.length; i++) {
+        stores[i].addChangeListener(this.handleStoresChanged)
       }
       this.setState(this.getStateFromStores(this.props));
     },
 
     componentWillUnmount: function() {
-      for(store in stores) {
-        store.removeChangeListener(this.handleStoresChanged)
+      for(var i=0; i<stores.length; i++) {
+        stores[i].removeChangeListener(this.handleStoresChanged)
       }
     },
 

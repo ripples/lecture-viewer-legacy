@@ -1,10 +1,15 @@
-var React = require('react');
-var pluralize = require('pluralize');
-var moment = require('moment');
+var React                 = require('react');
+var Reply                 = require('./Reply');
+var ReplyEditor           = require('./ReplyEditor');
+var pluralize             = require('pluralize');
+var moment                = require('moment');
+var CommentActionCreator  = require('../actions/CommentActionCreator');
 
 var Comment = React.createClass({
 
+  // TODO : Use SHAPING to pass a single Comment with specific fields as a prop
   propTypes: {
+    id: React.PropTypes.number,
     author: React.PropTypes.object.isRequired,
     datePosted: React.PropTypes.instanceOf(Date).isRequired,
     commentBody: React.PropTypes.string.isRequired,
@@ -13,17 +18,33 @@ var Comment = React.createClass({
     isReplying: React.PropTypes.bool
   },
 
+  getInitialState: function() {
+    return ({
+      isRepliesListVisisble: false
+      // isReplying: false
+    });
+  },
+
   _onSeek: function() {
     // TODO : Create SEEK Action
   },
 
   _onToggleReplies: function() {
-    this.setState{isRepliesListVisisble: !this.state.isRepliesListVisisble};
+    this.setState({isRepliesListVisisble: !this.state.isRepliesListVisisble});
   },
 
-  // An action must be dispatched to prevent simultaneos open replies across multiple comments
+  // An action must be dispatched to prevent simultaneous open replies across multiple comments
   _onBeginReply: function() {
-    // TODO : Create REPLY_BEGIN Action
+    // this.setState({isReplying: true});
+    CommentActionCreator.beginReplyToComment(this.props.id);
+  },
+
+  _onCloseEditor: function() {
+    // this.setState({isReplying: false});
+  },
+
+  _onSubmitReply: function(replyBody) {
+    CommentActionCreator.createReplyToComment(replyBody);
   },
 
   render: function() {
@@ -33,16 +54,17 @@ var Comment = React.createClass({
     var formattedTimeStamp = this.props.timestamp; // TODO ? Format
 
     var toggleRepliesButton = '';
-    if(var n = this.props.replies.length > 0) {
-      toggleRepliesButtonStyle = (this.state.isRepliesListVisisble) ?
+    var n = this.props.replies.length;
+    if(n > 0) {
+      var toggleRepliesButtonStyle = (this.state.isRepliesListVisisble) ?
         'comment__reply-button--open' :
         'comment__reply-button--closed';
       toggleRepliesButton =
-        <button className={toggleRepliesButtonStyle} onClick={this._onToggleReplies()}>{n} {pluralize('Reply', n)}</button>;
+        <button className={toggleRepliesButtonStyle} onClick={this._onToggleReplies}>{n} {pluralize('Reply', n)}</button>;
     }
 
     var repliesListItems = this.props.replies.map(function(reply) {
-      return <li><Reply author={reply.author} datePosted={reply.date} replyBody={reply.body}></li>
+      return (<li><Reply author={reply.author} datePosted={reply.date} replyBody={reply.body}/></li>);
     });
 
     var repliesListStyle = (this.state.isRepliesListVisisble) ?
@@ -50,14 +72,15 @@ var Comment = React.createClass({
       'comment__replies-list--hidden';
 
     var replyButton = (!this.props.isReplying) ?
-      <button className='comment__reply-button' onClick={this._onBeginReply()}>Reply</button> : '';
+      <button className='comment__reply-button' onClick={this._onBeginReply}>Reply</button> :
+      <ReplyEditor parentCommentId={this.props.id} _onClose={this._onCloseEditor} _onSubmit={this._onSubmitReply}/>;
 
     return (
       <div className='comment'>
         <h4 className='comment__author'>{authorName}</h4>
         <h4 className='comment__date'>{timeAgo}</h4>
         <p className='comment__body'>
-          <span className='comment__timestamp' onClick={this._onSeek()}>{formattedTimeStamp}</span> {this.props.commentBody}
+          <span className='comment__timestamp' onClick={this._onSeek}>{formattedTimeStamp}</span> {this.props.commentBody}
         </p>
         {replyButton}
         {toggleRepliesButton}
@@ -69,7 +92,6 @@ var Comment = React.createClass({
       </div>
     );
   }
-
 });
 
 module.exports = Comment;

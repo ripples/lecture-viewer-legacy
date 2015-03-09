@@ -1,9 +1,10 @@
-var React = require('React');
+var React = require('react');
 var CoursePage = require('./pages/CoursePage');
+var CommentList = require('./components/CommentList');
 
 // TODO : Implement Routing
 
 React.render(
   <div>
-    <CoursePage/>
+    <CommentList lectureId={1}/>
   </div>, document.getElementById('app'));
