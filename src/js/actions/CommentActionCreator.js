@@ -5,6 +5,7 @@ var API = require('../utils/MockData');
 var CommentActionCreator = {
 
   beginReplyToComment: function(commentId) {
+    console.log('Dispatching REPLY_BEGIN with data: ' + commentId);
     Dispatcher.dispatch({actionType: ActionConstants.REPLY_BEGIN, parentCommentId: commentId});
   },
 

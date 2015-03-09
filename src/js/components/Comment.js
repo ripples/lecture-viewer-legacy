@@ -64,8 +64,11 @@ var Comment = React.createClass({
     }
 
     var repliesListItems = this.props.replies.map(function(reply) {
-      return (<li><Reply author={reply.author} datePosted={reply.date} replyBody={reply.body}/></li>);
+      return (<li><Reply key={reply.id} author={reply.author} datePosted={reply.date} replyBody={reply.body}/></li>);
     });
+
+    // TODO : Remove this in favor of the CSS classes below...
+    var repliesListInlineStyle = (this.state.isRepliesListVisisble) ? {} : {display: 'none'};
 
     var repliesListStyle = (this.state.isRepliesListVisisble) ?
       'comment__replies-list--visible' :
@@ -84,7 +87,7 @@ var Comment = React.createClass({
         </p>
         {replyButton}
         {toggleRepliesButton}
-        <div className={repliesListStyle}>
+        <div className={repliesListStyle} style={repliesListInlineStyle}>
           <ol>
             {repliesListItems}
           </ol>
