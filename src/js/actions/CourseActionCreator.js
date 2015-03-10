@@ -11,7 +11,10 @@ var CourseActionCreators = {
     API.getCourseDetails(courseID)
     .then(function(data) {
         dispatch(ActionConstants.REQUEST_COURSE_DETAILS_SUCCESS, {data: data});
-    }, function(error) {
+    }, //This should return a promise and then call "fail" on it, yeah? 
+
+    //}).fail(function (err) { do blah blah blah}).done();
+     function(error) {
         dispatch(ActionConstants.REQUEST_COURSE_DETAILS_FAIL, {error: error});
     });
   }
