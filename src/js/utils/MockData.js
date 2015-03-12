@@ -151,32 +151,33 @@ module.exports = {
   // COMMENT MOCK DATA
 
   comments: [
-    {
-      id: 1,
-      author: {id: 1, firstName: 'Brandon', lastName: 'Read'},
-      date: new Date(),
-      body: 'This is the first comment for a lecture.  I hope you will reply and further explore the commenting system :)  Thanks! And good luck.',
-      timestamp: 478,
-      replies: [
-        {
-          id: 1,
-          author: {id: 2, firstName: 'Michael', lastName: 'Scott'},
-          date: new Date(),
-          body: 'This is a reply!  What do you think--how does it look?  Maybe a having a few more replies will make this UI look more realistic. Just sayin\'...'
-        }
-      ]
-    },
-    {
-      id: 2,
-      author: {id: 2, firstName: 'Michael', lastName: 'Scott'},
-      date: new Date(),
-      body: 'Here, have another comment.  The more, the merrier. Right?',
-      timestamp: 854,
-      replies: []
-    }
+    // {
+    //   id: 1,
+    //   author: {id: 1, firstName: 'Brandon', lastName: 'Read'},
+    //   date: new Date(),
+    //   body: 'This is the first comment for a lecture.  I hope you will reply and further explore the commenting system :)  Thanks! And good luck.',
+    //   timestamp: 478,
+    //   replies: [
+    //     {
+    //       id: 1,
+    //       author: {id: 2, firstName: 'Michael', lastName: 'Scott'},
+    //       date: new Date(),
+    //       body: 'This is a reply!  What do you think--how does it look?  Maybe a having a few more replies will make this UI look more realistic. Just sayin\'...'
+    //     }
+    //   ]
+    // },
+    // {
+    //   id: 2,
+    //   author: {id: 2, firstName: 'Michael', lastName: 'Scott'},
+    //   date: new Date(),
+    //   body: 'Here, have another comment.  The more, the merrier. Right?',
+    //   timestamp: 854,
+    //   replies: []
+    // }
   ],
 
-  replyNumber: 3,
+  replyNumber: 1,
+  commentNumber: 1,
 
   createReply: function(replyBody, commentId) {
     var reply = {
@@ -192,12 +193,21 @@ module.exports = {
         break;
       }
     }
+    console.log("Returning Reply: " + reply);
     return reply;
   },
 
-  createComment: function(commentBody, lectureId) {
-    // TODO
-    return null;
+  createComment: function(commentBody, lectureId, isAnonymous) {
+    var comment = {
+      id: ++this.commentNumber,
+      author: {id: 4, firstName: 'Comment', lastName: 'Noob'},
+      date: new Date(),
+      body: commentBody,
+      timestamp: 999,
+      replies: []
+    }
+    this.comments.push(comment);
+    return comment;
   },
 
   getCommentsForLecture: function(lectureId) {

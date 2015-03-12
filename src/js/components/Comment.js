@@ -9,7 +9,7 @@ var Comment = React.createClass({
 
   // TODO : Use SHAPING to pass a single Comment with specific fields as a prop
   propTypes: {
-    id: React.PropTypes.number,
+    commentId: React.PropTypes.number,
     author: React.PropTypes.object.isRequired,
     datePosted: React.PropTypes.instanceOf(Date).isRequired,
     commentBody: React.PropTypes.string.isRequired,
@@ -21,7 +21,6 @@ var Comment = React.createClass({
   getInitialState: function() {
     return ({
       isRepliesListVisisble: false
-      // isReplying: false
     });
   },
 
@@ -35,16 +34,7 @@ var Comment = React.createClass({
 
   // An action must be dispatched to prevent simultaneous open replies across multiple comments
   _onBeginReply: function() {
-    // this.setState({isReplying: true});
-    CommentActionCreator.beginReplyToComment(this.props.id);
-  },
-
-  _onCloseEditor: function() {
-    // this.setState({isReplying: false});
-  },
-
-  _onSubmitReply: function(replyBody) {
-    CommentActionCreator.createReplyToComment(replyBody);
+    CommentActionCreator.beginReplyToComment(this.props.commentId);
   },
 
   render: function() {
@@ -63,8 +53,8 @@ var Comment = React.createClass({
         <button className={toggleRepliesButtonStyle} onClick={this._onToggleReplies}>{n} {pluralize('Reply', n)}</button>;
     }
 
-    var repliesListItems = this.props.replies.map(function(reply) {
-      return (<li><Reply key={reply.id} author={reply.author} datePosted={reply.date} replyBody={reply.body}/></li>);
+    var repliesListItems = this.props.replies.map(function(reply, i) {
+      return (<li key={i}><Reply author={reply.author} datePosted={reply.date} replyBody={reply.body}/></li>);
     });
 
     // TODO : Remove this in favor of the CSS classes below...
@@ -76,7 +66,7 @@ var Comment = React.createClass({
 
     var replyButton = (!this.props.isReplying) ?
       <button className='comment__reply-button' onClick={this._onBeginReply}>Reply</button> :
-      <ReplyEditor parentCommentId={this.props.id} _onClose={this._onCloseEditor} _onSubmit={this._onSubmitReply}/>;
+      <ReplyEditor parentCommentId={this.props.commentId}/>;
 
     return (
       <div className='comment'>

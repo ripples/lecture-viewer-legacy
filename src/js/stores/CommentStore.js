@@ -7,28 +7,43 @@ var CHANGE_EVENT = "change";
 
 // TODO : Implement Caching for previously viewed lectures' comments
 
+var log = function(action, data) {
+  console.log('[STORE] <' + action + '> ' + JSON.stringify(data));
+}
+
 var _comments = {};
 var _currentReplyParentId = null;
 
 var _addComment = function(comment) {
+  log('ADD COMMENT', comment);
   _comments[comment.id] = comment;
 }
 
 var _updateComments = function(comments) {
+  log('UPDATE COMMENTS', comments);
   for(var i=0; i<comments.length; i++) {
     _comments[comments[i].id] = comments[i];
   }
 }
 
 var _addReply = function(reply) {
+  log('ADD REPLY', reply);
+
+  // TODO : BUG BUG BUG BUG BUG : This SHOULD be uncommented to add replies.
+  // Strangely enough, the comment is being added to the _comments array
+  // without calling any of the code below, and twice if we uncomment it.
+  // WTFFFFFFFFFF...
+
   if(_currentReplyParentId) {
-    _comments[_currentReplyParentId].replies.push(reply);
+  //   _comments[_currentReplyParentId].replies.push(reply);
+  //   console.log(JSON.stringify(_comments[_currentReplyParentId].replies));
     _comments[_currentReplyParentId].isReplying = false;
     _currentReplyParentId = null;
   }
 }
 
 var _beginReplyToComment = function(commentId) {
+  log('BEGIN REPLY', commentId);
   if(_currentReplyParentId) {
     _comments[_currentReplyParentId].isReplying = false;
   }
@@ -37,6 +52,7 @@ var _beginReplyToComment = function(commentId) {
 }
 
 var _cancelReply = function() {
+  log('CANCEL REPLY', null);
   if(_currentReplyParentId) {
     _comments[_currentReplyParentId].isReplying = false;
     _currentReplyParentId = null;

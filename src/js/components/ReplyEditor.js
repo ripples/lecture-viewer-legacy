@@ -4,8 +4,7 @@ var CommentActionCreator = require('../actions/CommentActionCreator');
 var ReplyEditor = React.createClass({
 
   propTypes: {
-    _onClose: React.PropTypes.func.isRequired,
-    _onSubmit: React.PropTypes.func.isRequired
+    parentCommentId: React.PropTypes.number
   },
 
   getInitialState: function() {
@@ -18,8 +17,8 @@ var ReplyEditor = React.createClass({
 
   _onCancelReply: function(e) {
     e.preventDefault();
+    console.log("***Cancelling reply...");
     CommentActionCreator.cancelReply();
-    this.props._onClose();
   },
 
   _onSubmitReply: function(e) {
@@ -27,9 +26,10 @@ var ReplyEditor = React.createClass({
     var replyBody = this.state.replyBody;
 
     // TODO : Perform error-checking
+    console.log("***Submiting reply...");
 
-    this.props._onSubmit(replyBody);
-    this.props._onClose();
+    this.setState({replyBody: ''});
+    CommentActionCreator.createReplyToComment(replyBody, this.props.parentCommentId);
   },
 
   _handleChange: function(e) {
@@ -50,7 +50,7 @@ var ReplyEditor = React.createClass({
         <form>
           {invalidReplyLabel}
           <textarea className='reply-editor__input' id='reply-body' name='reply' onChange={this._handleChange}></textarea>
-          <input type='submit' className='reply-editor__submit-button' value='Reply' onClick={this._onSubmitReply}/>
+          <input type='button' className='reply-editor__submit-button' value='Reply' onClick={this._onSubmitReply}/>
           <button className='reply-editor__cancel-button' onClick={this._onCancelReply}>Cancel</button>
         </form>
       </div>
