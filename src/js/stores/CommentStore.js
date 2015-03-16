@@ -35,8 +35,8 @@ var _addReply = function(reply) {
   // WTFFFFFFFFFF...
 
   if(_currentReplyParentId) {
-  //   _comments[_currentReplyParentId].replies.push(reply);
-  //   console.log(JSON.stringify(_comments[_currentReplyParentId].replies));
+    // _comments[_currentReplyParentId].replies.push(reply);
+    // console.log(JSON.stringify(_comments[_currentReplyParentId].replies));
     _comments[_currentReplyParentId].isReplying = false;
     _currentReplyParentId = null;
   }

@@ -178,6 +178,7 @@ module.exports = {
 
   replyNumber: 1,
   commentNumber: 1,
+  bookmarkNumber: 1,
 
   createReply: function(replyBody, commentId) {
     var reply = {
@@ -215,6 +216,43 @@ module.exports = {
     //   return comment.lectureId === lectureId;
     // });
     return this.comments;
+  },
+
+
+  // BOOKMARK MOCK DATA
+
+  bookmarks: [],
+
+  updateBookmark: function(bookmarkBody, bookmarkId) {
+    var bookmark;
+    for (var i = 0; i < this.bookmarks.length; i++) {
+      if (this.bookmarks[i]['id'] == commentId) {
+        this.bookmarks[i]['label'] = bookmarkBody;
+        bookmark = this.bookmarks[i];
+        break;
+      }
+    }
+    console.log("Returning Updated Bookmark: " + bookmark);
+    return bookmark;
+  },
+
+  createBookmark: function(bookmarkBody, lectureId) {
+    var bookmark = {
+      id: ++this.bookmarkNumber,
+      label: bookmarkBody,
+      time: 500000
+    }
+    this.bookmarks.push(bookmark);
+    return bookmark;
+  },
+
+  getBookmarksForLecture: function(lectureId) {
+    // return this.comments.filter(function(comment) {
+    //   return comment.lectureId === lectureId;
+    // });
+    return this.bookmarks;
   }
+
+
 
 }
