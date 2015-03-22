@@ -64,7 +64,7 @@ var BookmarkStore = assign(new EventEmitter(), {
 
   removeChangeListener: function(callback) { this.removeListener(CHANGE_EVENT, callback); },
 
-  getBookmarksForLecture: function(lectureId) {
+  getBookmarks: function(courseId, lectureId) {
     // TODO : Map to lectureId (uses cache of previously viewed lectures)
     return Object.keys(_bookmarks).map(function(key) { return _bookmarks[key]; });
   },

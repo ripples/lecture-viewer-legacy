@@ -1,39 +1,43 @@
-var Dispatcher = require('../dispatchers/Dispatcher');
+var Dispatcher      = require('../dispatchers/Dispatcher');
 var ActionConstants = require('../constants/ActionConstants');
-var API = require('../utils/MockData');
+var API             = require('../utils/MockData');
 
 var log = function(action, data) {
   console.log('[DISPATCHING] <' + action + '> ' + JSON.stringify(data));
 }
 
 var CommentActionCreator = {
-
-  beginReplyToComment: function(commentId) {
-    log('REPLY_BEGIN', commentId);
-    Dispatcher.dispatch({actionType: ActionConstants.REPLY_BEGIN, parentCommentId: commentId});
+  createReply: function(courseId, lectureId, comment, replyContent) {
+    var comment = API.createReply(courseId, lectureId, comment, replyContent);
+    log('REPLY_SUBMIT', comment);
+    Dispatcher.dispatch({
+      actionType: ActionConstants.REPLY_SUBMIT,
+      courseId: courseId,
+      lectureId: lectureId,
+      updatedComment: comment
+    });
   },
 
-  cancelReply: function() {
-    log('REPLY_CANCEL', null);
-    Dispatcher.dispatch({actionType: ActionConstants.REPLY_CANCEL});
-  },
-
-  createReplyToComment: function(replyBody, commentId) {
-    var reply = API.createReply(replyBody, commentId);
-    log('REPLY_SUBMIT', reply);
-    Dispatcher.dispatch({actionType: ActionConstants.REPLY_SUBMIT, reply: reply});
-  },
-
-  createCommentForLecture: function(commentBody, lectureId, isAnonymous) {
-    var comment = API.createComment(commentBody, lectureId, isAnonymous);
+  createComment: function(courseId, lectureId, commentContent, isAnonymous) {
+    var comment = API.createComment(courseId, lectureId, commentContent, isAnonymous);
     log('CREATE_COMMENT', comment);
-    Dispatcher.dispatch({actionType: ActionConstants.CREATE_COMMENT, comment: comment});
+    Dispatcher.dispatch({
+      actionType: ActionConstants.CREATE_COMMENT,
+      courseId: courseId,
+      lectureId: lectureId,
+      comment: comment
+    });
   },
 
-  requestCommentsForLecture: function(lectureId) {
-    var comments = API.getCommentsForLecture(lectureId);
+  requestComments: function(courseId, lectureId) {
+    var comments = API.getComments(lectureId);
     log('REQUEST_COMMENTS', comments);
-    Dispatcher.dispatch({actionType: ActionConstants.REQUEST_COMMENTS, comments: comments});
+    Dispatcher.dispatch({
+      actionType: ActionConstants.REQUEST_COMMENTS,
+      courseId: courseId,
+      lectureId: lectureId,
+      comments: comments
+    });
   }
 }
 

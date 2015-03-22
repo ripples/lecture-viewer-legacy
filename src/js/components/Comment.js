@@ -1,88 +1,149 @@
 var React                 = require('react');
 var Reply                 = require('./Reply');
 var ReplyEditor           = require('./ReplyEditor');
+var CommentActionCreator  = require('../actions/CommentActionCreator');
 var pluralize             = require('pluralize');
 var moment                = require('moment');
-var CommentActionCreator  = require('../actions/CommentActionCreator');
 
 var Comment = React.createClass({
 
-  // TODO : Use SHAPING to pass a single Comment with specific fields as a prop
+  displayName: 'Comment',
+
   propTypes: {
-    commentId: React.PropTypes.number,
-    author: React.PropTypes.object.isRequired,
-    datePosted: React.PropTypes.instanceOf(Date).isRequired,
-    commentBody: React.PropTypes.string.isRequired,
-    timestamp: React.PropTypes.number,
-    replies: React.PropTypes.array,
-    isReplying: React.PropTypes.bool
+    course_id:    React.PropTypes.number.isRequired,
+    lecture_id:   React.PropTypes.number.isRequired,
+    comment:      React.PropTypes.shape({
+      id:           React.PropTypes.number,
+      author:       React.PropTypes.shape({
+        first_name:   React.PropTypes.string,
+        last_name:    React.PropTypes.string,
+      }),
+      date_posted:  React.PropTypes.instanceOf(Date),
+      content:      React.PropTypes.string,
+      time:         React.PropTypes.number,
+      replies:      React.PropTypes.array,
+    }).isRequired,
+    isReplying:   React.PropTypes.bool,
+    onBeginReply: React.PropTypes.func,
+    onEndReply:   React.PropTypes.func,
   },
 
   getInitialState: function() {
-    return ({
-      isRepliesListVisisble: false
-    });
+    return ({ repliesVisible: false });
   },
 
-  _onSeek: function() {
-    // TODO : Create SEEK Action
+  /*============================== @HANDLING ==============================*/
+
+  handleTimestampClick: function() {
+    // TODO : Call an ActionCreator for seeking to the specific time
   },
 
-  _onToggleReplies: function() {
-    this.setState({isRepliesListVisisble: !this.state.isRepliesListVisisble});
+  handleToggleRepliesClick: function() {
+    this.setState({repliesVisible: !this.state.repliesVisible});
   },
 
-  // An action must be dispatched to prevent simultaneous open replies across multiple comments
-  _onBeginReply: function() {
-    CommentActionCreator.beginReplyToComment(this.props.commentId);
+  handleReplyClick: function() {
+    this.props.onBeginReply(this.props.comment.id);
   },
+
+  handleCancelReply: function() {
+    this.props.onEndReply();
+  },
+
+  handleSubmitReply: function(content) {
+    CommentActionCreator.createReply(
+      this.props.course_id, this.props.lecture_id,
+      this.props.comment, content
+    );
+    if(!this.state.repliesVisible) {
+      this.setState({repliesVisible: true});
+    }
+    this.props.onEndReply();
+  },
+
+  /*============================== @FORMATTING ==============================*/
+
+  getFormattedAuthorName: function() {
+    return  this.props.comment.author.first_name + ' ' +
+            this.props.comment.author.last_name;
+  },
+
+  getFormattedDatePosted: function() {
+    return moment(this.props.comment.date_posted).fromNow();
+  },
+
+  getFormattedTimestamp: function() {
+    // TODO : Put in form of hh:mm:ss if there is a time for the comment
+    return this.props.comment.time;
+  },
+
+  /*============================== @RENDERING ==============================*/
 
   render: function() {
-
-    var authorName = this.props.author.firstName;
-    var timeAgo = moment(this.props.datePosted).fromNow();
-    var formattedTimeStamp = this.props.timestamp; // TODO ? Format
-
-    var toggleRepliesButton = '';
-    var n = this.props.replies.length;
-    if(n > 0) {
-      var toggleRepliesButtonStyle = (this.state.isRepliesListVisisble) ?
-        'comment__reply-button--open' :
-        'comment__reply-button--closed';
-      toggleRepliesButton =
-        <button className={toggleRepliesButtonStyle} onClick={this._onToggleReplies}>{n} {pluralize('Reply', n)}</button>;
-    }
-
-    var repliesListItems = this.props.replies.map(function(reply, i) {
-      return (<li key={i}><Reply author={reply.author} datePosted={reply.date} replyBody={reply.body}/></li>);
-    });
-
-    // TODO : Remove this in favor of the CSS classes below...
-    var repliesListInlineStyle = (this.state.isRepliesListVisisble) ? {} : {display: 'none'};
-
-    var repliesListStyle = (this.state.isRepliesListVisisble) ?
-      'comment__replies-list--visible' :
-      'comment__replies-list--hidden';
-
-    var replyButton = (!this.props.isReplying) ?
-      <button className='comment__reply-button' onClick={this._onBeginReply}>Reply</button> :
-      <ReplyEditor parentCommentId={this.props.commentId}/>;
-
     return (
       <div className='comment'>
-        <h4 className='comment__author'>{authorName}</h4>
-        <h4 className='comment__date'>{timeAgo}</h4>
-        <p className='comment__body'>
-          <span className='comment__timestamp' onClick={this._onSeek}>{formattedTimeStamp}</span> {this.props.commentBody}
+        <h4 className='comment__author'>{this.getFormattedAuthorName()}</h4>
+        <h4 className='comment__date'>{this.getFormattedDatePosted()}</h4>
+        <p className='comment__content'>
+           {this.renderTimestamp()} {this.props.comment.content}
         </p>
-        {replyButton}
-        {toggleRepliesButton}
-        <div className={repliesListStyle} style={repliesListInlineStyle}>
-          <ol>
-            {repliesListItems}
-          </ol>
-        </div>
+        {this.renderReplyButtonOrEditor()}
+        {this.renderToggleRepliesButton()}
+        {this.renderRepliesList()}
       </div>
+    );
+  },
+
+  renderTimestamp: function() {
+    return (
+      <span className='comment__timestamp' onClick={this.handleTimestampClick}>
+        {this.getFormattedTimestamp()}
+      </span>
+    );
+  },
+
+  renderReplyButtonOrEditor: function() {
+    return (
+      this.props.isReplying ?
+      <ReplyEditor
+        onSubmit={this.handleSubmitReply}
+        onCancel={this.handleCancelReply}/> :
+      <button className='comment__reply-button' onClick={this.handleReplyClick}>
+        Reply
+      </button>
+    );
+  },
+
+  renderToggleRepliesButton: function() {
+    var toggleRepliesButton;
+    var n = this.props.comment.replies.length;
+    if(n > 0) {
+      var className = (this.state.repliesVisible) ?
+        'comment__toggle-replies-button--open' :
+        'comment__toggle-replies-button--closed';
+      toggleRepliesButton =
+        <button className={className} onClick={this.handleToggleRepliesClick}>
+          {n} {pluralize('Reply', n)}
+        </button>;
+    }
+    return toggleRepliesButton;
+  },
+
+  renderRepliesList: function() {
+    var replies = this.props.comment.replies.map(function(reply, i) {
+      return <li key={i}><Reply reply={reply}/></li>
+    });
+    // TODO : Remove this in favor of the CSS classes below...
+    //        This is a placeholder while CSS is not yet implemented.
+    var repliesListInlineStyle = (this.state.repliesVisible) ?  // TO REMOVE
+      {} : {display: 'none'};                                   // TO REMOVE
+    var repliesListStyle = (this.state.repliesVisible) ?
+      'comment__replies-list--visible' :
+      'comment__replies-list--hidden';
+    return (
+      <ol className={repliesListStyle} style={repliesListInlineStyle}>
+        {replies}
+      </ol>
     );
   }
 });

@@ -1,62 +1,73 @@
 var React = require('react');
-var CommentActionCreator = require('../actions/CommentActionCreator');
 
 var ReplyEditor = React.createClass({
 
+  displayName: 'ReplyEditor',
+
   propTypes: {
-    parentCommentId: React.PropTypes.number
+    onSubmit: React.PropTypes.func.isRequired,
+    onCancel: React.PropTypes.func.isRequired
   },
 
   getInitialState: function() {
     return {
-      replyBody: '',
-      isInvalid: false,
-      labelContent: ''
+      content: '',
+      contentIsValid: false
     };
   },
 
-  _onCancelReply: function(e) {
+  /*============================== @HANDLING ==============================*/
+
+  handleCancelClick: function(e) {
     e.preventDefault();
-    console.log("***Cancelling reply...");
-    CommentActionCreator.cancelReply();
+    this.props.onCancel();
+    this.replaceState(this.getInitialState());
   },
 
-  _onSubmitReply: function(e) {
+  handleSubmitClick: function(e) {
     e.preventDefault();
-    var replyBody = this.state.replyBody;
-
-    // TODO : Perform error-checking
-    console.log("***Submiting reply...");
-
-    this.setState({replyBody: ''});
-    CommentActionCreator.createReplyToComment(replyBody, this.props.parentCommentId);
+    var content = this.state.content.trim();
+    // TODO : Perform Validation if necessary
+    this.props.onSubmit(content);
+    this.replaceState(this.getInitialState());
   },
 
-  _handleChange: function(e) {
-    this.setState({replyBody: e.target.value});
+  handleReplyContentChange: function(e) {
+    e.preventDefault();
+    this.setState({
+      content: e.target.value,
+      contentIsValid: (e.target.value.trim().length > 0)
+    });
   },
+
+  /*============================== @RENDERING ==============================*/
 
   render: function() {
-
-    var invalidReplyLabel = (this.state.isInvalid) ?
-      <label className='reply-editor__label--invalid' for='reply-body'>{this.state.labelContent}</label> : '';
-
-    // TODO : Place this on the Submit button to change whether it is disabled
-    // var replyButtonState = (this.state.replyBody.length > 0 && !this.state.isInvalid) ? 'disabled' : '';
-    // {replyButtonState}
-
     return (
       <div className='reply-editor'>
         <form>
-          {invalidReplyLabel}
-          <textarea className='reply-editor__input' id='reply-body' name='reply' onChange={this._handleChange}></textarea>
-          <input type='button' className='reply-editor__submit-button' value='Reply' onClick={this._onSubmitReply}/>
-          <button className='reply-editor__cancel-button' onClick={this._onCancelReply}>Cancel</button>
+          <textarea className='reply-editor__input'
+            name='reply-content' value={this.state.content}
+            onChange={this.handleReplyContentChange}>
+          </textarea>
+          {this.renderSubmitReplyButton()}
+          <button className='reply-editor__cancel-button'
+            onClick={this.handleCancelClick}>
+            Cancel
+          </button>
         </form>
       </div>
     );
-  }
+  },
 
+  renderSubmitReplyButton: function() {
+    var replyButtonState = this.state.contentIsValid ? '' : 'disabled';
+    return (
+      <input className='reply-editor__submit-button'
+        type='button' value='Reply'
+        onClick={this.handleSubmitClick}/>
+    );
+  }
 });
 
 module.exports = ReplyEditor;
