@@ -1,9 +1,9 @@
 var React                 = require('react');
 var CommentList           = require('./CommentList');
 var CommentEditor         = require('./CommentEditor');
-var CreateStoreMixin      = require('../mixins/CreateStoreMixin');
-var CommentStore          = require('../stores/CommentStore');
-var CommentActionCreator  = require('../actions/CommentActionCreator');
+var CreateStoreMixin      = require('../../mixins/CreateStoreMixin');
+var CommentStore          = require('../../stores/CommentStore');
+var CommentActionCreator  = require('../../actions/CommentActionCreator');
 
 var CommentsContainer = React.createClass({
 
@@ -48,7 +48,7 @@ var CommentsContainer = React.createClass({
     return (
       <div className='comments-container'>
         <CommentList
-          comments={this.state.comments} 
+          comments={this.state.comments}
           course_id={this.props.course_id}
           lecture_id={this.props.lecture_id}/>
         <CommentEditor onSubmit={this.handleSubmitComment}/>

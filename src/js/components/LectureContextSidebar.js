@@ -1,6 +1,6 @@
 var React                 = require('react');
-var CommentsContainer     = require('./CommentsContainer');
-var BookmarksContainer    = require('./BookmarksContainer');
+var CommentsContainer     = require('./comments/CommentsContainer');
+var BookmarksContainer    = require('./bookmarks/BookmarksContainer');
 var TabbedArea            = require('react-bootstrap/lib/TabbedArea');
 var TabPane               = require('react-bootstrap/lib/TabPane');
 

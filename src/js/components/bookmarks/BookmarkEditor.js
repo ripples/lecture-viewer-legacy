@@ -1,5 +1,5 @@
 var React = require('react');
-var BookmarkActionCreator = require('../actions/BookmarkActionCreator');
+var BookmarkActionCreator = require('../../actions/BookmarkActionCreator');
 
 var BookmarkEditor = React.createClass({
 

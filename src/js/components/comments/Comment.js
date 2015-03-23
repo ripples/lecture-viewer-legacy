@@ -1,7 +1,7 @@
 var React                 = require('react');
 var Reply                 = require('./Reply');
 var ReplyEditor           = require('./ReplyEditor');
-var CommentActionCreator  = require('../actions/CommentActionCreator');
+var CommentActionCreator  = require('../../actions/CommentActionCreator');
 var pluralize             = require('pluralize');
 var moment                = require('moment');
 

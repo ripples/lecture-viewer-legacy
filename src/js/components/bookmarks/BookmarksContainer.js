@@ -1,9 +1,9 @@
 var React                 = require('react');
-// var BookmarkList          = require('./components/BookmarkList');
-// var BookmarkEditor        = require('./components/BookmarkEditor');
-var CreateStoreMixin      = require('../mixins/CreateStoreMixin');
-var BookmarkStore         = require('../stores/BookmarkStore');
-var BookmarkActionCreator = require('../actions/BookmarkActionCreator');
+// var BookmarkList          = require('./BookmarkList');
+// var BookmarkEditor        = require('./BookmarkEditor');
+var CreateStoreMixin      = require('../../mixins/CreateStoreMixin');
+var BookmarkStore         = require('../../stores/BookmarkStore');
+var BookmarkActionCreator = require('../../actions/BookmarkActionCreator');
 
 var BookmarksContainer = React.createClass({
 

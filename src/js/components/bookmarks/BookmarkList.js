@@ -1,8 +1,8 @@
 var React                 = require('react');
 var Bookmark              = require('./Bookmark');
-var CreateStoreMixin      = require('../mixins/CreateStoreMixin');
-var BookmarkStore         = require('../stores/BookmarkStore');
-var BookmarkActionCreator = require('../actions/BookmarkActionCreator');
+var CreateStoreMixin      = require('../../mixins/CreateStoreMixin');
+var BookmarkStore         = require('../../stores/BookmarkStore');
+var BookmarkActionCreator = require('../../actions/BookmarkActionCreator');
 
 /**
   Holds a list of Bookmarks for a specific lecture. When a user Bookmarks on a
