@@ -31,6 +31,11 @@ handleNameChange: function(evt) {
     });
   },
 
+  handleCreate: function(evt){
+    evt.preventDefault();
+    this.transitionTo('createAccount');
+  },
+
    handleLogin: function (evt) {
     console.log(localStorage.token);
     var self = this;
@@ -56,6 +61,7 @@ handleNameChange: function(evt) {
     	<input ref="name" placeholder="name" value={this.state.name} onChange={this.handleNameChange} />
     <input ref="pass" placeholder="password" value={this.state.password} onChange={this.handlePasswordChange} />
     <button onClick={this.handleLogin}>Login</button>
+    <button onClick={this.handleCreate}>Create Account</button>
     </div>
     );
   }

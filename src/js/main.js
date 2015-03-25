@@ -6,6 +6,7 @@ var DefaultRoute = Router.DefaultRoute;
 var Link = Router.Link;
 var Route = Router.Route;
 var RouteHandler = Router.RouteHandler;
+var CreateAccount = require('./components/CreateAccount');
 
 // TODO : Implement Routing
 var App = React.createClass({
@@ -29,6 +30,13 @@ this.transitionTo('logout');
       </div>
     );
   }
+});
+
+var CreateAccountRoute = React.createClass({
+  render: function(){
+    return <div><CreateAccount/></div>;
+  }
+
 });
 
 var LogoutRoute = React.createClass({
@@ -69,6 +77,7 @@ var routes = (
     <Route name="comment" handler={CommentRoute}/>
     <Route name="login" handler={LoginRoute}/>
     <Route name="logout" handler={LogoutRoute}/>
+    <Route name="createAccount" handler={CreateAccountRoute}/>
     <DefaultRoute handler={LoginRoute} />
   
   </Route>
