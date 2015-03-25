@@ -17,17 +17,17 @@ mixins: [Router.Navigation],
       error: false
     };
   },
-  
+
   handlePasswordChange: function(evt) {
     this.setState({
       password: evt.target.value
-      
+
     });
 },
 handleNameChange: function(evt) {
     this.setState({
       name: evt.target.value
-      
+
     });
   },
 
@@ -40,7 +40,7 @@ handleNameChange: function(evt) {
     console.log(localStorage.token);
     var self = this;
     evt.preventDefault();
-    var nextPath = '/comment';
+    var nextPath = '/main';
     var name = this.refs.name.getDOMNode().value;
     var password = this.refs.pass.getDOMNode().value;
     auth.login(name, password, function (loggedIn) {
@@ -50,7 +50,7 @@ handleNameChange: function(evt) {
       if (nextPath) {
         self.transitionTo(nextPath);
       } else {
-        self.transitionTo('/comment');
+        self.transitionTo('/main');
       }
     }.bind(this));
   },
@@ -77,7 +77,7 @@ var auth = {
       this.onChange(true);
       return;
     }
-    
+
     pretendRequest(name, password, function (res) {
       if (res.authenticated) {
         localStorage.token = res.token;

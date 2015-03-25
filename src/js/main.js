@@ -1,12 +1,15 @@
-var React = require('react');
+var React                 = require('react');
+var Login                 = require('./components/Login')
+var CreateAccount         = require('./components/CreateAccount');
 var LectureContextSidebar = require('./components/LectureContextSidebar');
-var Login = require('./components/Login')
-var Router = require('react-router');
-var DefaultRoute = Router.DefaultRoute;
-var Link = Router.Link;
-var Route = Router.Route;
-var RouteHandler = Router.RouteHandler;
-var CreateAccount = require('./components/CreateAccount');
+var CourseList            = require('./components/courses/CourseList');
+var Router                = require('react-router');
+
+var DefaultRoute          = Router.DefaultRoute;
+var Link                  = Router.Link;
+var Route                 = Router.Route;
+var RouteHandler          = Router.RouteHandler;
+
 
 // TODO : Implement Routing
 var App = React.createClass({
@@ -49,9 +52,14 @@ var LogoutRoute = React.createClass({
   }
 });
 
-var CommentRoute = React.createClass({
+var MainRoute = React.createClass({
   render: function () {
-    return <div><LectureContextSidebar course_id={1} lecture_id={1}/></div>;
+    return (
+      <div>
+        <CourseList/>
+        <LectureContextSidebar course_id={1} lecture_id={1}/>
+      </div>
+    );
   }
 });
 
@@ -63,7 +71,7 @@ var LoginRoute = React.createClass({
   },
   componentDidMount: function(){
 if(localStorage.token!=undefined)
-      this.transitionTo("comment");
+      this.transitionTo("main");
   },
   render: function () {
     return <div><Login/></div>;
@@ -74,12 +82,12 @@ if(localStorage.token!=undefined)
 
 var routes = (
   <Route handler={App} path="/">
-    <Route name="comment" handler={CommentRoute}/>
+    <Route name="main" handler={MainRoute}/>
     <Route name="login" handler={LoginRoute}/>
     <Route name="logout" handler={LogoutRoute}/>
     <Route name="createAccount" handler={CreateAccountRoute}/>
     <DefaultRoute handler={LoginRoute} />
-  
+
   </Route>
 );
 

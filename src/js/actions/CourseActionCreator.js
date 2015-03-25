@@ -1,23 +1,29 @@
-// TODO... Ignore this for now unless you decide to tackle Flux
-
-var Dispatcher = require('../dispatchers/Dispatcher');
+var Dispatcher      = require('../dispatchers/Dispatcher');
 var ActionConstants = require('../constants/ActionConstants');
-var API = require('../utils/WebAPI');
+var API             = require('../utils/MockData');
 
-var CourseActionCreators = {
+var log = function(action, data) {
+  console.log('[DISPATCHING] <' + action + '> ' + JSON.stringify(data));
+}
 
-  requestCourseDetails: function(courseID) {
+var CourseActionCreator = {
+  createCourse: function(tentativeCourse) {
+    var course = API.createCourse(tentativeCourse);
+    log('CREATE_COURSE', course);
+    Dispatcher.dispatch({
+      actionType: ActionConstants.CREATE_COURSE,
+      course: course
+    });
+  },
 
-    API.getCourseDetails(courseID)
-    .then(function(data) {
-        dispatch(ActionConstants.REQUEST_COURSE_DETAILS_SUCCESS, {data: data});
-    }, //This should return a promise and then call "fail" on it, yeah? 
-
-    //}).fail(function (err) { do blah blah blah}).done();
-     function(error) {
-        dispatch(ActionConstants.REQUEST_COURSE_DETAILS_FAIL, {error: error});
+  requestCourses: function() {
+    var courses = API.getCourses();
+    log('REQUEST_COURSES', courses);
+    Dispatcher.dispatch({
+      actionType: ActionConstants.REQUEST_COURSES,
+      courses: courses
     });
   }
 }
 
-module.exports = ActionCreators;
+module.exports = CourseActionCreator;

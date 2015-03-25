@@ -1,10 +1,50 @@
 var MOCK = require('faker');
 
 var bookmarks = {};
-var commentz = {};
+var comments = {};
+var courses = {
+  1: {
+    id: 1,
+    department: "Computer Science",
+    department_shorthand: "CS",
+    course_name: "Web Scalability",
+    course_number: "497s",
+    description: "A \"class\" about web stuff",
+    section: "01",
+    term: "Spring",
+    year: "2015",
+    instructor_id : "23ffaaccdd2330002288",
+  }
+};
+var lectures = {
+  1 : {
+    1: {
+        lecture_id: 1,
+        title: "Lecture 4: What is the Interwebs?",
+        description: "This lecture is awesome and you don't want to miss it",
+        time_posted: 1337622367267,
+        time_length: 3026,
+        thumbnail: "http://url.to/thumbnail/here.jpg"
+    },
+    2: {
+        lecture_id: 2,
+        title: "Lecture 5: Databases",
+        description: "We will talk about how to store huge amounts of data",
+        time_posted: 1337623117267,
+        time_length: 2026,
+        thumbnail: "http://url.to/thumbnail/here.jpg"
+    }
+  }
+}
 
+var COURSE_ID = 0;
+var LECTURE_ID = 0;
 var COMMENT_ID = 0;
 var BOOKMARK_ID = 0;
+
+var generateCourseId = function() {
+  return ++COURSE_ID;
+}
 
 var generateCommentId = function() {
   return ++COMMENT_ID;
@@ -12,6 +52,13 @@ var generateCommentId = function() {
 
 var generateBookmarkId = function() {
   return ++BOOKMARK_ID;
+}
+
+var generateCourse = function(course) {
+  newCourse = course;
+  newCourse[id] = generateCourseId();
+  newCourse[instructor_id] = faker.random.number();
+  return newCourse;
 }
 
 var generateComment = function(commentContent, isAnonymous) {
@@ -53,13 +100,27 @@ var generateReply = function(replyContent) {
 
 module.exports = {
 
+  /*============================== @COURSES ==============================*/
+
+  getCourses: function() {
+    return Object.keys(courses).map(function(key) {
+      return courses[key];
+    });
+  },
+
+  createCourse: function(tentativeCourse) {
+    var course = generateCourse(tentativeCourse);
+    courses[course.id] = course;
+    return course;
+  },
+
   /*============================== @COMMENTS ==============================*/
 
   getComments: function(courseId, lectureId) {
 
-    if(commentz[courseId] && commentz[courseId][lectureId]) {
-      return Object.keys(commentz[courseId][lectureId]).map(function(key) {
-        return commentz[key];
+    if(comments[courseId] && comments[courseId][lectureId]) {
+      return Object.keys(comments[courseId][lectureId]).map(function(key) {
+        return comments[key];
       });
     } else {
       return [];
@@ -68,21 +129,21 @@ module.exports = {
 
   createComment: function(courseId, lectureId, commentContent, isAnonymous) {
     var comment = generateComment(commentContent, isAnonymous);
-    if(!commentz[courseId]) {
-      commentz[courseId]={};
-      commentz[courseId][lectureId]={};
+    if(!comments[courseId]) {
+      comments[courseId]={};
+      comments[courseId][lectureId]={};
     }
-    commentz[courseId][lectureId][comment.id] = comment;
+    comments[courseId][lectureId][comment.id] = comment;
     return comment;
   },
 
   createReply: function(courseId, lectureId, comment, replyContent) {
     var reply = generateReply(replyContent);
-    if(!commentz[courseId][lectureId][comment.id].replies) {
-      commentz[courseId][lectureId][comment.id].replies = [];
+    if(!comments[courseId][lectureId][comment.id].replies) {
+      comments[courseId][lectureId][comment.id].replies = [];
     }
-    commentz[courseId][lectureId][comment.id].replies.push(reply);
-    return commentz[courseId][lectureId][comment.id];
+    comments[courseId][lectureId][comment.id].replies.push(reply);
+    return comments[courseId][lectureId][comment.id];
   }
 
   /*============================== @BOOKMARKS ==============================*/
