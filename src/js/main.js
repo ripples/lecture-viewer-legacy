@@ -3,6 +3,7 @@ var Login                 = require('./components/Login')
 var CreateAccount         = require('./components/CreateAccount');
 var LectureContextSidebar = require('./components/LectureContextSidebar');
 var CourseList            = require('./components/courses/CourseList');
+var LectureList           = require('./components/lectures/LectureList');
 var Router                = require('react-router');
 
 var DefaultRoute          = Router.DefaultRoute;
@@ -57,6 +58,7 @@ var MainRoute = React.createClass({
     return (
       <div>
         <CourseList/>
+        <LectureList course_id={1}/>
         <LectureContextSidebar course_id={1} lecture_id={1}/>
       </div>
     );

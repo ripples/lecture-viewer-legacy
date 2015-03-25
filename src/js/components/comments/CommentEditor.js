@@ -28,7 +28,10 @@ var CommentEditor = React.createClass({
     var content = this.state.content.trim();
     // TODO : Perform Validation if necessary
     this.props.onSubmit(this.state.content, this.state.isAnonymous);
-    this.replaceState(this.getInitialState());
+    this.setState({
+      content: '',
+      contentIsValid: false
+    });
   },
 
   handleCommentContentChange: function(e) {

@@ -8,7 +8,7 @@ var Course = React.createClass({
 
   propTypes: {
     course:      React.PropTypes.shape({
-      course_id:            React.PropTypes.number.isRequired,
+      id:                   React.PropTypes.number.isRequired,
       department:           React.PropTypes.string.isRequired,
       department_shorthand: React.PropTypes.string.isRequired,
       course_name:          React.PropTypes.string.isRequired,
@@ -17,9 +17,8 @@ var Course = React.createClass({
       section:              React.PropTypes.string.isRequired,
       term:                 React.PropTypes.string.isRequired,
       year:                 React.PropTypes.number.isRequired,
-      instructor_id:        React.PropTypes.number.isRequired,
-      lectures:             React.PropTypes.array.isRequired
-    }).isRequired,
+      instructor_id:        React.PropTypes.string.isRequired
+    }).isRequired
   },
 
   /*============================== @HANDLING ==============================*/
@@ -48,7 +47,7 @@ var Course = React.createClass({
       <div className='course' onClick={this.handleCourseClick}>
         <h3 className='course__identifier'>{this.getFormattedIdentifier()}</h3>
         <h3 className='course__semester'>{this.getFormattedSemester()}</h3>
-        <h1 className='course__name'>{this.props.course.course_name}</h1>
+        <h2 className='course__name'>{this.props.course.course_name}</h2>
       </div>
     );
   }

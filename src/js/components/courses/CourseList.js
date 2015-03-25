@@ -30,6 +30,13 @@ var CourseList = React.createClass({
     CourseActionCreator.requestCourses();
   },
 
+  /*============================== @HANDLING ==============================*/
+
+  handleCourseClick: function() {
+    // TODO : LINK to this Course's Context (ROUTER)
+    // CommentActionCreator.requestComments(props.course_id, props.lecture_id);
+  },
+
   /*============================== @RENDERING ==============================*/
 
   render: function() {
@@ -44,6 +51,7 @@ var CourseList = React.createClass({
 
     return (
       <div className='course-list'>
+        <h1>Courses</h1>
         <ul>
           {courses}
         </ul>

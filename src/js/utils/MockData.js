@@ -12,14 +12,16 @@ var courses = {
     description: "A \"class\" about web stuff",
     section: "01",
     term: "Spring",
-    year: "2015",
+    year: 2015,
     instructor_id : "23ffaaccdd2330002288",
   }
 };
 var lectures = {
   1 : {
     1: {
-        lecture_id: 1,
+        id: 1,
+        ordindal: 1,
+        type: "Lecture",
         title: "Lecture 4: What is the Interwebs?",
         description: "This lecture is awesome and you don't want to miss it",
         time_posted: 1337622367267,
@@ -27,7 +29,9 @@ var lectures = {
         thumbnail: "http://url.to/thumbnail/here.jpg"
     },
     2: {
-        lecture_id: 2,
+        id: 2,
+        ordindal: 2,
+        type: "Lecture",
         title: "Lecture 5: Databases",
         description: "We will talk about how to store huge amounts of data",
         time_posted: 1337623117267,
@@ -37,13 +41,17 @@ var lectures = {
   }
 }
 
-var COURSE_ID = 0;
-var LECTURE_ID = 0;
+var COURSE_ID = 1;
+var LECTURE_ID = 2;
 var COMMENT_ID = 0;
 var BOOKMARK_ID = 0;
 
 var generateCourseId = function() {
   return ++COURSE_ID;
+}
+
+var generateLectureId = function() {
+  return ++LECTURE_ID;
 }
 
 var generateCommentId = function() {
@@ -59,6 +67,12 @@ var generateCourse = function(course) {
   newCourse[id] = generateCourseId();
   newCourse[instructor_id] = faker.random.number();
   return newCourse;
+}
+
+var generateLecture = function(lecture) {
+  newLecture = lecture;
+  lecture[id] = generateLectureId();
+  return newLecture;
 }
 
 var generateComment = function(commentContent, isAnonymous) {
@@ -112,6 +126,27 @@ module.exports = {
     var course = generateCourse(tentativeCourse);
     courses[course.id] = course;
     return course;
+  },
+
+  /*============================== @LECTURES ==============================*/
+
+  getLectures: function(course_id) {
+    if(lectures[course_id]) {
+      return Object.keys(lectures[course_id]).map(function(key) {
+        return lectures[course_id][key];
+      });
+    } else {
+      return [];
+    }
+  },
+
+  createLecture: function(course_id, tentativeLecture) {
+    var lecture = generateLecture(tentativeCourse);
+    if(!lectures[course_id]) {
+      lectures[course_id]={};
+    }
+    lectures[course_id][lecture.id] = lecture;
+    return lecture;
   },
 
   /*============================== @COMMENTS ==============================*/
