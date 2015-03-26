@@ -83,7 +83,9 @@ if(localStorage.token!=undefined)
 });
 
 var ManageCourseRoute = React.createClass({
-  
+  render: function () {
+    return <div></div>;
+  },
 })
 
 var routes = (
