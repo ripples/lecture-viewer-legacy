@@ -4,6 +4,7 @@ var CreateAccount         = require('./components/CreateAccount');
 var LectureContextSidebar = require('./components/LectureContextSidebar');
 var CourseList            = require('./components/courses/CourseList');
 var LectureList           = require('./components/lectures/LectureList');
+var ManageCourse          = require('./components/ManageCourse');
 var Router                = require('react-router');
 
 var DefaultRoute          = Router.DefaultRoute;
@@ -81,6 +82,9 @@ if(localStorage.token!=undefined)
 
 });
 
+var ManageCourseRoute = React.createClass({
+  
+})
 
 var routes = (
   <Route handler={App} path="/">
