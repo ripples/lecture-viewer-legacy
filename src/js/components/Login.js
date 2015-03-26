@@ -59,7 +59,7 @@ handleNameChange: function(evt) {
   render: function() {
     return( <div>
     	<input ref="name" placeholder="name" value={this.state.name} onChange={this.handleNameChange} />
-    <input ref="pass" placeholder="password" value={this.state.password} onChange={this.handlePasswordChange} />
+    <input type="password" ref="pass" placeholder="password" value={this.state.password} onChange={this.handlePasswordChange} />
     <button onClick={this.handleLogin}>Login</button>
     <button onClick={this.handleCreate}>Create Account</button>
     </div>
@@ -107,12 +107,16 @@ var auth = {
 };
 function pretendRequest(name, password, cb) {
   setTimeout(function () {
-    if (name === 'name' && password === 'password') {
+    var localLength = localStorage.length;
+    for(var i=0;i<localLength;i++){
+      console.log("key, value: "+localStorage.key(i)+localStorage.getItem(localStorage.key(i)));
+    if ((name!="" && name === localStorage.key(i)) && password === localStorage.getItem(localStorage.key(i))) {
       cb({
         authenticated: true,
         token: Math.random().toString(36).substring(7)
       });
-    } else {
+      return;
+    }} if(!cb.authenticated) {
       alert("incorrect name or password");
       cb({authenticated: false});
     }
