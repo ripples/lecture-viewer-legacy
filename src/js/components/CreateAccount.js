@@ -32,13 +32,19 @@ handlePasswordChange: function(evt) {
   },
 
 handleCreateAccount: function(){
+  if(this.state.password != this.refs.pass2.getDOMNode().value){
+    alert("passwords do not match");
+  }
+  else{
+  localStorage.setItem(this.state.name,this.state.password);
  this.transitionTo('login');
+}
 },
 	render: function() {
     return( <div>
     	<input ref="name" placeholder="name" value={this.state.name} onChange={this.handleNameChange}/>
-    <input ref="pass1" placeholder="password" value={this.state.password}  onChange={this.handlePasswordChange}/>
-    <input ref="pass2" placeholder="retype password"  />
+    <input type="password" ref="pass1" placeholder="password" value={this.state.password}  onChange={this.handlePasswordChange}/>
+    <input type="password" ref="pass2" placeholder="retype password"  />
     <button onClick={this.handleCreateAccount}>Create</button>
     </div>
     );
