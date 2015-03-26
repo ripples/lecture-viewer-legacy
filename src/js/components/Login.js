@@ -12,7 +12,7 @@ mixins: [Router.Navigation],
 
   getInitialState: function() {
     return {
-      name: "",
+      email: "",
       password: "",
       error: false
     };
@@ -24,9 +24,9 @@ mixins: [Router.Navigation],
 
     });
 },
-handleNameChange: function(evt) {
+handleEmailChange: function(evt) {
     this.setState({
-      name: evt.target.value
+      email: evt.target.value
 
     });
   },
@@ -41,9 +41,9 @@ handleNameChange: function(evt) {
     var self = this;
     evt.preventDefault();
     var nextPath = '/main';
-    var name = this.refs.name.getDOMNode().value;
+    var email = this.refs.email.getDOMNode().value;
     var password = this.refs.pass.getDOMNode().value;
-    auth.login(name, password, function (loggedIn) {
+    auth.login(email, password, function (loggedIn) {
       if (!loggedIn){
         return this.setState({ error: true });}
 
@@ -58,8 +58,8 @@ handleNameChange: function(evt) {
 
   render: function() {
     return( <div>
-    	<input ref="name" placeholder="name" value={this.state.name} onChange={this.handleNameChange} />
-    <input type="password" ref="pass" placeholder="password" value={this.state.password} onChange={this.handlePasswordChange} />
+    	<input ref="email" placeholder="Email" value={this.state.email} onChange={this.handleEmailChange} />
+    <input type="password" ref="pass" placeholder="Password" value={this.state.password} onChange={this.handlePasswordChange} />
     <button onClick={this.handleLogin}>Login</button>
     <button onClick={this.handleCreate}>Create Account</button>
     </div>
@@ -70,7 +70,7 @@ handleNameChange: function(evt) {
 // Fake authentication lib
 
 var auth = {
-  login: function (name, password, cb) {
+  login: function (email, password, cb) {
     cb = arguments[arguments.length - 1];
     if (localStorage.token) {
       if (cb) cb(true);
@@ -78,7 +78,7 @@ var auth = {
       return;
     }
 
-    pretendRequest(name, password, function (res) {
+    pretendRequest(email, password, function (res) {
       if (res.authenticated) {
         localStorage.token = res.token;
         if (cb) cb(true);
@@ -105,19 +105,19 @@ var auth = {
   },
    onChange: function () {}
 };
-function pretendRequest(name, password, cb) {
+function pretendRequest(email, password, cb) {
   setTimeout(function () {
     var localLength = localStorage.length;
     for(var i=0;i<localLength;i++){
       console.log("key, value: "+localStorage.key(i)+localStorage.getItem(localStorage.key(i)));
-    if ((name!="" && name === localStorage.key(i)) && password === localStorage.getItem(localStorage.key(i))) {
+    if ((email!="" && email === localStorage.key(i)) && password === localStorage.getItem(localStorage.key(i))) {
       cb({
         authenticated: true,
         token: Math.random().toString(36).substring(7)
       });
       return;
     }} if(!cb.authenticated) {
-      alert("incorrect name or password");
+      alert("Incorrect email or password");
       cb({authenticated: false});
     }
   }, 0);

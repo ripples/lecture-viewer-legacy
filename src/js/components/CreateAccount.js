@@ -11,15 +11,15 @@ mixins: [Router.Navigation],
 
 	getInitialState: function() {
     return {
-      name: "",
+      email: "",
       password: "",
       passwordsMatch: false
     };
   },
 
-handleNameChange: function(evt) {
+handleEmailChange: function(evt) {
     this.setState({
-      name: evt.target.value
+      email: evt.target.value
       
     });
   },
@@ -36,15 +36,17 @@ handleCreateAccount: function(){
     alert("passwords do not match");
   }
   else{
-  localStorage.setItem(this.state.name,this.state.password);
+  localStorage.setItem(this.state.email,this.state.password);
  this.transitionTo('login');
 }
 },
 	render: function() {
     return( <div>
-    	<input ref="name" placeholder="name" value={this.state.name} onChange={this.handleNameChange}/>
-    <input type="password" ref="pass1" placeholder="password" value={this.state.password}  onChange={this.handlePasswordChange}/>
-    <input type="password" ref="pass2" placeholder="retype password"  />
+      <input ref="first_name" placeholder="First name" />
+      <input ref="last_name" placeholder="Last name" /><br />
+    	<input ref="email" placeholder="Email" value={this.state.email} onChange={this.handleEmailChange}/>
+    <input type="password" ref="pass1" placeholder="Password" value={this.state.password}  onChange={this.handlePasswordChange}/>
+    <input type="password" ref="pass2" placeholder="Retype password"  /><br />
     <button onClick={this.handleCreateAccount}>Create</button>
     </div>
     );
