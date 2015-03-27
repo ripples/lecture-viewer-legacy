@@ -123,7 +123,7 @@ ACTIONS:
 
   REPLY_BEGIN (parent_comment_id)
   REPLY_CANCEL (parent_comment_id)
-  REPLY_SUBMIT (parent_comment_id, replyBody)
+  CREATE_REPLY (parent_comment_id, replyBody)
 
   MARK_AS_READ (notification_id)
   MARK_ALL_AS_READ ([notification_id])

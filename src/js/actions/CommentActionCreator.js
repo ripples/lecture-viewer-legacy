@@ -9,9 +9,9 @@ var log = function(action, data) {
 var CommentActionCreator = {
   createReply: function(courseId, lectureId, comment, replyContent) {
     var comment = API.createReply(courseId, lectureId, comment, replyContent);
-    log('REPLY_SUBMIT', comment);
+    log('CREATE_REPLY', comment);
     Dispatcher.dispatch({
-      actionType: ActionConstants.REPLY_SUBMIT,
+      actionType: ActionConstants.CREATE_REPLY,
       courseId: courseId,
       lectureId: lectureId,
       updatedComment: comment

@@ -15,15 +15,15 @@ var CreateAccount = React.createClass({
 
   /*============================== @HANDLING ==============================*/
 
-  handleEmailChange: function(evt) {
+  handleEmailChange: function(e) {
     this.setState({
-      email: evt.target.value
+      email: e.target.value
     });
   },
 
-  handlePasswordChange: function(evt) {
+  handlePasswordChange: function(e) {
     this.setState({
-      password: evt.target.value
+      password: e.target.value
     });
   },
 
@@ -37,6 +37,11 @@ var CreateAccount = React.createClass({
     }
   },
 
+  handleLogin: function(e){
+    e.preventDefault();
+    this.transitionTo('login');
+  },
+
   /*============================== @RENDERING ==============================*/
 
 	render: function() {
@@ -48,6 +53,7 @@ var CreateAccount = React.createClass({
         <input type="password" ref="pass1" placeholder="Password" value={this.state.password}  onChange={this.handlePasswordChange}/>
         <input type="password" ref="pass2" placeholder="Retype password"  /><br />
         <button onClick={this.handleCreateAccount}>Create</button>
+        <span>Have an account?</span><button onClick={this.handleLogin}>Login</button>
       </div>
     );
   }

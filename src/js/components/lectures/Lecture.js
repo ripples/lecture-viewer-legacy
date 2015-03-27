@@ -46,7 +46,7 @@ var Lecture = React.createClass({
   },
 
   getFormattedDatePosted: function() {
-    return moment(this.props.lecture.time_posted).fromNow();
+    return 'Uploaded ' + moment(this.props.lecture.time_posted).fromNow();
   },
 
   getFormattedTimeLength: function() {

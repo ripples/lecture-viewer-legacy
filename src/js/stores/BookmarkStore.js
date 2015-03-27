@@ -73,21 +73,21 @@ var BookmarkStore = assign(new EventEmitter(), {
     return (_currentEditingBookmarkId === bookmarkId);
   },
 
-  EDIT_BOOKMARK_BEGIN: 'EDIT_BOOKMARK_BEGIN',
-  EDIT_BOOKMARK_CANCEL: 'EDIT_BOOKMARK_CANCEL',
-  EDIT_BOOKMARK_SUBMIT: 'EDIT_BOOKMARK_SUBMIT',
+  UPDATE_BOOKMARK_BEGIN: 'UPDATE_BOOKMARK_BEGIN',
+  UPDATE_BOOKMARK_CANCEL: 'UPDATE_BOOKMARK_CANCEL',
+  UPDATE_BOOKMARK: 'UPDATE_BOOKMARK',
   CREATE_BOOKMARK: 'CREATE_BOOKMARK',
   REQUEST_BOOKMARKS: 'REQUEST_BOOKMARKS',
 
   dispatcher: Dispatcher.register(function(payload) {
     switch(payload.actionType){
-      case ActionConstants.EDIT_BOOKMARK_BEGIN:
+      case ActionConstants.UPDATE_BOOKMARK_BEGIN:
         _beginEditingBookmark(payload.bookmarkId);
         break;
-      case ActionConstants.EDIT_BOOKMARK_CANCEL:
+      case ActionConstants.UPDATE_BOOKMARK_CANCEL:
         _cancelEditingBookmark();
         break;
-      case ActionConstants.EDIT_BOOKMARK_SUBMIT:
+      case ActionConstants.UPDATE_BOOKMARK:
         _saveEditedBookmark(payload.bookmark);
         break;
       case ActionConstants.CREATE_BOOKMARK:

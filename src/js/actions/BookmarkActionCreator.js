@@ -9,19 +9,19 @@ var log = function(action, data) {
 var BookmarkActionCreator = {
 
   beginEdit: function(bookmarkId) {
-    log('EDIT_BOOKMARK_BEGIN', bookmarkId);
-    Dispatcher.dispatch({actionType: ActionConstants.EDIT_BOOKMARK_BEGIN, bookmarkId: bookmarkId});
+    log('UPDATE_BOOKMARK_BEGIN', bookmarkId);
+    Dispatcher.dispatch({actionType: ActionConstants.UPDATE_BOOKMARK_BEGIN, bookmarkId: bookmarkId});
   },
 
   cancelEdit: function() {
-    log('EDIT_BOOKMARK_CANCEL', null);
-    Dispatcher.dispatch({actionType: ActionConstants.EDIT_BOOKMARK_CANCEL});
+    log('UPDATE_BOOKMARK_CANCEL', null);
+    Dispatcher.dispatch({actionType: ActionConstants.UPDATE_BOOKMARK_CANCEL});
   },
 
   submitEdit: function(bookmarkBody, bookmarkId) {
     var bookmark = API.updateBookmark(bookmarkBody, bookmarkId);
-    log('EDIT_BOOKMARK_SUBMIT', bookmark);
-    Dispatcher.dispatch({actionType: ActionConstants.EDIT_BOOKMARK_SUBMIT, bookmark: bookmark});
+    log('UPDATE_BOOKMARK', bookmark);
+    Dispatcher.dispatch({actionType: ActionConstants.UPDATE_BOOKMARK, bookmark: bookmark});
   },
 
   createBookmarkForLecture: function(bookmarkBody, lectureId) {

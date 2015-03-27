@@ -22,26 +22,26 @@ var Login = React.createClass({
 
   /*============================== @HANDLING ==============================*/
 
-  handlePasswordChange: function(evt) {
+  handlePasswordChange: function(e) {
     this.setState({
-      password: evt.target.value
+      password: e.target.value
     });
   },
 
-  handleEmailChange: function(evt) {
+  handleEmailChange: function(e) {
     this.setState({
-      email: evt.target.value
+      email: e.target.value
     });
   },
 
-  handleCreate: function(evt){
-    evt.preventDefault();
+  handleCreate: function(e){
+    e.preventDefault();
     this.transitionTo('CreateAccount');
   },
 
-  handleLogin: function (evt) {
+  handleLogin: function (e) {
     var self = this;
-    evt.preventDefault();
+    e.preventDefault();
     var nextPath = '/main';
     var email = this.refs.email.getDOMNode().value;
     var password = this.refs.pass.getDOMNode().value;

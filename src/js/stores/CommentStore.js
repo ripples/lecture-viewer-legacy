@@ -59,7 +59,7 @@ var CommentStore = assign(new EventEmitter(), {
 
   dispatcher: Dispatcher.register(function(payload) {
     switch(payload.actionType){
-      case ActionConstants.REPLY_SUBMIT:
+      case ActionConstants.CREATE_REPLY:
         addReply(
           payload.courseId,
           payload.lectureId,

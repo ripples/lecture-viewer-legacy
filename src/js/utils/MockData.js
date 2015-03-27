@@ -183,6 +183,8 @@ module.exports = {
 
   /*============================== @BOOKMARKS ==============================*/
 
+  // FIXME : Match the pattern for CRUD operations from above
+
   // getBookmarks: function(courseID) {
   //   return this.bookmarks.filter(function(bookmark) {
   //     return bookmark.courseID === courseID;
