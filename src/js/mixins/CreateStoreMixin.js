@@ -1,5 +1,7 @@
 function CreateStoreMixin(stores) {
+
   var StoreMixin = {
+    
     getInitialState: function() {
       return this.getStateFromStores(this.props);
     },

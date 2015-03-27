@@ -1,7 +1,7 @@
 # Component Tree
 
 
-TODO : Login + Signup + Forgot Password
+TODO : Login + CreateAccount + Forgot Password
 
 
 Left Sidebar
@@ -116,7 +116,7 @@ Main Context
 
 ACTIONS:
 
-  SIGNUP
+  CreateAccount
   LOGIN
   LOGOUT
   RESET_PASSWORD

@@ -1,6 +1,6 @@
 var React                 = require('react');
-var CommentsContainer     = require('./comments/CommentsContainer');
-var BookmarksContainer    = require('./bookmarks/BookmarksContainer');
+var CommentsContainer     = require('../comments/CommentsContainer');
+var BookmarksContainer    = require('../bookmarks/BookmarksContainer');
 var TabbedArea            = require('react-bootstrap/lib/TabbedArea');
 var TabPane               = require('react-bootstrap/lib/TabPane');
 
@@ -9,6 +9,14 @@ var LectureContextSidebar = React.createClass({
   propTypes: {
     course_id: React.PropTypes.number.isRequired,
     lecture_id: React.PropTypes.number.isRequired
+  },
+
+  // TODO : Remove after handling props via Routing
+  getDefaultProps: function() {
+    return {
+      course_id: 1,
+      lecture_id: 1
+    };
   },
 
   getInitialState: function() {
