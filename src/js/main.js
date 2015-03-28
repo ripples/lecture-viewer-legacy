@@ -3,6 +3,7 @@ var Login               = require('./components/landing/Login')
 var CreateAccount       = require('./components/landing/CreateAccount');
 var NavigationSidebar   = require('./components/structure/NavigationSidebar');
 var LectureContext      = require('./components/structure/LectureContext');
+var ManageLecture       = require('./components/lectures/ManageLecture');
 
 var Router              = require('react-router');
 var DefaultRoute        = Router.DefaultRoute;
@@ -29,6 +30,7 @@ var routes = (
     <Route name="main" handler={Main}/>
     <Route name="login" handler={Login}/>
     <Route name="CreateAccount" handler={CreateAccount}/>
+    <Route name="ManageLecture" handler={ManageLecture}/>
     <DefaultRoute handler={Login}/>
   </Route>
 );
