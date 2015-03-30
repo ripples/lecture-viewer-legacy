@@ -10,12 +10,17 @@ var ManageLecture = React.createClass({
 
   propTypes: {
     lecture_id: React.PropTypes.number.isRequired,
-    course_id:  React.PropTypes.number.isRequired
+    course_id:  React.PropTypes.number.isRequired,
+    lectures: React.PropTypes.array.isRequired
   },
 
   mixins : [CreateStoreMixin([LectureStore])],
   
   /*============================== @LIFECYCLE ==============================*/
+  
+  componentWillMount: function() {
+    this.props.lecture_id = 0;
+  },
   
   componentDidMount: function() {
     this.contextDidChange(this.props);
