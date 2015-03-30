@@ -38,11 +38,10 @@ var ManageLecture = React.createClass({
   /*============================== @RENDERING ==============================*/
 
   render : function() {
-    
     return (
       <div className="ManageLecture">
         Lecture: {this.props.lecture_id}
-        {this.state.lecture}
+        {this.state.lectures}
       </div>
     );
   }
