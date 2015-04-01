@@ -209,7 +209,7 @@ module.exports = {
   },
 
   deleteBookmark: function(courseId, lectureId, bookmarkId) {
-    delete bookmarks[courseId][lectureId][bookmark.id];
+    delete bookmarks[courseId][lectureId][bookmarkId];
   },
 
   getBookmarks: function(courseId, lectureId) {

@@ -9,9 +9,10 @@ var BookmarkEditor = React.createClass({
   propTypes: {
     onSubmit: React.PropTypes.func.isRequired,
     onCancel: React.PropTypes.func.isRequired,
+    bookmark: React.PropTypes.object
   },
 
-  // NEED THESE AS PROPS OR ON REQUEST
+  // TODO : NEED THESE AS PROPS OR ON REQUEST
   getDefaultProps: function() {
     return {
       lectureLength: 3745,    // random...
@@ -20,9 +21,10 @@ var BookmarkEditor = React.createClass({
   },
 
   getInitialState: function() {
+    bookmark = this.props.bookmark;
     return {
-      content: '',
-      time: '',
+      content: bookmark ? bookmark.content : '',
+      time: bookmark ? this.getFormattedTimestamp(bookmark.time) : '',
       contentIsValid: false,
       timeIsValid: false
     };
@@ -77,6 +79,15 @@ var BookmarkEditor = React.createClass({
     } else {
       return undefined;
     }
+  },
+
+  getFormattedTimestamp: function(timestamp) {
+    var hours   = parseInt(timestamp / 3600) % 24;
+    var minutes = parseInt(timestamp / 60) % 60;
+    var seconds = parseInt(timestamp) % 60;
+    return  (hours < 10 ? "0" + hours : hours) + ":" +
+            (minutes < 10 ? "0" + minutes : minutes) + ":" +
+            (seconds  < 10 ? "0" + seconds : seconds);
   },
 
   /*============================== @VALIDATING ==============================*/

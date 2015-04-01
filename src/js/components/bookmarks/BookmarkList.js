@@ -28,18 +28,6 @@ var BookmarkList = React.createClass({
     this.replaceState(this.getInitialState());
   },
 
-  handleSaveBookmark: function(bookmark_id, content, time) {
-    BookmarkActionCreator.saveBookmark(
-      this.props.course_id, this.props.lecture_id, bookmark_id, content, time
-    );
-  },
-
-  handleDeleteBookmark: function(bookmark_id) {
-    BookmarkActionCreator.deleteBookmark(
-      this.props.course_id, this.props.lecture_id, bookmark_id
-    );
-  },
-
   /*============================== @RENDERING ==============================*/
 
   render: function() {
@@ -66,7 +54,6 @@ var BookmarkList = React.createClass({
       </div>
     );
   }
-
 });
 
 module.exports = BookmarkList;

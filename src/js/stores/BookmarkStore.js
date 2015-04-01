@@ -21,6 +21,7 @@ var saveBookmark = function(courseId, lectureId, updatedBookmark) {
 }
 
 var deleteBookmark = function(courseId, lectureId, bookmarkId) {
+  log('DELETE_BOOKMARK', 'null (no data)', null);
   delete bookmarks[courseId][lectureId][bookmarkId];
 }
 
