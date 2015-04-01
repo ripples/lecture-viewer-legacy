@@ -5,7 +5,7 @@ var EventEmitter    = require('events').EventEmitter;
 
 var CHANGE_EVENT = "change";
 
-// TODO : Implement Caching for previously viewed lectures' bookmarks
+// TODO : Follow structure seen in other Stores. This is a poor implementation.
 
 var log = function(action, data) {
   console.log('[STORE] <' + action + '> ' + JSON.stringify(data));

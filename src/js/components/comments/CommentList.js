@@ -8,7 +8,7 @@ var CommentList = React.createClass({
   propTypes: {
     course_id: React.PropTypes.number.isRequired,
     lecture_id: React.PropTypes.number.isRequired,
-    comments:   React.PropTypes.array.isRequired,
+    comments:   React.PropTypes.array.isRequired
   },
 
   getInitialState: function() {
@@ -19,11 +19,11 @@ var CommentList = React.createClass({
 
   /*============================== @HANDLING ==============================*/
 
-  handleBeginCommentReply: function(commentId) {
+  handleBeginReply: function(commentId) {
     this.setState({replyingCommentId: commentId});
   },
 
-  handleEndCommentReply: function() {
+  handleEndReply: function() {
     this.replaceState(this.getInitialState());
   },
 
@@ -39,8 +39,8 @@ var CommentList = React.createClass({
             lecture_id={this.props.lecture_id}
             comment={comment}
             isReplying={this.state.replyingCommentId === comment.id}
-            onBeginReply={this.handleBeginCommentReply}
-            onEndReply={this.handleEndCommentReply}/>
+            onBeginReply={this.handleBeginReply}
+            onEndReply={this.handleEndReply}/>
         </li>
       )
     }.bind(this));

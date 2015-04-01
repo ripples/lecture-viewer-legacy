@@ -1,15 +1,12 @@
 var Dispatcher      = require('../dispatchers/Dispatcher');
 var ActionConstants = require('../constants/ActionConstants');
 var API             = require('../utils/MockData');
-
-var log = function(action, data) {
-  console.log('[DISPATCHING] <' + action + '> ' + JSON.stringify(data));
-}
+var log             = require('../utils/Logging').actionCreator('COMMENT');
 
 var CommentActionCreator = {
   createReply: function(courseId, lectureId, comment, replyContent) {
     var comment = API.createReply(courseId, lectureId, comment, replyContent);
-    log('CREATE_REPLY', comment);
+    log('CREATE_REPLY', 'updatedComment', comment);
     Dispatcher.dispatch({
       actionType: ActionConstants.CREATE_REPLY,
       courseId: courseId,
@@ -20,7 +17,7 @@ var CommentActionCreator = {
 
   createComment: function(courseId, lectureId, commentContent, isAnonymous) {
     var comment = API.createComment(courseId, lectureId, commentContent, isAnonymous);
-    log('CREATE_COMMENT', comment);
+    log('CREATE_COMMENT', 'comment', comment);
     Dispatcher.dispatch({
       actionType: ActionConstants.CREATE_COMMENT,
       courseId: courseId,
@@ -31,7 +28,7 @@ var CommentActionCreator = {
 
   requestComments: function(courseId, lectureId) {
     var comments = API.getComments(lectureId);
-    log('REQUEST_COMMENTS', comments);
+    log('REQUEST_COMMENTS', 'comments', comments);
     Dispatcher.dispatch({
       actionType: ActionConstants.REQUEST_COMMENTS,
       courseId: courseId,

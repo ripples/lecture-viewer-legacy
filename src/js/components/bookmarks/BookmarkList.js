@@ -4,59 +4,54 @@ var CreateStoreMixin      = require('../../mixins/CreateStoreMixin');
 var BookmarkStore         = require('../../stores/BookmarkStore');
 var BookmarkActionCreator = require('../../actions/BookmarkActionCreator');
 
-/**
-  Holds a list of Bookmarks for a specific lecture. When a user Bookmarks on a
-  lecture, it should appear in this list.
-**/
-
 var BookmarkList = React.createClass({
 
+  displayName: 'BookmarkList',
+
   propTypes: {
-    lectureId: React.PropTypes.number.isRequired
+    course_id:  React.PropTypes.number.isRequired,
+    lecture_id: React.PropTypes.number.isRequired,
+    bookmarks:  React.PropTypes.array.isRequired
   },
 
-  mixins: [CreateStoreMixin([BookmarkStore])],
-
-  getStateFromStores: function(props) {
-    // var lectureID = this.parseLecture(props); // TODO : For use with ROUTER
-    var lectureId = props.lectureId;
-    var bookmarks = BookmarkStore.getBookmarksForLecture(lectureId);
+  getInitialState: function() {
     return {
-      bookmarks: bookmarks
+      editingBookmarkId: -1
     };
   },
 
-  componentDidMount: function() {
-    this.lectureDidChange(this.props);
+  /*============================== @HANDLING ==============================*/
+
+  handleBeginBookmarkEdit: function(bookmark_id) {
+    this.setState({editingBookmarkId: bookmark_id});
   },
 
-  componentWillReceiveProps: function(nextProps) {
-    // if (this.parseLecture(nextProps) !== this.parseLecture(this.props)) {
-      // this.setState(this.getStateFromStores(nextProps));
-      this.lectureDidChange(nextProps);
-    // }
+  handleEndBookmarkEdit: function() {
+    this.replaceState(this.getInitialState());
   },
 
-  lectureDidChange: function(props) {
-    // var lectureID = this.parseCourse(props);  // TODO : For use with ROUTER
-    var lectureId = props.lectureId;
-    BookmarkActionCreator.requestBookmarksForLecture(lectureId);
-  },
+  /*============================== @RENDERING ==============================*/
 
   render: function() {
-    var bookmarks = this.state.bookmarks;
-    var bookmarkListItems = bookmarks.map(function(bookmark, i) {
+
+    var bookmarks = this.props.bookmarks.map(function(bookmark, i) {
       return (
         <li key={i}>
-          <Bookmark bookmarkId={bookmark.id} label={bookmark.label} time={bookmark.time}/>
+          <Bookmark
+            course_id={this.props.course_id}
+            lecture_id={this.props.lecture_id}
+            bookmark={bookmark}
+            isEditing={this.state.editingBookmarkId === bookmark.id}
+            onBeginEdit={this.handleBeginBookmarkReply}
+            onEndEdit={this.handleEndBookmarkReply}/>
         </li>
-      );
-    });
+      )
+    }.bind(this));
 
     return (
       <div className='bookmark-list'>
         <ol>
-          {bookmarkListItems}
+          {bookmarks}
         </ol>
       </div>
     );

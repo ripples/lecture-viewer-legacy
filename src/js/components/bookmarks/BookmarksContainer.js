@@ -1,6 +1,6 @@
 var React                 = require('react');
-// var BookmarkList          = require('./BookmarkList');
-// var BookmarkEditor        = require('./BookmarkEditor');
+var BookmarkList          = require('./BookmarkList');
+var BookmarkEditor        = require('./BookmarkEditor');
 var CreateStoreMixin      = require('../../mixins/CreateStoreMixin');
 var BookmarkStore         = require('../../stores/BookmarkStore');
 var BookmarkActionCreator = require('../../actions/BookmarkActionCreator');
@@ -36,21 +36,34 @@ var BookmarksContainer = React.createClass({
 
   /*============================== @HANDLING ==============================*/
 
-    handleSubmitBookmark: function(content, isAnonymous) {
-      BookmarkActionCreator.createBookmark(
-        this.props.course_id, this.props.lecture_id
-      );
-    },
+  handleSubmitBookmark: function(label, time) {
+    BookmarkActionCreator.createBookmark(
+      this.props.course_id, this.props.lecture_id, label, time
+    );
+  },
+
+  handleSaveBookmark: function(bookmark_id, label, time) {
+    BookmarkActionCreator.saveBookmark(
+      this.props.course_id, this.props.lecture_id, bookmark_id, label, time
+    );
+  },
+
+  handleDeleteBookmark: function(bookmark_id) {
+    BookmarkActionCreator.deleteBookmark(
+      this.props.course_id, this.props.lecture_id, bookmark_id
+    );
+  },
 
   /*============================== @RENDERING ==============================*/
-
-  // <BookmarkList bookmarks={this.state.bookmarks}/>
-  // <BookmarkEditor onSubmit={this.handleSubmitBookmark}/>
 
   render: function() {
     return (
       <div className='bookmarks-container'>
-
+        <BookmarkList
+          bookmarks={this.state.bookmarks}
+          course_id={this.props.course_id}
+          lecture_id={this.props.lecture_id}/>
+        <BookmarkEditor onSubmit={this.handleSubmitBookmark}/>
       </div>
     );
   }

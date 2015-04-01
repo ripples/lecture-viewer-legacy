@@ -3,28 +3,29 @@ var React = require('react');
 var Bookmark = React.createClass({
 
   propTypes: {
-    bookmarkId: React.PropTypes.number.isRequired,
-    label: React.PropTypes.string.isRequired,
-    time: React.PropTypes.instanceOf(Date).isRequired
+    bookmark: React.PropTypes.shape({
+      id:     React.PropTypes.number.isRequired,
+      label:  React.PropTypes.string.isRequired,
+      time:   React.PropTypes.number.isRequired
+    })
   },
 
-  _formatTimestamp: function(timeInMilliseconds) {
+  /*============================== @FORMATTING ==============================*/
 
-    // TODO : Setup onClick listener
-    // TODO : Format time as hh:mm:ss
-
-    return null;
+  getFormattedTimestamp: function() {
+    // TODO : LINK to appropriate time in lecture
+    // TODO : Put in form of hh:mm:ss if there is a time for the comment
+    // return moment({seconds:this.props.bookmark.time}, ['HH:mm:ss']); FIXME
+    return this.props.bookmark.time;
   },
+
+  /*============================== @RENDERING ==============================*/
 
   render: function() {
-
-    var label = this.props.label;
-    var time = this._formatTimestamp(this.props.time);
-
     return (
       <div className='bookmark'>
-        <h4 className='bookmark__label'>{label}</h4>
-        <h4 className='bookmark__time'>{time}</h4>
+        <h4 className='bookmark__label'>{this.props.bookmark.label}</h4>
+        <h4 className='bookmark__time'>{this.getFormattedTimestamp()}</h4>
       </div>
     );
   }

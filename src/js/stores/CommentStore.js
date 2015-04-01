@@ -1,20 +1,13 @@
 var Dispatcher      = require('../dispatchers/Dispatcher');
 var ActionConstants = require('../constants/ActionConstants');
-var assign          = require('object-assign');
-var EventEmitter    = require('events').EventEmitter;
-
-var CHANGE_EVENT = "change";
-
-var log = function(action, data) {
-  console.log('[STORE] <' + action + '> ' + JSON.stringify(data));
-}
-
+var createStore     = require('../utils/StoreUtils');
+var log             = require('../utils/Logging').store('COMMENT');
 /*============================== @PRIVATE ==============================*/
 
 var comments = {};
 
 var addComment = function(courseId, lectureId, comment) {
-  log('ADD COMMENT', comment);
+  log('ADD_COMMENT', 'comment', comment);
   if(!comments[courseId]) {
     comments[courseId]={};
     comments[courseId][lectureId]={};
@@ -23,12 +16,12 @@ var addComment = function(courseId, lectureId, comment) {
 }
 
 var addReply = function(courseId, lectureId, updatedComment) {
-  log('ADD REPLY', updatedComment);
+  log('ADD_REPLY', 'updatedComment', updatedComment);
   comments[courseId][lectureId][updatedComment.id] = updatedComment;
 }
 
 var updateComments = function(courseId, lectureId, comments) {
-  log('UPDATE COMMENTS', comments);
+  log('UPDATE_COMMENTS', 'comments', comments);
   for(var i=0; i<comments.length; i++) {
     comments[courseId][lectureId][comments[i].id] = comments[i];
   }
@@ -36,14 +29,7 @@ var updateComments = function(courseId, lectureId, comments) {
 
 /*============================== @PUBLIC ==============================*/
 
-//  TODO : Extend a BaseStore
-var CommentStore = assign(new EventEmitter(), {
-
-  emitChange: function() { this.emit(CHANGE_EVENT); },
-
-  addChangeListener: function(callback) { this.on(CHANGE_EVENT, callback); },
-
-  removeChangeListener: function(callback) { this.removeListener(CHANGE_EVENT, callback); },
+var CommentStore = createStore({
 
   getComments: function(courseId, lectureId) {
     if(comments[courseId] && comments[courseId][lectureId]) {
@@ -53,39 +39,27 @@ var CommentStore = assign(new EventEmitter(), {
     } else {
       return [];
     }
-  },
+  }
+});
 
-  /*============================== @DISPATCHING ==============================*/
+/*============================== @DISPATCHING ==============================*/
 
-  dispatcher: Dispatcher.register(function(payload) {
-    switch(payload.actionType){
-      case ActionConstants.CREATE_REPLY:
-        addReply(
-          payload.courseId,
-          payload.lectureId,
-          payload.updatedComment
-        );
-        break;
-      case ActionConstants.CREATE_COMMENT:
-        addComment(
-          payload.courseId,
-          payload.lectureId,
-          payload.comment
-        );
-        break;
-      case ActionConstants.REQUEST_COMMENTS:
-        updateComments(
-          payload.courseId,
-          payload.lectureId,
-          payload.comments
-        );
-        break;
-      defaut:
-        break;
-    }
-    CommentStore.emitChange();
-    return true;
-  })
+CommentStore.dispatcher = Dispatcher.register(function(payload) {
+  switch(payload.actionType){
+    case ActionConstants.CREATE_REPLY:
+      addReply(payload.courseId, payload.lectureId, payload.updatedComment);
+      break;
+    case ActionConstants.CREATE_COMMENT:
+      addComment(payload.courseId, payload.lectureId, payload.comment);
+      break;
+    case ActionConstants.REQUEST_COMMENTS:
+      updateComments(payload.courseId, payload.lectureId, payload.comments);
+      break;
+    defaut:
+      break;
+  }
+  CommentStore.emitChange();
+  return true;
 });
 
 module.exports = CommentStore;
