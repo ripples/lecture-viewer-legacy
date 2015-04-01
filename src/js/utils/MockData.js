@@ -112,6 +112,14 @@ var generateReply = function(replyContent) {
   }
 }
 
+var generateBookmark = function(content, time) {
+  return {
+    id: generateBookmarkId(),
+    content: content,
+    time: time
+  }
+}
+
 module.exports = {
 
   /*============================== @COURSES ==============================*/
@@ -179,46 +187,39 @@ module.exports = {
     }
     comments[courseId][lectureId][comment.id].replies.push(reply);
     return comments[courseId][lectureId][comment.id];
-  }
+  },
 
   /*============================== @BOOKMARKS ==============================*/
 
-  // FIXME : Match the pattern for CRUD operations from above
+  createBookmark: function(courseId, lectureId, content, time) {
+    var bookmark = generateBookmark(content, time);
+    if(!bookmarks[courseId]) {
+      bookmarks[courseId]={};
+      bookmarks[courseId][lectureId]={};
+    }
+    bookmarks[courseId][lectureId][bookmark.id] = bookmark;
+    return bookmark;
+  },
 
-  // getBookmarks: function(courseID) {
-  //   return this.bookmarks.filter(function(bookmark) {
-  //     return bookmark.courseID === courseID;
-  //   });
-  // },
-  //
-  // updateBookmark: function(bookmarkBody, bookmarkId) {
-  //   var bookmark;
-  //   for (var i = 0; i < this.bookmarks.length; i++) {
-  //     if (this.bookmarks[i]['id'] == commentId) {
-  //       this.bookmarks[i]['label'] = bookmarkBody;
-  //       bookmark = this.bookmarks[i];
-  //       break;
-  //     }
-  //   }
-  //   console.log("Returning Updated Bookmark: " + bookmark);
-  //   return bookmark;
-  // },
-  //
-  // createBookmark: function(bookmarkBody, lectureId) {
-  //   var bookmark = {
-  //     id: ++this.bookmarkNumber,
-  //     label: bookmarkBody,
-  //     time: 500000
-  //   }
-  //   this.bookmarks.push(bookmark);
-  //   return bookmark;
-  // },
-  //
-  // getBookmarksForLecture: function(lectureId) {
-  //   // return this.comments.filter(function(comment) {
-  //   //   return comment.lectureId === lectureId;
-  //   // });
-  //   return this.bookmarks;
-  // }
+  saveBookmark: function(courseId, lectureId, bookmarkId, content, time) {
+    var bookmark = generateBookmark(content, time);
+    bookmark.id = bookmarkId;
+    bookmarks[courseId][lectureId][bookmarkId] = bookmark;
+    return bookmark;
+  },
+
+  deleteBookmark: function(courseId, lectureId, bookmarkId) {
+    delete bookmarks[courseId][lectureId][bookmark.id];
+  },
+
+  getBookmarks: function(courseId, lectureId) {
+    if(bookmarks[courseId] && bookmarks[courseId][lectureId]) {
+      return Object.keys(bookmarks[courseId][lectureId]).map(function(key) {
+        return bookmarks[key];
+      });
+    } else {
+      return [];
+    }
+  }
 
 }

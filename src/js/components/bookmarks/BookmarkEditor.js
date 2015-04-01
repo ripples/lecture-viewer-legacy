@@ -1,54 +1,124 @@
-var React = require('react');
+var React                 = require('react');
 var BookmarkActionCreator = require('../../actions/BookmarkActionCreator');
+var moment                = require('moment');
 
 var BookmarkEditor = React.createClass({
 
+  displayName: 'BookmarkEditor',
+
   propTypes: {
-    lectureId: React.PropTypes.number.isRequired
+    onSubmit: React.PropTypes.func.isRequired,
+    onCancel: React.PropTypes.func.isRequired,
+  },
+
+  // NEED THESE AS PROPS OR ON REQUEST
+  getDefaultProps: function() {
+    return {
+      lectureLength: 3745,    // random...
+      lectureTimestamp: 2054  // random...
+    };
   },
 
   getInitialState: function() {
     return {
-      bookmarkBody: '',
-      labelContent: '',
-      isInvalid: false,
+      content: '',
+      time: '',
+      contentIsValid: false,
+      timeIsValid: false
     };
   },
 
-  _onAddBookmark: function(e) {
+  /*============================== @HANDLING ==============================*/
+
+  handleCancelClick: function(e) {
     e.preventDefault();
-    var bookmarkBody = this.state.bookmarkBody;
-
-    // TODO : Perform error-checking
-    BookmarkActionCreator.createBookmarkForLecture(bookmarkBody, this.props.lectureId);
-    this.setState({bookmarkBody: ''});
+    this.props.onCancel();
+    this.replaceState(this.getInitialState());
   },
 
-  _handleChange: function(e) {
-    this.setState({bookmarkBody: e.target.value});
+  handleSubmitClick: function(e) {
+    e.preventDefault();
+    var content = this.state.content.trim();
+    var time = this.getStringAsTimestamp(this.state.time.trim());
+    // TODO : Perform Validation if necessary
+    this.props.onSubmit(content, time);
+    this.replaceState(this.getInitialState());
   },
+
+  handleContentChange: function(e) {
+    e.preventDefault();
+    var content = e.target.value;
+    this.setState({
+      content: content,
+      contentIsValid: (content.trim().length > 0)
+    });
+  },
+
+  handleTimeChange: function(e) {
+    e.preventDefault();
+    var time = e.target.value;
+    this.setState({
+      time: time,
+      timeIsValid: this.isTimestampValid(this.getStringAsTimestamp(time.trim()))
+    });
+  },
+
+  /*============================== @FORMATTING ==============================*/
+
+  getStringAsTimestamp: function(timeString) {
+    if(moment(timeString, ["hh:mm:ss", "h:m:s", "mm:ss", "m:s"]).isValid()) {
+      // Returns timestamp in seconds
+      var p = timeString.split(':'), s = 0, m = 1;
+      while (p.length > 0) {
+          s += m * parseInt(p.pop(), 10);
+          m *= 60;
+      }
+      return s;
+    } else {
+      return undefined;
+    }
+  },
+
+  /*============================== @VALIDATING ==============================*/
+
+  isTimestampValid: function(timestamp) {
+    return  (timestamp && timestamp != null) &&
+            !isNaN(timestamp) &&
+            (timestamp >= 0 && timestamp <= this.props.lectureLength);
+  },
+
+  /*============================== @RENDERING ==============================*/
 
   render: function() {
-
-    var invalidBookmarkLabel = (this.state.isInvalid) ?
-      <label className='bookmark-editor__label--invalid' for='bookmark-body'>{this.state.labelContent}</label> : '';
-
-    // TODO : Place this on the Submit button to change whether it is disabled
-    // var bookmarkButtonState = (this.state.bookmarkBody.length > 0 && !this.state.isInvalid) ? 'disabled' : '';
-    // {bookmarkButtonState}
-
     return (
       <div className='bookmark-editor'>
         <form>
-          {invalidBookmarkLabel}
-          <textarea className='bookmark-editor__input' id='bookmark-body' name='bookmark'
-            value={this.state.bookmarkBody} onChange={this._handleChange}></textarea>
-          <input type='button' className='bookmark-editor__submit-button' value='Add Bookmark' onClick={this._onAddBookmark}/>
+          <textarea className='bookmark-editor__content-input'
+            name='bookmark' value={this.state.content}
+            onChange={this.handleContentChange}>
+          </textarea>
+          <input placeholder="0:00" value={this.state.time}
+            onChange={this.handleTimeChange}
+          />
+          <button className='bookmark-editor__cancel-button'
+            onClick={this.handleCancelClick}>
+            Cancel
+          </button>
+          {this.renderSubmitBookmarkButton()}
         </form>
       </div>
     );
-  }
+  },
 
+  renderSubmitBookmarkButton: function() {
+    var bookmarkButtonState = this.state.contentIsValid &&
+                              this.state.timeIsValid ? '' : 'disabled';
+    return (
+      <input className='bookmark-editor__submit-button'
+        type='button' value='Submit'
+        onClick={this.handleSubmitClick}/>
+    );
+  }
 });
 
 module.exports = BookmarkEditor;

@@ -22,8 +22,10 @@ var addReply = function(courseId, lectureId, updatedComment) {
 
 var updateComments = function(courseId, lectureId, comments) {
   log('UPDATE_COMMENTS', 'comments', comments);
-  for(var i=0; i<comments.length; i++) {
-    comments[courseId][lectureId][comments[i].id] = comments[i];
+  if(comments) {
+    for(var i=0; i<comments.length; i++) {
+      comments[courseId][lectureId][comments[i].id] = comments[i];
+    }
   }
 }
 

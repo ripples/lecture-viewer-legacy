@@ -32,8 +32,6 @@ var LectureContextSidebar = React.createClass({
   },
 
   /*============================== @RENDERING ==============================*/
-  // <BookmarksContainer course_id={this.props.course_id}
-  //   lecture_id={this.props.lecture_id}/>
 
   // TODO : Toggle Open/Close button
   render: function() {
@@ -45,7 +43,8 @@ var LectureContextSidebar = React.createClass({
               lecture_id={this.props.lecture_id}/>
           </TabPane>
           <TabPane eventKey={2} tab="Bookmarks">
-
+            <BookmarksContainer course_id={this.props.course_id}
+              lecture_id={this.props.lecture_id}/>
           </TabPane>
         </TabbedArea>
       </div>

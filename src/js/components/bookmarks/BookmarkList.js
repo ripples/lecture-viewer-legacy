@@ -1,7 +1,5 @@
 var React                 = require('react');
 var Bookmark              = require('./Bookmark');
-var CreateStoreMixin      = require('../../mixins/CreateStoreMixin');
-var BookmarkStore         = require('../../stores/BookmarkStore');
 var BookmarkActionCreator = require('../../actions/BookmarkActionCreator');
 
 var BookmarkList = React.createClass({
@@ -30,6 +28,18 @@ var BookmarkList = React.createClass({
     this.replaceState(this.getInitialState());
   },
 
+  handleSaveBookmark: function(bookmark_id, content, time) {
+    BookmarkActionCreator.saveBookmark(
+      this.props.course_id, this.props.lecture_id, bookmark_id, content, time
+    );
+  },
+
+  handleDeleteBookmark: function(bookmark_id) {
+    BookmarkActionCreator.deleteBookmark(
+      this.props.course_id, this.props.lecture_id, bookmark_id
+    );
+  },
+
   /*============================== @RENDERING ==============================*/
 
   render: function() {
@@ -42,8 +52,8 @@ var BookmarkList = React.createClass({
             lecture_id={this.props.lecture_id}
             bookmark={bookmark}
             isEditing={this.state.editingBookmarkId === bookmark.id}
-            onBeginEdit={this.handleBeginBookmarkReply}
-            onEndEdit={this.handleEndBookmarkReply}/>
+            onBeginEdit={this.handleBeginBookmarkEdit}
+            onEndEdit={this.handleEndBookmarkEdit}/>
         </li>
       )
     }.bind(this));

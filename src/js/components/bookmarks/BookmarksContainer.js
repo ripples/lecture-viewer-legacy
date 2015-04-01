@@ -14,6 +14,8 @@ var BookmarksContainer = React.createClass({
 
   mixins: [CreateStoreMixin([BookmarkStore])],
 
+  getInitialState: function() { return {isAdding: false}; },
+
   /*============================== @LIFECYCLE ==============================*/
 
   componentDidMount: function() {
@@ -36,22 +38,19 @@ var BookmarksContainer = React.createClass({
 
   /*============================== @HANDLING ==============================*/
 
-  handleSubmitBookmark: function(label, time) {
+  handleSubmitBookmark: function(content, time) {
     BookmarkActionCreator.createBookmark(
-      this.props.course_id, this.props.lecture_id, label, time
+      this.props.course_id, this.props.lecture_id, content, time
     );
+    this.setState(this.getInitialState());
   },
 
-  handleSaveBookmark: function(bookmark_id, label, time) {
-    BookmarkActionCreator.saveBookmark(
-      this.props.course_id, this.props.lecture_id, bookmark_id, label, time
-    );
+  handleCancelAddBookmark: function() {
+    this.setState(this.getInitialState());
   },
 
-  handleDeleteBookmark: function(bookmark_id) {
-    BookmarkActionCreator.deleteBookmark(
-      this.props.course_id, this.props.lecture_id, bookmark_id
-    );
+  handleAddClick: function() {
+    this.setState({isAdding: !this.state.isAdding});
   },
 
   /*============================== @RENDERING ==============================*/
@@ -63,11 +62,22 @@ var BookmarksContainer = React.createClass({
           bookmarks={this.state.bookmarks}
           course_id={this.props.course_id}
           lecture_id={this.props.lecture_id}/>
-        <BookmarkEditor onSubmit={this.handleSubmitBookmark}/>
+        {this.renderAddButtonOrEditor()}
       </div>
     );
-  }
+  },
 
+  renderAddButtonOrEditor: function() {
+    return (
+      this.state.isAdding ?
+      <BookmarkEditor
+        onSubmit={this.handleSubmitBookmark}
+        onCancel={this.handleCancelAddBookmark}/> :
+      <button className='bookmark__add-button' onClick={this.handleAddClick}>
+        Add Bookmark
+      </button>
+    );
+  }
 });
 
 module.exports = BookmarksContainer;

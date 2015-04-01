@@ -1,42 +1,53 @@
-var Dispatcher = require('../dispatchers/Dispatcher');
+var Dispatcher      = require('../dispatchers/Dispatcher');
 var ActionConstants = require('../constants/ActionConstants');
-var API = require('../utils/MockData');
-
-var log = function(action, data) {
-  console.log('[DISPATCHING] <' + action + '> ' + JSON.stringify(data));
-}
+var API             = require('../utils/MockData');
+var log             = require('../utils/Logging').actionCreator('BOOKMARK');
 
 var BookmarkActionCreator = {
 
-  beginEdit: function(bookmarkId) {
-    log('UPDATE_BOOKMARK_BEGIN', bookmarkId);
-    Dispatcher.dispatch({actionType: ActionConstants.UPDATE_BOOKMARK_BEGIN, bookmarkId: bookmarkId});
+  createBookmark: function(courseId, lectureId, content, time) {
+    var bookmark = API.createBookmark(courseId, lectureId, content, time);
+    log('CREATE_BOOKMARK', 'bookmark', bookmark);
+    Dispatcher.dispatch({
+      actionType: ActionConstants.CREATE_BOOKMARK,
+      courseId: courseId,
+      lectureId: lectureId,
+      bookmark: bookmark
+    });
   },
 
-  cancelEdit: function() {
-    log('UPDATE_BOOKMARK_CANCEL', null);
-    Dispatcher.dispatch({actionType: ActionConstants.UPDATE_BOOKMARK_CANCEL});
+  saveBookmark: function(courseId, lectureId, bookmarkId, content, time) {
+    var bookmark = API.saveBookmark(courseId, lectureId, bookmarkId, content, time);
+    log('SAVE_BOOKMARK', 'updated bookmark', bookmark);
+    Dispatcher.dispatch({
+      actionType: ActionConstants.UPDATE_BOOKMARK,
+      courseId: courseId,
+      lectureId: lectureId,
+      bookmark: bookmark
+    });
   },
 
-  submitEdit: function(bookmarkBody, bookmarkId) {
-    var bookmark = API.updateBookmark(bookmarkBody, bookmarkId);
-    log('UPDATE_BOOKMARK', bookmark);
-    Dispatcher.dispatch({actionType: ActionConstants.UPDATE_BOOKMARK, bookmark: bookmark});
+  deleteBookmark: function(courseId, lectureId, bookmarkId) {
+    API.deleteBookmark(courseId, lectureId, bookmarkId);
+    log('DELETE_BOOKMARK', 'deleted (no data)', null);
+    Dispatcher.dispatch({
+      actionType: ActionConstants.DELETE_BOOKMARK,
+      courseId: courseId,
+      lectureId: lectureId,
+      bookmarkId: bookmarkId
+    });
   },
 
-  createBookmarkForLecture: function(bookmarkBody, lectureId) {
-    var bookmark = API.createBookmark(bookmarkBody, lectureId);
-    log('CREATE_BOOKMARK', bookmark);
-    Dispatcher.dispatch({actionType: ActionConstants.CREATE_BOOKMARK, bookmark: bookmark});
-  },
-
-  requestBookmarksForLecture: function(lectureId) {
-    var bookmarks = API.getBookmarksForLecture(lectureId);
-    log('REQUEST_BOOKMARKS', bookmarks);
-    Dispatcher.dispatch({actionType: ActionConstants.REQUEST_BOOKMARKS, bookmarks: bookmarks});
+  requestBookmarks: function(courseId, lectureId) {
+    var bookmarks = API.getBookmarks(courseId, lectureId);
+    log('REQUEST_BOOKMARKS', 'bookmarks', bookmarks);
+    Dispatcher.dispatch({
+      actionType: ActionConstants.REQUEST_COMMENTS,
+      courseId: courseId,
+      lectureId: lectureId,
+      bookmarks: bookmarks
+    });
   }
-
-  // TODO : DELETE BOOKMARK
 }
 
 module.exports = BookmarkActionCreator;
