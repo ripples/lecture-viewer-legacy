@@ -41,37 +41,64 @@ var ManageCourse = React.createClass({
 	/*============================== @HANDLING ==============================*/
 
 	handleEditInformationClick: function(data) {
-		this.state.isEditingInfo = true;
+		this.setState({isEditingInfo: true});
 	},
 
 	handleEditRosterClick: function(data) {
-		this.state.isEditingRoster = true;
+		this.setState({isEditingRoster: true});
+	},
+
+	handleSaveInformationClick: function(data) {
+		this.setState({isEditingInfo: false});
+	},
+
+	handleSaveRosterClick: function(data) {
+		this.setState({isEditingRoster: false});
 	},
 
 	/*============================== @RENDERING ==============================*/
 
 	render: function() {
-		if (this.state.isEditingInfo){
-			var infoEditButton = <button onClick={this.handleSaveInformationClick}> Save Information </button>;
-		} else {
-			var infoEditButton = <button onClick={this.handleEditInformationClick}> Edit Information </button>;
-		}
-
 		if (this.state.isEditingRoster){
-			var rosterEditButton = <button onClick={this.handleSaveRosterClick}> Save Roster </button>;
+			var rosterEditButton = 	<div>
+															<button> Upload CSV File </button>
+															<button> Paste Email </button>
+															<button onClick={this.handleSaveRosterClick}> Save Roster </button>
+															</div>;
 		} else {
 			var rosterEditButton = <button onClick={this.handleEditRosterClick}> Edit Roster </button>;
 		}
 
-		var courses = this.state.courses.map(function(course, i) {
-      return (
-        <li key={i}>
-          <Course course={course}/>
-					{infoEditButton}
-					{rosterEditButton}
-        </li>
-      )
-    });
+		if (this.state.isEditingInfo){
+			var infoEditButton = <button onClick={this.handleSaveInformationClick} type="submit"> Save Information </button>;
+			var courses = this.state.courses.map(function(course, i) {
+				return (
+					<li key={i}>
+						<form>
+							<input type="text" name="course__deparment" value={course.department}/> <br/>
+							<input type="text" name="course__number" value={course.course_number}/>
+							<input type="text" name="course__section" value={course.section}/> <br/>
+							<input type="text" name="course__term" value={course.term}/>
+							<input type="text" name="course__year" value={course.year}/> <br/>
+							<textarea type="text" name="course__description" value={course.description}/> <br/>
+							{infoEditButton} <br/>
+						</form>
+						{rosterEditButton}
+					</li>
+				)
+			});
+		} else {
+			var infoEditButton = <button onClick={this.handleEditInformationClick}> Edit Information </button>;
+			var courses = this.state.courses.map(function(course, i) {
+				return (
+					<li key={i}>
+						<Course course={course}/>
+						{infoEditButton} <br/>
+						{rosterEditButton}
+					</li>
+				)
+			});
+		}
 
     return (
       <div className='manage-course'>
