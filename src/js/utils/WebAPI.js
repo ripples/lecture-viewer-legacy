@@ -2,7 +2,7 @@
 var Promise = req('promise');
 var request = require('superagent');
 /*** We are going to need jQuery in the HTML ***/
-function newUser(emailVal, passwordVal, fnameVal, lnameVal){
+function new_user(emailVal, passwordVal, fnameVal, lnameVal){
 
 	var promise = new Promise ( function (resolve, reject){
 			request
@@ -41,7 +41,7 @@ var doneUser = newUser();
  });
 ***/
 
-function getUserPriv(user_id){								   //Get user ID some how
+function get_user_priv(user_id){								   //Get user ID some how
 	var promise = new Promise( function (resolve, reject){
 		request
 			.get('/user/' + user_id)
@@ -61,7 +61,7 @@ function getUserPriv(user_id){								   //Get user ID some how
 }
 
 
-function changeUser(user_id, fnameval, lnameVal){
+function change_user(user_id, fnameval, lnameVal){
 	var promise = new Promise ( function (resolve, reject){
 		request
 			.put('/user/'+ user_id)
@@ -81,7 +81,7 @@ function changeUser(user_id, fnameval, lnameVal){
 	return promise;
 }
 
-function deleteUser(user_id){
+function delete_user(user_id){
 	var promise = new Promise (function (resolve, reject){
 		request
 			.delete('/user/' + user_id)
@@ -101,7 +101,7 @@ function deleteUser(user_id){
 
 
 
-function authVerify(verifyID){
+function auth_verify(verifyID){
 	var promise = new Promise (function (resolve, reject){
 		request
 			.get('/auth/verify' + verifyID)
@@ -120,7 +120,7 @@ function authVerify(verifyID){
 	return promise;
 }
 
-function authLogin(email, password){
+function auth_login(email, password){
 	var promise = new Promise ( function ( resolve, reject){
 		request
 			.post('/auth/login')
@@ -140,10 +140,65 @@ function authLogin(email, password){
 	return promise;
 }
 
-function authLogout(){
+function auth_logout(){
 	var promise = new Promise (function (resolve, reject){
 		request
 			.post('/auth/logout')
+			.end(function (err, res){
+				if(res.status === "success"){
+					resolve(res);
+				}
+				else if(err){
+					reject(err);
+				} else {
+					reject(res);
+				}
+			});
+		});
+	return promise;
+}
+
+function get_notifications(){
+	var promise = new Promise (function (resolve, reject){
+		request
+			.get('/user/notification')
+			.end(function (err, res){
+				if(res.status === "success"){
+					resolve(res);
+				}
+				else if(err){
+					reject(err);
+				} else {
+					reject(res);
+				}
+			});
+		});
+	return promise;
+}
+
+function mark_notifications_read(){
+	var promise = new Promise (function (resolve, reject){
+		request
+			.delete('/user/notification')
+			.end(function (err, res){
+				if(res.status === "success"){
+					resolve(res);
+				}
+				else if(err){
+					reject(err);
+				} else {
+					reject(res);
+				}
+			});
+		});
+	return promise;
+}
+
+function mark_notification_read(notification){
+	var promise = new Promise (function (resolve, reject){
+		request
+			.post('/delete/notification/' + notification)
+			.send({notification_id : notification})
 			.end(function (err, res){
 				if(res.status === "success"){
 					resolve(res);
