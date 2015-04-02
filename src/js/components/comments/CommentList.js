@@ -1,5 +1,6 @@
 var React   = require('react');
 var Comment = require('./Comment');
+var ScrollContentWrapper = require('../helpers/ScrollContentWrapper');
 
 var CommentList = React.createClass({
 
@@ -46,11 +47,13 @@ var CommentList = React.createClass({
     }.bind(this));
 
     return (
-      <div className='comment-list'>
-        <ol>
-          {comments}
-        </ol>
-      </div>
+      <ScrollContentWrapper>
+        <div className='comment-list'>
+          <ol>
+            {comments}
+          </ol>
+        </div>
+      </ScrollContentWrapper>
     );
   }
 });
