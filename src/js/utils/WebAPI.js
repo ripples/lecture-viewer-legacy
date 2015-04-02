@@ -308,4 +308,81 @@ function lecture_bookmark(course_id, lecture_id){
 	return promise;
 }
 
+function add_course(department, course_name, course_number, term, year, instructor_email){
+	var promise = new Promise (function (resolve, reject){
+		request
+			.post('/course')
+			.send({department : department, course_name : course_name, course_number : course_number, term : term, year : year, instructor_email : instructor_email})
+			.end( function (err, res){
+				if(res.status === "success"){
+					resolve(res);
+				}
+				else if(err){
+					reject(err);
+				} else {
+					reject(res);
+				}
+			});
+		});
+	return promise;
+}
+
+function get_course(course_id){
+	var promise = new Promise( function (resolve, reject){
+		request
+			.get('/course/' + course_id)
+			.send({course_id : course_id})
+			.end( function (err, res){
+				if(res.status === "success"){
+					resolve(res);
+				}
+				else if(err){
+					reject(err);
+				} else {
+					reject(res);
+				}
+			});
+		});
+	return promise;
+}
+
+function edit_course(course_id, department, course_name, course_number, term, year, instructor_email){
+	var promise = new Promise( function (resolve, reject){
+		request
+			.put('/course/'+course_id)
+			.send({course_id : course_id, department : department, course_name : course_name, course_number : course_number, term : term, year : year, instructor_email : instructor_email})
+			.end( function (err, res){
+				if(res.status === "success"){
+					resolve(res);
+				}
+				else if(err){
+					reject(err);
+				} else {
+					reject(res);
+				}
+			});
+		});
+	return promise;
+}
+
+function delete_course(course_id){
+	var promise = new Promise( function (resolve, reject){
+		request
+			.delete('/course/'+course_id)
+			.send({course_id : course_id})
+			.end( function (err, res){
+				if(res.status === "success"){
+					resolve(res);
+				}
+				else if(err){
+					reject(err);
+				} else {
+					reject(res);
+				}
+			});
+		});
+	return promise;
+}
+
+
 // Responses should call an Action to handle the payload
