@@ -48,6 +48,7 @@ var Course = React.createClass({
         <h3 className='course__identifier'>{this.getFormattedIdentifier()}</h3>
         <h3 className='course__semester'>{this.getFormattedSemester()}</h3>
         <h2 className='course__name'>{this.props.course.course_name}</h2>
+        <p className='course__description'>{this.props.course.description}</p>
       </div>
     );
   }

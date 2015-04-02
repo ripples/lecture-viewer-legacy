@@ -36,20 +36,25 @@ var LectureContextSidebar = React.createClass({
   // TODO : Toggle Open/Close button
   render: function() {
     return (
-      <div id='lecture-context-sidebar'>
-        <TabbedArea defaultActiveKey={1}>
-          <TabPane eventKey={1} tab="Comments">
-            <CommentsContainer course_id={this.props.course_id}
-              lecture_id={this.props.lecture_id}/>
-          </TabPane>
-          <TabPane eventKey={2} tab="Bookmarks">
-            <BookmarksContainer course_id={this.props.course_id}
-              lecture_id={this.props.lecture_id}/>
-          </TabPane>
-        </TabbedArea>
+      <div className='lecture-context-sidebar'>
+        <CommentsContainer course_id={this.props.course_id}
+          lecture_id={this.props.lecture_id}/>
       </div>
     );
   }
 });
+
+// <div className='lecture-context-sidebar'>
+//   <TabbedArea defaultActiveKey={1}>
+//     <TabPane eventKey={1} tab="Comments">
+//       <CommentsContainer course_id={this.props.course_id}
+//         lecture_id={this.props.lecture_id}/>
+//     </TabPane>
+//     <TabPane eventKey={2} tab="Bookmarks">
+//       <BookmarksContainer course_id={this.props.course_id}
+//         lecture_id={this.props.lecture_id}/>
+//     </TabPane>
+//   </TabbedArea>
+// </div>
 
 module.exports = LectureContextSidebar;

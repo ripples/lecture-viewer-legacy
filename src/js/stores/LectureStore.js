@@ -1,20 +1,14 @@
 var Dispatcher      = require('../dispatchers/Dispatcher');
 var ActionConstants = require('../constants/ActionConstants');
-var assign          = require('object-assign');
-var EventEmitter    = require('events').EventEmitter;
-
-var CHANGE_EVENT = "change";
-
-var log = function(action, data) {
-  console.log('[STORE] <' + action + '> ' + JSON.stringify(data));
-}
+var createStore     = require('../utils/StoreUtils');
+var log             = require('../utils/Logging').store('LECTURE');
 
 /*============================== @PRIVATE ==============================*/
 
 var lectures = {};
 
 var addLecture = function(course_id, lecture) {
-  log('ADD LECTURE', lecture);
+  log('ADD_LECTURE', 'lecture', lecture);
   if(!lectures[course_id]) {
     lectures[course_id]={};
   }
@@ -22,7 +16,7 @@ var addLecture = function(course_id, lecture) {
 }
 
 var updateLectures = function(course_id, updatedLectures) {
-  log('UPDATE LECTURES', updatedLectures);
+  log('UPDATE_LECTURES', 'updatedLectures', updatedLectures);
   if(!lectures[course_id]) {
     lectures[course_id]={};
   }
@@ -33,14 +27,7 @@ var updateLectures = function(course_id, updatedLectures) {
 
 /*============================== @PUBLIC ==============================*/
 
-//  TODO : Extend a BaseStore
-var LectureStore = assign(new EventEmitter(), {
-
-  emitChange: function() { this.emit(CHANGE_EVENT); },
-
-  addChangeListener: function(callback) { this.on(CHANGE_EVENT, callback); },
-
-  removeChangeListener: function(callback) { this.removeListener(CHANGE_EVENT, callback); },
+var LectureStore = createStore({
 
   getLectures: function(course_id) {
     if(lectures[course_id]) {
@@ -50,30 +37,24 @@ var LectureStore = assign(new EventEmitter(), {
     } else {
       return [];
     }
-  },
+  }
+});
 
-  /*============================== @DISPATCHING ==============================*/
+/*============================== @DISPATCHING ==============================*/
 
-  dispatcher: Dispatcher.register(function(payload) {
-    switch(payload.actionType){
-      case ActionConstants.CREATE_LECTURE:
-        addLecture(
-          payload.course_id,
-          payload.lecture
-        );
-        break;
-      case ActionConstants.REQUEST_LECTURES:
-        updateLectures(
-          payload.course_id,
-          payload.lectures
-        );
-        break;
-      defaut:
-        break;
-    }
-    LectureStore.emitChange();
-    return true;
-  })
+LectureStore.dispatcher = Dispatcher.register(function(payload) {
+  switch(payload.actionType){
+    case ActionConstants.CREATE_LECTURE:
+      addLecture(payload.course_id, payload.lecture);
+      break;
+    case ActionConstants.REQUEST_LECTURES:
+      updateLectures(payload.course_id, payload.lectures);
+      break;
+    defaut:
+      break;
+  }
+  LectureStore.emitChange();
+  return true;
 });
 
 module.exports = LectureStore;

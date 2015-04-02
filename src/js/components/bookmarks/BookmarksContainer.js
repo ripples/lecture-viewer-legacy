@@ -1,6 +1,6 @@
 var React                 = require('react');
-// var BookmarkList          = require('./BookmarkList');
-// var BookmarkEditor        = require('./BookmarkEditor');
+var BookmarkList          = require('./BookmarkList');
+var BookmarkEditor        = require('./BookmarkEditor');
 var CreateStoreMixin      = require('../../mixins/CreateStoreMixin');
 var BookmarkStore         = require('../../stores/BookmarkStore');
 var BookmarkActionCreator = require('../../actions/BookmarkActionCreator');
@@ -13,6 +13,8 @@ var BookmarksContainer = React.createClass({
   },
 
   mixins: [CreateStoreMixin([BookmarkStore])],
+
+  getInitialState: function() { return {isAdding: false}; },
 
   /*============================== @LIFECYCLE ==============================*/
 
@@ -36,25 +38,46 @@ var BookmarksContainer = React.createClass({
 
   /*============================== @HANDLING ==============================*/
 
-    handleSubmitBookmark: function(content, isAnonymous) {
-      BookmarkActionCreator.createBookmark(
-        this.props.course_id, this.props.lecture_id
-      );
-    },
+  handleSubmitBookmark: function(content, time) {
+    BookmarkActionCreator.createBookmark(
+      this.props.course_id, this.props.lecture_id, content, time
+    );
+    this.setState(this.getInitialState());
+  },
+
+  handleCancelAddBookmark: function() {
+    this.setState(this.getInitialState());
+  },
+
+  handleAddClick: function() {
+    this.setState({isAdding: !this.state.isAdding});
+  },
 
   /*============================== @RENDERING ==============================*/
-
-  // <BookmarkList bookmarks={this.state.bookmarks}/>
-  // <BookmarkEditor onSubmit={this.handleSubmitBookmark}/>
 
   render: function() {
     return (
       <div className='bookmarks-container'>
-
+        <BookmarkList
+          bookmarks={this.state.bookmarks}
+          course_id={this.props.course_id}
+          lecture_id={this.props.lecture_id}/>
+        {this.renderAddButtonOrEditor()}
       </div>
     );
-  }
+  },
 
+  renderAddButtonOrEditor: function() {
+    return (
+      this.state.isAdding ?
+      <BookmarkEditor
+        onSubmit={this.handleSubmitBookmark}
+        onCancel={this.handleCancelAddBookmark}/> :
+      <button className='bookmark__add-button' onClick={this.handleAddClick}>
+        Add Bookmark
+      </button>
+    );
+  }
 });
 
 module.exports = BookmarksContainer;

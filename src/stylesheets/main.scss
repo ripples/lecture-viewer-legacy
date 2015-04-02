@@ -1,0 +1,52 @@
+@import './partials/scrolling';
+
+$dark-gray: #3B3B3B;
+$light-gray: #E6E6E6;
+$font-stack: 100% Helvetica, sans-serif;
+$editor-height: 100px;
+$header-height: 100px;
+
+html, body {
+  font: $font-stack;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.navigation-sidebar {
+  position: absolute;
+  left: 0;
+  height: 100%;
+  width: 240px;
+  background: $dark-gray;
+}
+
+.lecture-context {
+  position: absolute;
+  right: 0;
+  height: 100%;
+
+  &-sidebar {
+    position:absolute;
+    right: 0;
+    height: 100%;
+    width: 340px;
+    background: $light-gray;
+  }
+}
+
+.comments-container {
+  @include fixed-header-and-footer--scrollable-content--wrapper();
+}
+
+.comment-list {
+  @include fixed-header-and-footer--scrollable-content--content();
+  width: 100%;
+}
+
+.comment-editor {
+  @include fixed-header-and-footer--scrollable-content--fixed-component();
+  width: 100%;
+  background: #c1c1c1;
+}

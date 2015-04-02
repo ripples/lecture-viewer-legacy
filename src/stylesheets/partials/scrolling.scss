@@ -1,0 +1,35 @@
+/*  Place on elements that will serve as a container for
+    content that must be scrolled, but have dynamically sized
+    header and footer.
+*/
+@mixin fixed-header-and-footer--scrollable-content--wrapper() {
+  display: table;
+  height: 100%;
+  width: 100%;
+}
+
+/*  Place on dynamically sized headers or footers
+    within a scrollable content container
+*/
+@mixin fixed-header-and-footer--scrollable-content--fixed-component() {
+  display: table-row;
+}
+
+/*  For use within scroll-content-wrapper only
+*/
+@mixin fixed-header-and-footer--scrollable-content--content-wrapper() {
+  display: table-row;
+  height: 100%;
+}
+
+/*  Place on the content of a scrollable content container.
+    This is the element that will be scrollable.
+*/
+@mixin fixed-header-and-footer--scrollable-content--content() {
+  height: 100%;
+  overflow: scroll;
+}
+
+.scroll-content-wrapper {
+  @include fixed-header-and-footer--scrollable-content--content-wrapper();
+}
