@@ -103,60 +103,58 @@ function deleteUser(user_id){
 
 function authVerify(verifyID){
 	var promise = new Promise (function (resolve, reject){
-		$.ajax({
-			type 	 : 'GET',
-			url		 : '/auth/verify'+verify_id,
-			data 	 : {verify_id : verifyID},
-			dataType : 'json'
-		}).done (function (data){
-			if(data.status === 'success'){
-				resolve(data.data);
-			}
-			else{
-				reject(data);
-			}
+		request
+			.get('/auth/verify' + verifyID)
+			.send({verify_id : verifyID})
+			.end( function (err, res){
+				if(res.status === "success"){
+					resolve(res.data);
+				}
+				else if(err){
+					reject(err);
+				} else {
+					reject(res);
+				}
+			});
 		});
-	});
 	return promise;
 }
 
-function authLogin(){
-	var email = $("input[ref='email'").val();
-	var passVal = $("input[ref='pass'").val();
+function authLogin(email, password){
 	var promise = new Promise ( function ( resolve, reject){
-		$.ajax({
-			type 	 : 'POST',
-			url		 : '/auth/login'
-			data 	 : {user_email : email, user_password : pass},
-			dataType : 'json'
-		}).done(function (data){
-			if(data.status === 'success'){
-				resolve(data.data);
-			}
-			else{
-				reject(data);
-			}
+		request
+			.post('/auth/login')
+			.send({user_email : email, user_password : pass})
+			.end( function (err, res){
+				if(res.status === "success"){
+					resolve(res);
+				}
+				else if(err){
+					reject(err);
+				}
+				else{
+					reject(res);
+				}
+			});
 		});
-	});
 	return promise;
 }
 
 function authLogout(){
 	var promise = new Promise (function (resolve, reject){
-		$.ajax({
-			type 	 : 'POST',
-			url		 : '/auth/logout'
-			data 	 : {},
-			dataType : 'json'
-		}).done(function (data){
-			if(data.status === 'success'){
-				resolve(data.data);
-			}
-			else{
-				reject(data);
-			}
+		request
+			.post('/auth/logout')
+			.end(function (err, res){
+				if(res.status === "success"){
+					resolve(res);
+				}
+				else if(err){
+					reject(err);
+				} else {
+					reject(res);
+				}
+			});
 		});
-	});
 	return promise;
 }
 
