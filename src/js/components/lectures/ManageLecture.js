@@ -10,8 +10,7 @@ var ManageLecture = React.createClass({
 
   propTypes: {
     lecture_id: React.PropTypes.number.isRequired,
-    course_id:  React.PropTypes.number.isRequired,
-    lectures: React.PropTypes.array.isRequired
+    course_id:  React.PropTypes.number.isRequired
   },
 
   mixins : [CreateStoreMixin([LectureStore])],
@@ -41,12 +40,11 @@ var ManageLecture = React.createClass({
   },
   
   /*============================== @RENDERING ==============================*/
-
+  
   render : function() {
     return (
       <div className="ManageLecture">
-        Lecture: {this.props.lecture_id}
-        {this.state.lectures}
+        <h1>Lecture Title: {this.props.lecture_id}</h1>
       </div>
     );
   }
