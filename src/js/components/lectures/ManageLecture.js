@@ -1,4 +1,5 @@
 var React                 = require('react');
+var Router                = require('react-router');
 var Lecture               = require('./Lecture');
 var CreateStoreMixin      = require('../../mixins/CreateStoreMixin');
 var LectureStore          = require('../../stores/LectureStore');
@@ -9,42 +10,69 @@ var ManageLecture = React.createClass({
   displayName : 'ManageLecture',
 
   propTypes: {
-    lecture_id: React.PropTypes.number.isRequired,
     course_id:  React.PropTypes.number.isRequired
   },
 
   mixins : [CreateStoreMixin([LectureStore])],
   
-  /*============================== @LIFECYCLE ==============================*/
-  
-  componentWillMount: function() {
-    this.props.lecture_id = 0;
+  getInitialState : function() {
+    return {
+      isEditingInfo: false
+    };
   },
   
-  componentDidMount: function() {
+  /*============================== @LIFECYCLE ==============================*/
+  
+  componentWillMount : function(){
+    this.props.course_id = 1;
+  },
+  
+  componentDidMount : function() {
     this.contextDidChange(this.props);
   },
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps : function(nextProps) {
     this.setState(this.getStateFromStores(nextProps));
     this.contextDidChange(nextProps);
   },
 
-  getStateFromStores: function(props) {
+  getStateFromStores : function(props) {
     var lectures = LectureStore.getLectures(props.course_id);
     return { lectures: lectures };
   },
 
-  contextDidChange: function(props) {
+  contextDidChange : function(props) {
     LectureActionCreator.requestLectures(props.course_id);
+  },
+  
+  /*============================== @HANDLING ===============================*/
+  
+  handleEditInformationClick: function(data) {
+    this.setState({isEditingInfo: true});
+  },
+  
+  handleSaveInformationClick: function(data) {
+    this.setState({isEditingInfo: false});
   },
   
   /*============================== @RENDERING ==============================*/
   
   render : function() {
+    
+    var lectures = this.state.lectures.map(function(lecture, i) {
+      return (
+        <li key={i}>
+          <Lecture lecture={lecture}/>
+        </li>
+      )
+    });
+    
     return (
-      <div className="ManageLecture">
-        <h1>Lecture Title: {this.props.lecture_id}</h1>
+      <div className="manage-lecture">
+        <h1>Lectures</h1>
+        <ul>
+          {lectures}
+        </ul>
       </div>
     );
   }
