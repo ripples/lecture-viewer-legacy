@@ -213,9 +213,99 @@ function mark_notification_read(notification){
 	return promise;
 }
 
-function updateBookmark(bookmarkBody, bookmarkID){
-
+function create_bookmark(course, lecture, labl, time){
+	var promise = new Promise (function (resolve, reject){
+		request
+			.post('/user/bookmark')
+			.send({course_id : course, lecture_id : lecture, label : labl, time : time})
+			end( function (err, res){
+				if(res.status === "success"){
+					resolve(res);
+				}
+				else if(err){
+					reject(err);
+				} else {
+					reject(res);
+				}
+			});
+		});
+	return promise;
 }
 
+function delete_bookmark(bookmark_id){
+	var promise = new Promise (function (resolve, reject){
+		request
+			.delete('/user/bookmark/' + bookmark_id)
+			.send({bookmark_id : bookmark_id})
+			.end( function (err, res){
+				if(res.status === "success"){
+					resolve(res);
+				}
+				else if(err){
+					reject(err);
+				} else {
+					reject(res);
+				}
+			});
+		});
+	return promise;
+}
+
+function edit_bookmark(bookmark_id){
+	var promise = new Promise (function (resolve, reject){
+		request
+			.put('/user/bookmark/'+bookmark_id)
+			.send({bookmark_id : bookmark_id})
+			.end( function (err, res){
+				if(res.status === "success"){
+					resolve(res);
+				}
+				else if(err){
+					reject(err);
+				} else {
+					reject(res);
+				}
+			})
+		});
+	return promise;
+}
+
+function course_bookmark(course_id){
+	var promise = new Promise (function (resolve, reject){
+		request
+			.get('/user/bookmark/course/' + course_id)
+			.send({course_id : course_id})
+			.end( function (err, res){
+				if(res.status === "success"){
+					resolve(res);
+				}
+				else if(err){
+					reject(err);
+				} else {
+					reject(res);
+				}
+			});
+		});
+	return promise;
+}
+
+function lecture_bookmark(course_id, lecture_id){
+	var promise = new Promise (function (resolve, reject){
+		request
+			.get('/user/bookmark/'+course_id+'/lecture/'+lecture_id)
+			.send({course_id : course_id, lecture_id : lecture_id});
+			.end( function (err, res){
+				if(res.status === "success"){
+					resolve(res);
+				}
+				else if(err){
+					reject(err);
+				} else {
+					reject(res);
+				}
+			});
+		});
+	return promise;
+}
 
 // Responses should call an Action to handle the payload
