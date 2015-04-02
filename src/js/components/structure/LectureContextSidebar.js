@@ -36,7 +36,7 @@ var LectureContextSidebar = React.createClass({
   // TODO : Toggle Open/Close button
   render: function() {
     return (
-      <div id='lecture-context-sidebar'>
+      <div className='lecture-context-sidebar'>
         <TabbedArea defaultActiveKey={1}>
           <TabPane eventKey={1} tab="Comments">
             <CommentsContainer course_id={this.props.course_id}

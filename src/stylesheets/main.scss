@@ -1,4 +1,20 @@
 body {
   font: 100% Helvetica, sans-serif;
-  background-color: #efefef;
+  background-color: #8e8e8e;
+}
+
+.navigation-sidebar {
+  width: 240px;
+  height: 100%;
+  float: left;
+}
+
+.lecture-context {
+  height: 100%;
+
+  &-sidebar {
+    width: 340px;
+    height: 100%;
+    float: right;
+  }
 }

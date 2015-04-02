@@ -4,7 +4,7 @@ var concat      = require('gulp-concat');
 var livereload  = require('gulp-livereload');
 var http        = require('http');
 var st          = require('st');
-var sass        = require('gulp-sass');
+var sass        = require('gulp-ruby-sass');
 
 gulp.task('browserify', function() {
     gulp.src('src/js/main.js')
@@ -19,10 +19,12 @@ gulp.task('copy', function() {
         .pipe(gulp.dest('dist'));
 });
 
-gulp.task('sass', function () {
-    gulp.src('src/stylesheets/*.scss')
-        .pipe(sass())
-        .pipe(gulp.dest('dist/css'));
+gulp.task('sass', function() {
+    return sass('./src/stylesheets/main.scss')
+    .on('error', function (err) {
+      console.error('Error', err.message);
+    })
+    .pipe(gulp.dest('dist/css'));
 });
 
 gulp.task('default', ['browserify', 'copy', 'sass']);

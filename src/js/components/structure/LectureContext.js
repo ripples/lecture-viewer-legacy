@@ -12,7 +12,7 @@ var LectureContext = React.createClass({
 
   render: function() {
     return (
-      <div id='lecture-context'>
+      <div className='lecture-context'>
         <LectureContextSidebar {...this.props}/>
       </div>
     );

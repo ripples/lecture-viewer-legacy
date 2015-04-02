@@ -22,7 +22,7 @@ var NavigationSidebar = React.createClass({
 
   render: function() {
     return (
-      <div id='navigation-sidebar'>
+      <div className='navigation-sidebar'>
         <button onClick={this.handleLogout}>Logout</button>
         <CourseList/>
         <LectureList course_id={1}/>
