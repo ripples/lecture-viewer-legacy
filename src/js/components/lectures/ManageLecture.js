@@ -59,20 +59,35 @@ var ManageLecture = React.createClass({
   
   render : function() {
     
-    var lectures = this.state.lectures.map(function(lecture, i) {
-      return (
-        <li key={i}>
-          <Lecture lecture={lecture}/>
-        </li>
-      )
-    });
+    if (this.state.isEditingInfo) {
+      var editButton = <button onClick={this.handleSaveInformationClick}> Save Changes </button>;
+      var lectures = this.state.lectures.map(function(lecture, i) {
+        return (
+          <li key={i}>
+            Lecture {lecture.id} <br/>
+            Title: <br/> <input type="text" name="lecture-title" placeholder={lecture.title} /> <br/>
+            Description: <br/> <textarea type="text" name="lecture-description" placeholder={lecture.description} /> <br/>
+          </li>
+        )
+      });
+    } else {
+      var editButton = <button onClick={this.handleEditInformationClick}> Edit Lectures </button>;
+      var lectures = this.state.lectures.map(function(lecture, i) {
+        return (
+          <li key={i}>
+            <Lecture lecture={lecture}/> <br/>
+          </li>
+        )
+      });
+    }
     
     return (
       <div className="manage-lecture">
-        <h1>Lectures</h1>
+        <h1>Manage Lectures</h1>
         <ul>
           {lectures}
         </ul>
+        {editButton}
       </div>
     );
   }
