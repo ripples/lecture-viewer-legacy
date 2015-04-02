@@ -14,6 +14,18 @@ var courses = {
     term: "Spring",
     year: 2015,
     instructor_id : "23ffaaccdd2330002288",
+  },
+  2: {
+    id: 2,
+    department: "Computer Science",
+    department_shorthand: "CS",
+    course_name: "Web Programming",
+    course_number: "326",
+    description: "Intro to web stuff",
+    section: "01",
+    term: "Spring",
+    year: 2015,
+    instructor_id : "23ffaaccdd2330002288",
   }
 };
 var lectures = {
