@@ -11,12 +11,12 @@ var ManageCourse = React.createClass({
 
 	mixins: [CreateStoreMixin([CourseStore])],
 
-	getInitialState: function() {
-		return {
-			isEditingInfo: false,
-			isEditingRoster: false
-		};
-	},
+	// getInitialState: function() {
+	// 	return {
+	// 		isEditingInfo: false,
+	// 		isEditingRoster: false
+	// 	};
+	// },
 
 	/*============================== @LIFECYCLE ==============================*/
 
@@ -31,7 +31,17 @@ var ManageCourse = React.createClass({
 
 	getStateFromStores: function(props) {
 		var courses = CourseStore.getCourses();
-		return { courses: courses };
+		var isEditingInfo = [];
+		var isEditingRoster = [];
+		for (var i=0; i<courses.length; i++){
+			isEditingInfo.push(false);
+			isEditingRoster.push(false);
+		}
+		return {
+			courses: courses,
+		 	isEditingInfo: isEditingInfo,
+			isEditingRoster: isEditingRoster
+		};
 	},
 
 	contextDidChange: function(props) {
@@ -40,65 +50,68 @@ var ManageCourse = React.createClass({
 
 	/*============================== @HANDLING ==============================*/
 
-	handleEditInformationClick: function(data) {
-		this.setState({isEditingInfo: true});
+	handleEditInformationClick: function(i) {
+		var isEditingInfo = this.state.isEditingInfo;
+		isEditingInfo[i] = true;
+		this.setState({isEditingInfo: isEditingInfo});
 	},
 
-	handleEditRosterClick: function(data) {
-		this.setState({isEditingRoster: true});
+	handleEditRosterClick: function(i) {
+		var isEditingRoster = this.state.isEditingRoster;
+		isEditingRoster[i] = true;
+		this.setState({isEditingRoster: isEditingRoster});
 	},
 
-	handleSaveInformationClick: function(data) {
-		this.setState({isEditingInfo: false});
+	handleSaveInformationClick: function(i) {
+		var isEditingInfo = this.state.isEditingInfo;
+		isEditingInfo[i] = false;
+		this.setState({isEditingInfo: isEditingInfo});
 	},
 
-	handleSaveRosterClick: function(data) {
-		this.setState({isEditingRoster: false});
+	handleSaveRosterClick: function(i) {
+		var isEditingRoster = this.state.isEditingRoster;
+		isEditingRoster[i] = false;
+		this.setState({isEditingRoster: isEditingRoster});
 	},
 
 	/*============================== @RENDERING ==============================*/
 
 	render: function() {
-		if (this.state.isEditingRoster){
-			var rosterEditButton = 	<div>
-															<button> Upload CSV File </button>
-															<button> Paste Email </button>
-															<button onClick={this.handleSaveRosterClick}> Save Roster </button>
-															</div>;
-		} else {
-			var rosterEditButton = <button onClick={this.handleEditRosterClick}> Edit Roster </button>;
-		}
+		var courses = this.state.courses.map(function(course, i) {
+			var rosterEditButton;
+			if (this.state.isEditingRoster[i]){
+				rosterEditButton = 	<div>
+																<button> Upload CSV File </button>
+																<button> Paste Email </button>
+																<button onClick={this.handleSaveRosterClick.bind(this, i)}> Save Roster </button>
+														</div>;
+			} else {
+				rosterEditButton = <button onClick={this.handleEditRosterClick.bind(this, i)}> Edit Roster </button>;
+			}
 
-		if (this.state.isEditingInfo){
-			var infoEditButton = <button onClick={this.handleSaveInformationClick} type="submit"> Save Information </button>;
-			var courses = this.state.courses.map(function(course, i) {
+			if (this.state.isEditingInfo[i]){
 				return (
 					<li key={i}>
-						<form>
-							<input type="text" name="course__deparment" value={course.department}/> <br/>
-							<input type="text" name="course__number" value={course.course_number}/>
-							<input type="text" name="course__section" value={course.section}/> <br/>
-							<input type="text" name="course__term" value={course.term}/>
-							<input type="text" name="course__year" value={course.year}/> <br/>
-							<textarea type="text" name="course__description" value={course.description}/> <br/>
-							{infoEditButton} <br/>
-						</form>
+						Department <input type="text" name="course__deparment" value={course.department}/> <br/>
+						Number <input type="text" name="course__number" value={course.course_number}/>
+						Section <input type="text" name="course__section" value={course.section}/> <br/>
+						Term <input type="text" name="course__term" value={course.term}/>
+						Year <input type="text" name="course__year" value={course.year}/> <br/>
+						Description <br/> <textarea type="text" name="course__description" value={course.description}/> <br/>
+						<button onClick={this.handleSaveInformationClick.bind(this, i)}> Save Information </button> <br/>
 						{rosterEditButton}
 					</li>
 				)
-			});
-		} else {
-			var infoEditButton = <button onClick={this.handleEditInformationClick}> Edit Information </button>;
-			var courses = this.state.courses.map(function(course, i) {
+			} else {
 				return (
 					<li key={i}>
 						<Course course={course}/>
-						{infoEditButton} <br/>
+						<button onClick={this.handleEditInformationClick.bind(this, i)}> Edit Information </button> <br/>
 						{rosterEditButton}
 					</li>
 				)
-			});
-		}
+			}
+		}, this);
 
     return (
       <div className='manage-course'>
