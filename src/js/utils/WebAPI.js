@@ -384,5 +384,98 @@ function delete_course(course_id){
 	return promise;
 }
 
+function get_comments(course_id, lecture_id){
+	var promise = new Promise( function (resolve, reject){
+		request
+			.get('/course/'+course_id +'/lecture/' +lecture_id)
+			.end( function (err, res){
+				if(res.status === "success"){
+					resolve(res);
+				}
+				else if(err){
+					reject(err);
+				} else {
+					reject(res);
+				}
+			});
+	});
+	return promise;
+}
+
+function post_comment(course_id, lecture_id, content, date, time){
+	var promise = new Promise(function (resolve, reject){
+		request
+			.post('/course/'+course_id+'/lecture/'+lecture_id)
+			.send({content : content, posted_date: date, time:time})
+			.end(function (err, res){
+				if(res.status === "success"){
+					resolve(res);
+				}
+				else if(err){
+					reject(err);
+				} else {
+					reject(res);
+				}
+			});
+		});
+	return promise;
+}
+
+function delete_comment(course_id, lecture_id, comment_id){
+	var promise = new Promise(function (resolve, reject){
+		request
+			.delete('/course/'+course_id+'/lecture/'+lecture_id+'/comment/'+comment_id)
+			.end(function (err, res){
+				if(res.status === "success"){
+					resolve(res);
+				}
+				else if(err){
+					reject(err);
+				} else {
+					reject(res);
+				}
+			});
+		});
+	return promise;
+}
+
+function edit_comment(course_id, lecture_id, comment_id, content){
+	var promise = new Promise(function (resolve, reject){
+		request
+			.put('/course/'+course_id+'/lecture/'+lecture_id+'/comment/'+comment_id)
+			.send({content : content})
+			.end(function (err, res){
+				if(res.status === "success"){
+					resolve(res);
+				}
+				else if(err){
+					reject(err);
+				} else {
+					reject(res);
+				}
+			});
+		});
+	return promise;
+}
+
+function reply_comment(course_id, lecture_id, comment_id, content, date, time){
+	var promise = new Promise(function (resolve, reject){
+		request
+			.post('/course/'+course_id+'/lecture/'+lecture_id+'/comment/'+comment_id)
+			.send({content : content, posted_date: date, time:time})
+			.end(function (err, res){
+				if(res.status === "success"){
+					resolve(res);
+				}
+				else if(err){
+					reject(err);
+				} else {
+					reject(res);
+				}
+			});
+		});
+	return promise;
+}
+
 
 // Responses should call an Action to handle the payload
