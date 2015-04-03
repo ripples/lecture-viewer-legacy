@@ -4,8 +4,7 @@
 .navigation-sidebar {
   position: absolute;
   left: 0;
-  height: 100%;
-  width: 240px;
+  height: 100%; width: 240px;
   background: $dark-gray;
 }
 
@@ -18,8 +17,7 @@
   &-sidebar {
     position:absolute;
     right: 0;
-    height: 100%;
-    width: 300px;
+    height: 100%; width: 300px;
     background: white;
     &-header {
       @include fixed-header-and-footer--scrollable-content--fixed-component();

@@ -4,8 +4,7 @@
 */
 @mixin fixed-header-and-footer--scrollable-content--wrapper() {
   display: table;
-  height: 100%;
-  width: 100%;
+  height: 100%; width: 100%;
 }
 
 /*  Place on dynamically sized headers or footers
@@ -26,8 +25,8 @@
     This is the element that will be scrollable.
 */
 @mixin fixed-header-and-footer--scrollable-content--content() {
-  height: 100%;
   overflow: scroll;
+  height: 100%;
 }
 
 .scroll-content-wrapper {
