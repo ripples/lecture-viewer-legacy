@@ -170,6 +170,11 @@ var API = {
     return lecture;
   },
 
+  saveLecture: function(course_id, lecture_id, lecture) {
+    // TODO : @LUKE
+    return null;
+  },
+
   /*============================== @COMMENTS ==============================*/
 
   getComments: function(courseId, lectureId) {

@@ -1,0 +1,67 @@
+// @import './scrolling';
+// @import './colors';
+//
+// .navigation-sidebar {
+//   @include fixed-header-and-footer--scrollable-content--wrapper();
+//   box-sizing: border-box;
+//   padding: 20px;
+// }
+//
+// .lecture-list {
+//   @include fixed-header-and-footer--scrollable-content--content();
+//   ol {
+//     li:last-of-type {
+//       .lecture {
+//         margin-bottom: 0px !important;
+//         border-bottom: none;
+//       }
+//     }
+//   }
+// }
+//
+// .lecture {
+//   margin: 0px 10px 15px 10px;
+//   border-bottom: 1px $mid-gray solid;
+//   &__author {
+//     margin-right: 10px;
+//     vertical-align: baseline;
+//     text-transform: uppercase;
+//     font-size: $list-component-header-text-size; color: $light-gray-text;
+//   }
+//   &__date {
+//     text-transform: uppercase;
+//     vertical-align: baseline;
+//     font-size: $list-component-subheader-text-size; color: $light-gray-text;
+//   }
+//   &__content {
+//     margin: 10px 0px 10px 0px;
+//     font-size: $list-component-content-text-size; color: $dark-gray-text;
+//   }
+// }
+//
+// .lecture {
+//   padding: 0px 0px 10px 0px;
+//   &__timestamp {
+//     font-family: $timestamp-font; color: $dark-gray;
+//   }
+//   &__reply-button {
+//     margin: 0; padding: 0;
+//     color: $dark-gray-text;
+//     background: transparent;
+//   }
+//   &__toggle-replies-button {
+//     margin-right: 10px;
+//     color: $deep-gray-text;
+//     background: $light-gray;
+//   }
+//   &__replies-list {
+//     margin-top: 0px; margin-bottom: 10px; padding: 10px 0px 10px 0px;
+//     background: $light-gray;
+//     li:last-of-type {
+//       .reply {
+//         border-bottom: none;
+//         margin-bottom: 0px !important;
+//       }
+//     }
+//   }
+// }

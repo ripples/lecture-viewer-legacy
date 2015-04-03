@@ -25,6 +25,14 @@ var updateLectures = function(course_id, updatedLectures) {
   }
 }
 
+var saveLecture = function(course_id, updatedLecture) {
+  log('SAVE_LECTURE', 'updatedLecture', updatedLecture);
+  if(!lectures[course_id]) {
+    lectures[course_id]={};
+  }
+  lectures[course_id][updatedLecture.id] = updatedLecture;
+}
+
 /*============================== @PUBLIC ==============================*/
 
 var LectureStore = createStore({
@@ -49,6 +57,9 @@ LectureStore.dispatcher = Dispatcher.register(function(payload) {
       break;
     case ActionConstants.REQUEST_LECTURES:
       updateLectures(payload.course_id, payload.lectures);
+      break;
+    case ActionConstants.UPDATE_LECTURE:
+      saveLecture(payload.course_id, payload.lecture);
       break;
     defaut:
       break;
