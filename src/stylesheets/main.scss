@@ -6,6 +6,14 @@
 
 /*============================== @BASE ==============================*/
 
+// Prevents long text from overflowing container
+@mixin word-wrap() {
+  word-break:     break-word;
+  -webkit-hyphens: auto;
+  -moz-hyphens:    auto;
+  hyphens:         auto;
+}
+
 html, body {
   font-family: $font-stack;
   position: relative;
@@ -13,6 +21,7 @@ html, body {
   padding: 0;
   height: 100%;
   background: $light-gray;
+  @include word-wrap();
 }
 
 ul, ol {

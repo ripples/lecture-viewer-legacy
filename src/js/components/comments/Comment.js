@@ -72,9 +72,13 @@ var Comment = React.createClass({
     return moment(this.props.comment.date_posted).fromNow();
   },
 
-  getFormattedTimestamp: function() {
-    // TODO : Put in form of hh:mm:ss if there is a time for the comment
-    return this.props.comment.time;
+  getFormattedTimestamp: function(timestamp) {
+    var hours   = parseInt(timestamp / 3600) % 24;
+    var minutes = parseInt(timestamp / 60) % 60;
+    var seconds = parseInt(timestamp) % 60;
+    return  (hours < 10 ? "0" + hours : hours) + ":" +
+            (minutes < 10 ? "0" + minutes : minutes) + ":" +
+            (seconds  < 10 ? "0" + seconds : seconds);
   },
 
   /*============================== @RENDERING ==============================*/
@@ -99,7 +103,7 @@ var Comment = React.createClass({
   renderTimestamp: function() {
     return (
       <span className='comment__timestamp' onClick={this.handleTimestampClick}>
-        {this.getFormattedTimestamp()}
+        {this.getFormattedTimestamp(this.props.comment.time)}
       </span>
     );
   },

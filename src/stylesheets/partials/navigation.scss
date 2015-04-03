@@ -20,7 +20,6 @@
     right: 0;
     height: 100%;
     width: 300px;
-    padding: 20px;
     background: white;
     &-header {
       @include fixed-header-and-footer--scrollable-content--fixed-component();

@@ -107,7 +107,7 @@ var generateComment = function(commentContent, isAnonymous) {
     },
     date_posted: new Date(),
     content: commentContent,
-    time: MOCK.random.number(),
+    time: 407,
     replies: []
   }
 }

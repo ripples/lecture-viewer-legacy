@@ -3,6 +3,8 @@
 
 .comments-container {
   @include fixed-header-and-footer--scrollable-content--wrapper();
+  box-sizing: border-box;
+  padding: 20px;
 }
 
 .comment-list {
@@ -51,7 +53,7 @@
   padding: 0px 0px 10px 0px;
   &__timestamp {
     color: $dark-gray;
-    font-weight: bold;
+    font-family: $timestamp-font;
   }
   &__reply-button {
     color: $dark-gray-text;
