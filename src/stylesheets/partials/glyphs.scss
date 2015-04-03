@@ -1,10 +1,9 @@
 @import './colors';
 
 @mixin arrow-up() {
-  margin-left: 5px;
-  top: -7px;
-  left: 9px;
   display: inline-block;
+  top: -7px; left: 9px;
+  margin-left: 5px;
   border-right: 7px solid transparent;
   border-bottom: 7px solid $deep-gray-text;
   border-left: 7px solid transparent;

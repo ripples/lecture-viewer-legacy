@@ -94,8 +94,9 @@ var Comment = React.createClass({
            {this.renderTimestamp()} {this.props.comment.content}
         </p>
         {this.renderToggleRepliesButton()}
-        {this.renderReplyButtonOrEditor()}
         {this.renderRepliesList()}
+        {this.renderReplyButton()}
+        {this.renderReplyEditor()}
       </div>
     );
   },
@@ -108,15 +109,21 @@ var Comment = React.createClass({
     );
   },
 
-  renderReplyButtonOrEditor: function() {
+  renderReplyButton: function() {
+    return (
+      !this.props.isReplying ?
+      <button className='comment__reply-button' onClick={this.handleReplyClick}>
+        Reply
+      </button> : ''
+    );
+  },
+
+  renderReplyEditor: function() {
     return (
       this.props.isReplying ?
       <ReplyEditor
         onSubmit={this.handleSubmitReply}
-        onCancel={this.handleCancelReply}/> :
-      <button className='comment__reply-button' onClick={this.handleReplyClick}>
-        Reply
-      </button>
+        onCancel={this.handleCancelReply}/> : ''
     );
   },
 
@@ -139,15 +146,11 @@ var Comment = React.createClass({
     var replies = this.props.comment.replies.map(function(reply, i) {
       return <li key={i}><Reply reply={reply}/></li>
     });
-    // TODO : Remove this in favor of the CSS classes below...
-    //        This is a placeholder while CSS is not yet implemented.
-    var repliesListInlineStyle = (this.state.repliesVisible) ?  // TO REMOVE
-      {} : {display: 'none'};                                   // TO REMOVE
     var repliesListStyle = (this.state.repliesVisible) ?
-      'comment__replies-list visible' :
-      'comment__replies-list hidden';
+      'comment__replies-list show' :
+      'comment__replies-list hide';
     return (
-      <ol className={repliesListStyle} style={repliesListInlineStyle}>
+      <ol className={repliesListStyle}>
         {replies}
       </ol>
     );

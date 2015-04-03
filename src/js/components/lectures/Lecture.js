@@ -74,8 +74,8 @@ var Lecture = React.createClass({
             {this.props.lecture.title}
           </Link>
         </h2>
-        {this.renderDescription()}
         {this.renderToggleDescriptionButton()}
+        {this.renderDescription()}
         <h3 className='lecture__time'>{this.getFormattedTimeLength()}</h3>
       </div>
     );
@@ -83,8 +83,8 @@ var Lecture = React.createClass({
 
   renderToggleDescriptionButton: function() {
     var className = (this.state.descriptionVisible) ?
-      'lecture__toggle-description-button--open' :
-      'lecture__toggle-description-button--closed';
+      'lecture__toggle-description-button open' :
+      'lecture__toggle-description-button closed';
     var toggleDescriptionButton =
       <button className={className} onClick={this.handleToggleDescriptionClick}>
         Toggle Description
@@ -93,12 +93,10 @@ var Lecture = React.createClass({
   },
 
   renderDescription: function() {
-    var descriptionInlineStyle = (this.state.descriptionVisible) ?  // TO REMOVE
-      {} : {display: 'none'};                                       // TO REMOVE
     var descriptionStyle = (this.state.descriptionVisible) ?
-      'lecture__description--visible' :
-      'lecture__description--hidden';
-    return <p className={descriptionStyle} style={descriptionInlineStyle}>
+      'lecture__description show' :
+      'lecture__description hide';
+    return <p className={descriptionStyle}>
       {this.props.lecture.description}
     </p>
   },

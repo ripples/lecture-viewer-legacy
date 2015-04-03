@@ -48,13 +48,14 @@ var ReplyEditor = React.createClass({
         <form>
           <textarea className='reply-editor__input'
             name='reply-content' value={this.state.content}
+            placeholder={"Add Reply..."}
             onChange={this.handleReplyContentChange}>
           </textarea>
-          {this.renderSubmitReplyButton()}
           <button className='reply-editor__cancel-button'
             onClick={this.handleCancelClick}>
             Cancel
           </button>
+          {this.renderSubmitReplyButton()}
         </form>
       </div>
     );

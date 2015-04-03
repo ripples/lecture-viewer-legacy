@@ -15,40 +15,55 @@
 }
 
 html, body {
-  font-family: $font-stack;
   position: relative;
-  margin: 0;
-  padding: 0;
   height: 100%;
+  margin: 0; padding: 0;
+  font-family: $font-stack;
   background: $light-gray;
   @include word-wrap();
 }
 
 ul, ol {
   list-style: none;
-  padding: 0;
-  margin: 0;
+  margin: 0; padding: 0;
 }
 
 p {
-  padding: 0;
-  margin: 0;
+  margin: 0; padding: 0;
 }
 
 h1, h2, h3, h4, h5, h6,  {
-    margin: 0;
-    display: inline-block;
-    font-weight:normal;
-    vertical-align: bottom;
+  display: inline-block;
+  vertical-align: bottom;
+  margin: 0;
+  font-weight:normal;
 }
 
-button, input[type=submit], input[type=button] {
-  border: none;
-  font-size: $button-text-size;
-  font-weight: normal;
-  padding: 5px 10px 5px 10px;
+.hide {
+    display: none;
+}
+
+.show {
+    display: normal;
+}
+
+textarea {
   &:focus {
     outline:0;
+  }
+}
+
+button, input[type=submit], input[type=button], input[type=text] {
+  padding: 5px 10px 5px 10px;
+  border: none;
+  font-size: $button-text-size; font-weight: normal;
+  &:focus {
+    outline:0;
+    .input:focus {
+    outline: none !important;
+    border:1px solid red;
+    box-shadow: 0 0 10px #719ECE;
+}
   }
   &.open {
     &:after {

@@ -50,9 +50,10 @@ var CommentEditor = React.createClass({
         <form>
           <textarea className='comment-editor__input'
             name='comment' value={this.state.content}
+            placeholder={'Add Comment...'}
             onChange={this.handleCommentContentChange}>
           </textarea>
-          {this.renderAnonymousToggleButton()}
+          {/*this.renderAnonymousToggleButton()*/}
           {this.renderSubmitCommentButton()}
         </form>
       </div>
@@ -63,7 +64,7 @@ var CommentEditor = React.createClass({
     var commentButtonState = this.state.contentIsValid ? '' : 'disabled';
     return (
       <input className='comment-editor__submit-button'
-        type='button' value='Submit'
+        type='button' value='Comment'
         onClick={this.handleSubmitClick}/>
     );
   },
