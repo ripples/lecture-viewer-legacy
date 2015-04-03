@@ -2,6 +2,7 @@ var MOCK = require('faker');
 
 var bookmarks = {};
 var comments = {};
+
 var courses = {
   1: {
     id: 1,
@@ -132,7 +133,7 @@ var generateBookmark = function(content, time) {
   }
 }
 
-module.exports = {
+var API = {
 
   /*============================== @COURSES ==============================*/
 
@@ -235,3 +236,5 @@ module.exports = {
   }
 
 }
+
+module.exports = API;

@@ -82,13 +82,15 @@ var Comment = React.createClass({
   render: function() {
     return (
       <div className='comment'>
-        <h4 className='comment__author'>{this.getFormattedAuthorName()}</h4>
-        <h4 className='comment__date'>{this.getFormattedDatePosted()}</h4>
+        <div className='comment-header'>
+          <h4 className='comment__author'>{this.getFormattedAuthorName()}</h4>
+          <h4 className='comment__date'>{this.getFormattedDatePosted()}</h4>
+        </div>
         <p className='comment__content'>
            {this.renderTimestamp()} {this.props.comment.content}
         </p>
-        {this.renderReplyButtonOrEditor()}
         {this.renderToggleRepliesButton()}
+        {this.renderReplyButtonOrEditor()}
         {this.renderRepliesList()}
       </div>
     );
@@ -119,8 +121,8 @@ var Comment = React.createClass({
     var n = this.props.comment.replies.length;
     if(n > 0) {
       var className = (this.state.repliesVisible) ?
-        'comment__toggle-replies-button--open' :
-        'comment__toggle-replies-button--closed';
+        'comment__toggle-replies-button open' :
+        'comment__toggle-replies-button closed';
       toggleRepliesButton =
         <button className={className} onClick={this.handleToggleRepliesClick}>
           {n} {pluralize('Reply', n)}
@@ -138,8 +140,8 @@ var Comment = React.createClass({
     var repliesListInlineStyle = (this.state.repliesVisible) ?  // TO REMOVE
       {} : {display: 'none'};                                   // TO REMOVE
     var repliesListStyle = (this.state.repliesVisible) ?
-      'comment__replies-list--visible' :
-      'comment__replies-list--hidden';
+      'comment__replies-list visible' :
+      'comment__replies-list hidden';
     return (
       <ol className={repliesListStyle} style={repliesListInlineStyle}>
         {replies}

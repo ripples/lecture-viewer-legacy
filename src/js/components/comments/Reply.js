@@ -35,7 +35,7 @@ var Reply = React.createClass({
       <div className='reply'>
         <h4 className='reply__author'>{this.getFormattedAuthorName()}</h4>
         <h4 className='reply__date'>{this.getFormattedDatePosted()}</h4>
-        <p className='reply__body'>{this.props.reply.content}</p>
+        <p className='reply__content'>{this.props.reply.content}</p>
       </div>
     );
   }

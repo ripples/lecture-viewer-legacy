@@ -1,8 +1,6 @@
 var React                 = require('react');
 var CommentsContainer     = require('../comments/CommentsContainer');
 var BookmarksContainer    = require('../bookmarks/BookmarksContainer');
-var TabbedArea            = require('react-bootstrap/lib/TabbedArea');
-var TabPane               = require('react-bootstrap/lib/TabPane');
 
 var LectureContextSidebar = React.createClass({
 
@@ -43,6 +41,9 @@ var LectureContextSidebar = React.createClass({
     );
   }
 });
+
+// <BookmarksContainer course_id={this.props.course_id}
+//   lecture_id={this.props.lecture_id}/>
 
 // <div className='lecture-context-sidebar'>
 //   <TabbedArea defaultActiveKey={1}>

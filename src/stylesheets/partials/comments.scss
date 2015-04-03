@@ -1,0 +1,75 @@
+@import './scrolling';
+@import './colors';
+
+.comments-container {
+  @include fixed-header-and-footer--scrollable-content--wrapper();
+}
+
+.comment-list {
+  @include fixed-header-and-footer--scrollable-content--content();
+  width: 100%;
+  ol {
+    li:last-of-type {
+      .comment {
+        border-bottom: none;
+        margin-bottom: 0px !important;
+      }
+    }
+  }
+}
+
+.comment-editor {
+  @include fixed-header-and-footer--scrollable-content--fixed-component();
+  width: 100%;
+  background: #c1c1c1; // Just for visual aid. TODO : Remove
+}
+
+.comment, .reply {
+  margin: 0px 10px 15px 10px;
+  border-bottom: 1px $mid-gray solid;
+  &__author {
+    text-transform: uppercase;
+    margin-right: 10px;
+    vertical-align: baseline;
+    font-size: $list-component-header-text-size;
+    color: $light-gray-text;
+  }
+  &__date {
+    text-transform: uppercase;
+    vertical-align: baseline;
+    font-size: $list-component-subheader-text-size;
+    color: $light-gray-text;
+  }
+  &__content {
+    margin: 10px 0px 10px 0px;
+    font-size: $list-component-content-text-size;
+    color: $dark-gray-text;
+  }
+}
+
+.comment {
+  padding: 0px 0px 10px 0px;
+  &__timestamp {
+    color: $dark-gray;
+    font-weight: bold;
+  }
+  &__reply-button {
+    color: $dark-gray-text;
+    background: transparent;
+  }
+  &__toggle-replies-button {
+    color: $deep-gray-text;
+    background: $light-gray;
+  }
+  &__replies-list {
+    margin-top: 0px;
+    padding: 10px 0px 10px 0px;
+    background: $light-gray;
+    li:last-of-type {
+      .reply {
+        border-bottom: none;
+        margin-bottom: 0px !important;
+      }
+    }
+  }
+}

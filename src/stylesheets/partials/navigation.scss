@@ -1,0 +1,29 @@
+@import './scrolling';
+@import './colors';
+
+.navigation-sidebar {
+  position: absolute;
+  left: 0;
+  height: 100%;
+  width: 240px;
+  background: $dark-gray;
+}
+
+.lecture-context {
+  position: absolute;
+  right: 0;
+  height: 100%;
+  background: $light-gray;
+
+  &-sidebar {
+    position:absolute;
+    right: 0;
+    height: 100%;
+    width: 300px;
+    padding: 20px;
+    background: white;
+    &-header {
+      @include fixed-header-and-footer--scrollable-content--fixed-component();
+    }
+  }
+}
