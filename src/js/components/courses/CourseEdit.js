@@ -24,7 +24,8 @@ var CourseEdit = React.createClass({
   getInitialState: function() {
   	return {
   		isEditingInfo: false,
-  		isEditingRoster: false
+  		isEditingRoster: false,
+      isUploadingCsv: false
   	};
   },
 
@@ -45,6 +46,10 @@ var CourseEdit = React.createClass({
 	handleSaveRosterClick: function() {
 		this.setState({isEditingRoster: false});
 	},
+
+  handleUploadCsvClick: function() {
+    this.setState({isUploadingCsv: !this.state.isUploadingCsv});
+  },
 
   /*============================== @RENDERING ==============================*/
 
@@ -85,12 +90,23 @@ var CourseEdit = React.createClass({
   renderRosterEditButton: function() {
     if (this.state.isEditingRoster){
       return 	<div>
-                <button> Upload CSV File </button>
-                <button> Paste Email </button>
+                {this.renderUploadCsvButton()} <br/>
+                <button> Paste Email </button> <br/>
                 <button onClick={this.handleSaveRosterClick}> Save Roster </button>
               </div>;
     } else {
       return <button onClick={this.handleEditRosterClick}> Edit Roster </button>;
+    }
+  },
+
+  renderUploadCsvButton: function() {
+    if (this.state.isUploadingCsv){
+      return <span>
+                <input type='file'/>
+                <button onClick={this.handleUploadCsvClick}> Upload </button>
+             </span>;
+    } else {
+      return <button onClick={this.handleUploadCsvClick}> Upload CSV File </button>;
     }
   }
 });
