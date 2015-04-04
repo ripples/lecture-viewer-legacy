@@ -1,6 +1,6 @@
 var React  = require('react');
 var Router = require('react-router');
-var Course = require('./Course');
+var CourseEdit = require('./CourseEdit');
 var CreateStoreMixin     = require('../../mixins/CreateStoreMixin');
 var CourseStore = require('../../stores/CourseStore');
 var CourseActionCreator  = require('../../actions/CourseActionCreator');
@@ -31,16 +31,8 @@ var ManageCourse = React.createClass({
 
 	getStateFromStores: function(props) {
 		var courses = CourseStore.getCourses();
-		var isEditingInfo = [];
-		var isEditingRoster = [];
-		for (var i=0; i<courses.length; i++){
-			isEditingInfo.push(false);
-			isEditingRoster.push(false);
-		}
 		return {
-			courses: courses,
-		 	isEditingInfo: isEditingInfo,
-			isEditingRoster: isEditingRoster
+			courses: courses
 		};
 	},
 
@@ -78,39 +70,11 @@ var ManageCourse = React.createClass({
 
 	render: function() {
 		var courses = this.state.courses.map(function(course, i) {
-			var rosterEditButton;
-			if (this.state.isEditingRoster[i]){
-				rosterEditButton = 	<div>
-																<button> Upload CSV File </button>
-																<button> Paste Email </button>
-																<button onClick={this.handleSaveRosterClick.bind(this, i)}> Save Roster </button>
-														</div>;
-			} else {
-				rosterEditButton = <button onClick={this.handleEditRosterClick.bind(this, i)}> Edit Roster </button>;
-			}
-
-			if (this.state.isEditingInfo[i]){
-				return (
-					<li key={i}>
-						Department <input type="text" name="course__deparment" value={course.department}/> <br/>
-						Number <input type="text" name="course__number" value={course.course_number}/>
-						Section <input type="text" name="course__section" value={course.section}/> <br/>
-						Term <input type="text" name="course__term" value={course.term}/>
-						Year <input type="text" name="course__year" value={course.year}/> <br/>
-						Description <br/> <textarea type="text" name="course__description" value={course.description}/> <br/>
-						<button onClick={this.handleSaveInformationClick.bind(this, i)}> Save Information </button> <br/>
-						{rosterEditButton}
-					</li>
-				)
-			} else {
-				return (
-					<li key={i}>
-						<Course course={course}/>
-						<button onClick={this.handleEditInformationClick.bind(this, i)}> Edit Information </button> <br/>
-						{rosterEditButton}
-					</li>
-				)
-			}
+			return (
+				<li key={i}>
+					<CourseEdit course={course}/>
+				</li>
+			)
 		}, this);
 
     return (
