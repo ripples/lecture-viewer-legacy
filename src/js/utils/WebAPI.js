@@ -45,7 +45,6 @@ function get_user_priv(user_id){								   //Get user ID some how
 	var promise = new Promise( function (resolve, reject){
 		request
 			.get('/user/' + user_id)
-			.send({id : userID})
 			.end( function (err, res){
 				if(res.status === "success"){						    //If the data status is success,
 					resolve(res.data);										//Do something with the first_name, last_name, and course_list
@@ -65,7 +64,6 @@ function change_user(user_id, fnameval, lnameVal){
 	var promise = new Promise ( function (resolve, reject){
 		request
 			.put('/user/'+ user_id)
-			.send({id : userID, first_name : fnameVal, last_name : lnameVal})
 			.end( function (err, res){
 				if(res.status === "success"){
 					resolve(res.data);
@@ -85,7 +83,6 @@ function delete_user(user_id){
 	var promise = new Promise (function (resolve, reject){
 		request
 			.delete('/user/' + user_id)
-			.send({id : user_id})
 			.end( function (err, res){
 				if(res.status === "success"){
 					resolve(res.data);
@@ -105,7 +102,6 @@ function auth_verify(verifyID){
 	var promise = new Promise (function (resolve, reject){
 		request
 			.get('/auth/verify' + verifyID)
-			.send({verify_id : verifyID})
 			.end( function (err, res){
 				if(res.status === "success"){
 					resolve(res.data);
@@ -197,8 +193,7 @@ function mark_notifications_read(){
 function mark_notification_read(notification){
 	var promise = new Promise (function (resolve, reject){
 		request
-			.post('/delete/notification/' + notification)
-			.send({notification_id : notification})
+			.delete('/delete/notification/' + notification)
 			.end(function (err, res){
 				if(res.status === "success"){
 					resolve(res);
@@ -218,7 +213,7 @@ function create_bookmark(course, lecture, labl, time){
 		request
 			.post('/user/bookmark')
 			.send({course_id : course, lecture_id : lecture, label : labl, time : time})
-			end( function (err, res){
+			.end( function (err, res){
 				if(res.status === "success"){
 					resolve(res);
 				}
@@ -236,7 +231,6 @@ function delete_bookmark(bookmark_id){
 	var promise = new Promise (function (resolve, reject){
 		request
 			.delete('/user/bookmark/' + bookmark_id)
-			.send({bookmark_id : bookmark_id})
 			.end( function (err, res){
 				if(res.status === "success"){
 					resolve(res);
@@ -274,7 +268,6 @@ function course_bookmark(course_id){
 	var promise = new Promise (function (resolve, reject){
 		request
 			.get('/user/bookmark/course/' + course_id)
-			.send({course_id : course_id})
 			.end( function (err, res){
 				if(res.status === "success"){
 					resolve(res);
@@ -293,7 +286,6 @@ function lecture_bookmark(course_id, lecture_id){
 	var promise = new Promise (function (resolve, reject){
 		request
 			.get('/user/bookmark/'+course_id+'/lecture/'+lecture_id)
-			.send({course_id : course_id, lecture_id : lecture_id});
 			.end( function (err, res){
 				if(res.status === "success"){
 					resolve(res);
@@ -331,7 +323,6 @@ function get_course(course_id){
 	var promise = new Promise( function (resolve, reject){
 		request
 			.get('/course/' + course_id)
-			.send({course_id : course_id})
 			.end( function (err, res){
 				if(res.status === "success"){
 					resolve(res);
@@ -369,7 +360,6 @@ function delete_course(course_id){
 	var promise = new Promise( function (resolve, reject){
 		request
 			.delete('/course/'+course_id)
-			.send({course_id : course_id})
 			.end( function (err, res){
 				if(res.status === "success"){
 					resolve(res);

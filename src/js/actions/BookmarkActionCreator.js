@@ -6,7 +6,7 @@ var log             = require('../utils/Logging').actionCreator('BOOKMARK');
 var BookmarkActionCreator = {
 
   createBookmark: function(courseId, lectureId, content, time) {
-    var bookmark = API.createBookmark(courseId, lectureId, content, time);
+    var bookmark = API.create_bookmark(courseId, lectureId, content, time);
     log('CREATE_BOOKMARK', 'bookmark', bookmark);
     Dispatcher.dispatch({
       actionType: ActionConstants.CREATE_BOOKMARK,
@@ -17,7 +17,7 @@ var BookmarkActionCreator = {
   },
 
   saveBookmark: function(courseId, lectureId, bookmarkId, content, time) {
-    var bookmark = API.saveBookmark(courseId, lectureId, bookmarkId, content, time);
+    var bookmark = API.edit_bookmark(courseId, lectureId, bookmarkId, content, time);
     log('SAVE_BOOKMARK', 'updated bookmark', bookmark);
     Dispatcher.dispatch({
       actionType: ActionConstants.UPDATE_BOOKMARK,
@@ -28,7 +28,7 @@ var BookmarkActionCreator = {
   },
 
   deleteBookmark: function(courseId, lectureId, bookmarkId) {
-    API.deleteBookmark(courseId, lectureId, bookmarkId);
+    API.delete_bookmark(courseId, lectureId, bookmarkId);
     log('DELETE_BOOKMARK', 'deleted (no data)', null);
     Dispatcher.dispatch({
       actionType: ActionConstants.DELETE_BOOKMARK,
@@ -39,7 +39,7 @@ var BookmarkActionCreator = {
   },
 
   requestBookmarks: function(courseId, lectureId) {
-    var bookmarks = API.getBookmarks(courseId, lectureId);
+    var bookmarks = API.lecture_bookmarks(courseId, lectureId);
     log('REQUEST_BOOKMARKS', 'bookmarks', bookmarks);
     Dispatcher.dispatch({
       actionType: ActionConstants.REQUEST_COMMENTS,

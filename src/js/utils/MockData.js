@@ -172,7 +172,7 @@ var API = {
 
   /*============================== @COMMENTS ==============================*/
 
-  getComments: function(courseId, lectureId) {
+  get_comments: function(courseId, lectureId) {
 
     if(comments[courseId] && comments[courseId][lectureId]) {
       return Object.keys(comments[courseId][lectureId]).map(function(key) {
@@ -183,7 +183,7 @@ var API = {
     }
   },
 
-  createComment: function(courseId, lectureId, commentContent, isAnonymous) {
+  post_comment: function(courseId, lectureId, commentContent, isAnonymous) {
     var comment = generateComment(commentContent, isAnonymous);
     if(!comments[courseId]) {
       comments[courseId]={};
@@ -193,7 +193,7 @@ var API = {
     return comment;
   },
 
-  createReply: function(courseId, lectureId, comment, replyContent) {
+  reply_comment: function(courseId, lectureId, comment, replyContent) {
     var reply = generateReply(replyContent);
     if(!comments[courseId][lectureId][comment.id].replies) {
       comments[courseId][lectureId][comment.id].replies = [];
@@ -204,7 +204,7 @@ var API = {
 
   /*============================== @BOOKMARKS ==============================*/
 
-  createBookmark: function(courseId, lectureId, content, time) {
+  create_bookmark: function(courseId, lectureId, content, time) {
     var bookmark = generateBookmark(content, time);
     if(!bookmarks[courseId]) {
       bookmarks[courseId]={};
@@ -214,18 +214,18 @@ var API = {
     return bookmark;
   },
 
-  saveBookmark: function(courseId, lectureId, bookmarkId, content, time) {
+  edit_bookmark: function(courseId, lectureId, bookmarkId, content, time) {
     var bookmark = generateBookmark(content, time);
     bookmark.id = bookmarkId;
     bookmarks[courseId][lectureId][bookmarkId] = bookmark;
     return bookmark;
   },
 
-  deleteBookmark: function(courseId, lectureId, bookmarkId) {
+  delete_bookmark: function(courseId, lectureId, bookmarkId) {
     delete bookmarks[courseId][lectureId][bookmarkId];
   },
 
-  getBookmarks: function(courseId, lectureId) {
+  lecture_bookmark: function(courseId, lectureId) {
     if(bookmarks[courseId] && bookmarks[courseId][lectureId]) {
       return Object.keys(bookmarks[courseId][lectureId]).map(function(key) {
         return bookmarks[key];
