@@ -23,6 +23,17 @@ var LectureActionCreator = {
       lectures: lectures
     });
   },
+  
+  requestLecture: function(course_id, lecture_id) {
+    var lecture = API.getLecture(course_id, lecture_id);
+    log('REQUEST_LECTURE', 'lecture', lecture);
+    Dispatcher.dispatch({
+      actionType: ActionConstants.REQUEST_LECTURE,
+      course_id: course_id,
+      lecture_id: lecture_id,
+      lecture: lecture
+    });
+  },
 
   saveLecture: function(course_id, lecture_id, lecture) {
     var updatedLecture = API.saveLecture(course_id, lecture_id, lecture);

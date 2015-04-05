@@ -9,23 +9,21 @@ var ManageLecture = React.createClass({
 
   displayName : 'ManageLecture',
 
-  propTypes: {
-    course_id:  React.PropTypes.number.isRequired
+  propTypes : {
+    course_id:  React.PropTypes.number.isRequired,
+    lecture_id: React.PropTypes.number.isRequired
   },
 
   mixins : [CreateStoreMixin([LectureStore])],
   
-  getInitialState : function() {
+  getDefaultProps : function() {
     return {
-      isEditingInfo: false
+      course_id: 1,
+      lecture_id: 1
     };
   },
   
   /*============================== @LIFECYCLE ==============================*/
-  
-  componentWillMount : function(){
-    this.props.course_id = 1;
-  },
   
   componentDidMount : function() {
     this.contextDidChange(this.props);
@@ -37,57 +35,41 @@ var ManageLecture = React.createClass({
   },
 
   getStateFromStores : function(props) {
-    var lectures = LectureStore.getLectures(props.course_id);
-    return { lectures: lectures };
+    var lectures = LectureStore.getLecture(props.course_id, props.lecture_id);
+    return { lecture: lecture };
   },
 
   contextDidChange : function(props) {
-    LectureActionCreator.requestLectures(props.course_id);
+    LectureActionCreator.requestLecture(props.course_id, props.lecture_id);
   },
   
   /*============================== @HANDLING ===============================*/
   
-  handleEditInformationClick: function(data) {
-    this.setState({isEditingInfo: true});
+  handleTitleChange : function(e) {
+    e.preventDefault();
+    // TODO: figure out how to modify title of lecture in state
   },
   
-  handleSaveInformationClick: function(data) {
-    this.setState({isEditingInfo: false});
+  handleDescriptionChange : function(e) {
+    e.preventDefault();
+    // TODO: figure out how to modify description of lecture in state
+  },
+  
+  handleSave : function(e) {
+    e.preventDefault();
+    // TODO: add save functionality
   },
   
   /*============================== @RENDERING ==============================*/
   
   render : function() {
-    
-    if (this.state.isEditingInfo) {
-      var editButton = <button onClick={this.handleSaveInformationClick}> Save Changes </button>;
-      var lectures = this.state.lectures.map(function(lecture, i) {
-        return (
-          <li key={i}>
-            Lecture {lecture.id} <br/>
-            Title: <br/> <input type="text" name="lecture-title" placeholder={lecture.title} /> <br/>
-            Description: <br/> <textarea type="text" name="lecture-description" placeholder={lecture.description} /> <br/>
-          </li>
-        )
-      });
-    } else {
-      var editButton = <button onClick={this.handleEditInformationClick}> Edit Lectures </button>;
-      var lectures = this.state.lectures.map(function(lecture, i) {
-        return (
-          <li key={i}>
-            <Lecture lecture={lecture}/> <br/>
-          </li>
-        )
-      });
-    }
-    
     return (
       <div className="manage-lecture">
-        <h1>Manage Lectures</h1>
-        <ul>
-          {lectures}
-        </ul>
-        {editButton}
+        <h1>Manage Lecture {this.state.lecture.ordinal}</h1>
+        Lecture {this.state.lecture.id} <br/>
+        Title: <input type="text" name="lecture-title" value={this.state.lecture.title} onChange={this.handleTitleChange}/> <br/>
+        Description: <textarea type="text" name="lecture-description" value={this.state.lecture.description} onChange={this.handleDescriptionChange}/> <br/>
+        <button onClick={this.handleSave}>Save Changes</button>
       </div>
     );
   }

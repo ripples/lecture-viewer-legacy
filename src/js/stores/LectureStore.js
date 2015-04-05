@@ -45,6 +45,19 @@ var LectureStore = createStore({
     } else {
       return [];
     }
+  },
+  
+  getLecture: function(course_id, lecture_id) {
+    if(lectures[course_id]) {
+      for(i = 0; i < lectures[course_id].length; i++) {
+        if(lectures[course_id][lecture_id]) {
+          return lectures[course_id][lecture_id];
+        }
+      }
+      return [];
+    } else {
+      return [];
+    }
   }
 });
 
@@ -57,6 +70,9 @@ LectureStore.dispatcher = Dispatcher.register(function(payload) {
       break;
     case ActionConstants.REQUEST_LECTURES:
       updateLectures(payload.course_id, payload.lectures);
+      break;
+    case ActionConstants.REQUEST_LECTURE:
+      updateLecture(payload.course_id, payload.lecture_id, payload.lecture);
       break;
     case ActionConstants.UPDATE_LECTURE:
       saveLecture(payload.course_id, payload.lecture);
