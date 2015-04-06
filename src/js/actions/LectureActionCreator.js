@@ -23,7 +23,7 @@ var LectureActionCreator = {
       lectures: lectures
     });
   },
-  
+
   requestLecture: function(course_id, lecture_id) {
     var lecture = API.getLecture(course_id, lecture_id);
     log('REQUEST_LECTURE', 'lecture', lecture);

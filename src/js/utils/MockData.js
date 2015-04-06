@@ -160,18 +160,14 @@ var API = {
       return [];
     }
   },
-  
+
   getLecture: function(course_id, lecture_id) {
     if(lectures[course_id]) {
-      for(i = 0; i < lectures[course_id].length; i++) {
-        if(lectures[course_id][lecture_id]) {
-          return lectures[course_id][lecture_id];
-        }
+      if(lectures[course_id][lecture_id]) {
+        return lectures[course_id][lecture_id];
       }
-      return [];
-    } else {
-      return [];
     }
+    return null;
   },
 
   createLecture: function(course_id, tentativeLecture) {
@@ -184,8 +180,11 @@ var API = {
   },
 
   saveLecture: function(course_id, lecture_id, lecture) {
-    // TODO : @LUKE
-    return null;
+    if(!lectures[course_id]) {
+      lectures[course_id]={};
+    }
+    lectures[course_id][lecture_id] = lecture;
+    return lecture;
   },
 
   /*============================== @COMMENTS ==============================*/

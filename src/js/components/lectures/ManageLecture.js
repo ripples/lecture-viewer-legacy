@@ -15,16 +15,16 @@ var ManageLecture = React.createClass({
   },
 
   mixins : [CreateStoreMixin([LectureStore])],
-  
+
   getDefaultProps : function() {
     return {
       course_id: 1,
       lecture_id: 1
     };
   },
-  
+
   /*============================== @LIFECYCLE ==============================*/
-  
+
   componentDidMount : function() {
     this.contextDidChange(this.props);
   },
@@ -35,33 +35,47 @@ var ManageLecture = React.createClass({
   },
 
   getStateFromStores : function(props) {
-    var lectures = LectureStore.getLecture(props.course_id, props.lecture_id);
+    var lecture = LectureStore.getLecture(props.course_id, props.lecture_id);
+    if(!lecture || lecture == null) {
+      lecture = {
+        id:           null,
+        ordinal:      null,
+        title:        null,
+        description:  null
+      }
+    }
     return { lecture: lecture };
   },
 
   contextDidChange : function(props) {
     LectureActionCreator.requestLecture(props.course_id, props.lecture_id);
   },
-  
+
   /*============================== @HANDLING ===============================*/
-  
+
   handleTitleChange : function(e) {
     e.preventDefault();
-    // TODO: figure out how to modify title of lecture in state
+    var lecture = this.state.lecture;
+    lecture.title = e.target.value;
+    this.setState({lecture: lecture});
   },
-  
+
   handleDescriptionChange : function(e) {
     e.preventDefault();
-    // TODO: figure out how to modify description of lecture in state
+    var lecture = this.state.lecture;
+    lecture.description = e.target.value;
+    this.setState({lecture: lecture});
   },
-  
+
   handleSave : function(e) {
     e.preventDefault();
-    // TODO: add save functionality
+    LectureActionCreator.saveLecture(this.props.course_id, this.props.lecture_id, this.state.lecture);
+    // TODO : Unmount component? Close modal? This will prbably be handled by the parent component.
+    // Or you will likely transitionTo a new route.
   },
-  
+
   /*============================== @RENDERING ==============================*/
-  
+
   render : function() {
     return (
       <div className="manage-lecture">

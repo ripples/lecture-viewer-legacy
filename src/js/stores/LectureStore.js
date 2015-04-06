@@ -25,6 +25,14 @@ var updateLectures = function(course_id, updatedLectures) {
   }
 }
 
+var updateLecture = function(course_id, lecture) {
+  log('UPDATE_LECTURE', 'lecture', lecture);
+  if(!lectures[course_id]) {
+    lectures[course_id]={};
+  }
+  lectures[course_id][lecture.id] = lecture;
+}
+
 var saveLecture = function(course_id, updatedLecture) {
   log('SAVE_LECTURE', 'updatedLecture', updatedLecture);
   if(!lectures[course_id]) {
@@ -46,18 +54,14 @@ var LectureStore = createStore({
       return [];
     }
   },
-  
+
   getLecture: function(course_id, lecture_id) {
     if(lectures[course_id]) {
-      for(i = 0; i < lectures[course_id].length; i++) {
-        if(lectures[course_id][lecture_id]) {
-          return lectures[course_id][lecture_id];
-        }
+      if(lectures[course_id][lecture_id]) {
+        return lectures[course_id][lecture_id];
       }
-      return [];
-    } else {
-      return [];
     }
+    return null;
   }
 });
 
@@ -72,7 +76,7 @@ LectureStore.dispatcher = Dispatcher.register(function(payload) {
       updateLectures(payload.course_id, payload.lectures);
       break;
     case ActionConstants.REQUEST_LECTURE:
-      updateLecture(payload.course_id, payload.lecture_id, payload.lecture);
+      updateLecture(payload.course_id, payload.lecture);
       break;
     case ActionConstants.UPDATE_LECTURE:
       saveLecture(payload.course_id, payload.lecture);
