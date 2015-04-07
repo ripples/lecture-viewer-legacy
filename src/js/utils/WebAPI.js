@@ -116,7 +116,7 @@ function auth_verify(verifyID){
 	return promise;
 }
 
-function auth_login(email, password){
+function login(email, password){
 	var promise = new Promise ( function ( resolve, reject){
 		request
 			.post('/auth/login')
@@ -136,7 +136,7 @@ function auth_login(email, password){
 	return promise;
 }
 
-function auth_logout(){
+function logout(){
 	var promise = new Promise (function (resolve, reject){
 		request
 			.post('/auth/logout')
