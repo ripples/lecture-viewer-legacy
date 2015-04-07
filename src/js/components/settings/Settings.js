@@ -6,7 +6,6 @@ var Settings = React.createClass({
 
 	displayName: 'Settings',
 
-	mixins: [CreateStoreMixin([CourseStore])],
 
 propTypes: {
     user_id: React.PropTypes.number.isRequired,
@@ -31,9 +30,9 @@ propTypes: {
   render: function() {
     return(
       <div>
-       <input ref="first_name" placeholder=props.user_first_name />
-        <input ref="last_name" placeholder=props.user_last_name /><br />
-      	<input ref="email" placeholder=props.user_email />
+       <input ref="first_name" placeholder="New first name" />
+        <input ref="last_name" placeholder="New last name" /><br />
+      	<input ref="email" placeholder="New email" />
         <input type="password" ref="pass1" placeholder="Old password"/>
         <input type="password" ref="pass2" placeholder="New password" />
         <input type="password" ref="pass3" placeholder="Retype password" /><br />
