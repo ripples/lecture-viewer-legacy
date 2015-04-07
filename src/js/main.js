@@ -5,7 +5,7 @@ var NavigationSidebar   = require('./components/structure/NavigationSidebar');
 var LectureContext      = require('./components/structure/LectureContext');
 var ManageCourse        = require('./components/courses/ManageCourse');
 var ManageLecture       = require('./components/lectures/ManageLecture');
-var Settings            = require('./components/settings/Settings');
+var SettingsContainer   = require('./components/settings/SettingsContainer');
 
 var Router              = require('react-router');
 var DefaultRoute        = Router.DefaultRoute;
@@ -34,7 +34,7 @@ var routes = (
     <Route name="CreateAccount" handler={CreateAccount}/>
     <Route name="ManageCourse" handler={ManageCourse} />
     <Route name="ManageLecture" handler={ManageLecture}/>
-    <Route name="Settings" handler={Settings}/>
+    <Route name="SettingsContainer" handler={SettingsContainer}/>
     <DefaultRoute handler={Login}/>
   </Route>
 );
