@@ -1,0 +1,19 @@
+ROUTING CONCEPT:
+
+Add or modify as desired.  The GO: -> is a redirect.
+
+lecture-viewer.com              AUTHENTICATED ->        NOT AUTHENTICATED ->    NOT AUTHORIZED ->
+
+  /                             -> GO: /main            GO: /login
+  /login                        -> GO: /main
+  /login?loggedOut=true
+  /signup                       -> GO: /main
+  /forgot-password              -> GO: /main
+                                                        ALL SAME AS BELOW
+  /main                                                 GO: /login
+    /settings
+    /{courseID}                 -> GO: /main
+      /manage                                                                   -> GO: /main
+      /{lectureID}              -> GO: {...}/view
+        /manage                                                                 -> GO: /main
+        /view
