@@ -50,8 +50,8 @@ var Lecture = React.createClass({
   },
 
   getFormattedTimeLength: function() {
-    // TODO : Convert time in milliseconds to minutes
-    var timeInMinutes = this.props.lecture.time_length;
+    // TODO : Make sure this conversion is correct
+    var timeInMinutes = Math.floor(this.props.lecture.time_length / 60);
     return timeInMinutes + ' ' + pluralize('minute', timeInMinutes);
   },
 
@@ -64,19 +64,22 @@ var Lecture = React.createClass({
       lecture_id: this.props.lecture.id
     }
 
+    // TODO : Put back in when prepared for linking
+    // <Link to="main" params={linkParams}>
+    //   {this.props.lecture.title}
+    // </Link>
+
     // TODO : Modify LINK to route to view-lecture/...
     return (
       <div className='lecture' onClick={this.handleLectureClick}>
-        <h3 className='lecture__identifier'>{this.getFormattedIdentifier()}</h3>
-        <h3 className='lecture__date'>{this.getFormattedDatePosted()}</h3>
-        <h2 className='lecture__name'>
-          <Link to="main" params={linkParams}>
-            {this.props.lecture.title}
-          </Link>
+        <h4 className='lecture__identifier'>{this.getFormattedIdentifier()}</h4>
+        <h4 className='lecture__date'>{this.getFormattedDatePosted()}</h4>
+        <h2 className='lecture__title'>
+          {this.props.lecture.title}
         </h2>
         {this.renderToggleDescriptionButton()}
+        <h4 className='lecture__time'>{this.getFormattedTimeLength()}</h4>
         {this.renderDescription()}
-        <h3 className='lecture__time'>{this.getFormattedTimeLength()}</h3>
       </div>
     );
   },
@@ -87,7 +90,7 @@ var Lecture = React.createClass({
       'lecture__toggle-description-button closed';
     var toggleDescriptionButton =
       <button className={className} onClick={this.handleToggleDescriptionClick}>
-        Toggle Description
+        Details
       </button>;
     return toggleDescriptionButton;
   },

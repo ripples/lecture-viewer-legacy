@@ -20,3 +20,14 @@
   border-left: 7px solid transparent;
   content: '';
 }
+
+@mixin arrow-left() {
+  margin-right: 5px;
+  top: -7px;
+  left: 9px;
+  display: inline-block;
+  border-top: 7px solid transparent;
+  border-right: 7px solid $ultralight-gray-text;
+  border-bottom: 7px solid transparent;
+  content: '';
+}

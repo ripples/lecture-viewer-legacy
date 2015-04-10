@@ -1,11 +1,43 @@
 @import './scrolling';
 @import './colors';
+@import './glyphs';
 
 .navigation-sidebar {
+  @include fixed-header-and-footer--scrollable-content--wrapper();
   position: absolute;
   left: 0;
-  height: 100%; width: 240px;
+  height: 100%; width: 275px;
+  box-sizing: border-box;
+  padding: 20px;
   background: $dark-gray;
+  &__header {
+    box-sizing: border-box;
+    padding-bottom: 10px;
+    width: 100%;
+    border-bottom: 1px solid $dark-line;
+    .notifications-button {
+      color: $dark-button-text;
+      background: $dark-button;
+    }
+  }
+  &__footer {
+    box-sizing: border-box;
+    border-top: 1px solid $dark-line;
+    width: 100%;
+    padding-top: 10px;
+    .logout-button {
+      margin-right: 10px;
+      color: $dark-button-text;
+      background: $dark-button;
+    }
+    .settings-button {
+      color: $dark-button-text;
+      background: $dark-button;
+    }
+  }
+  &__content {
+    @include fixed-header-and-footer--scrollable-content--content-wrapper(); // Works for the moment. May need uncommented
+  }
 }
 
 .lecture-context {
@@ -20,7 +52,7 @@
     height: 100%; width: 300px;
     background: white;
     &-header {
-      @include fixed-header-and-footer--scrollable-content--fixed-component();
+      // @include fixed-header-and-footer--scrollable-content--fixed-component();
     }
   }
 }

@@ -35,8 +35,8 @@ var lectures = {
         id: 1,
         ordindal: 1,
         type: "Lecture",
-        title: "Lecture 4: What is the Interwebs?",
-        description: "This lecture is awesome and you don't want to miss it",
+        title: "General Relativity and the Theory of Everything",
+        description: "We take a look at why love can transcend time and space, or some other baloney that they made Anne Hathaway say in Interstellar.",
         time_posted: 1337622367267,
         time_length: 3026,
         thumbnail: "http://url.to/thumbnail/here.jpg"
@@ -45,17 +45,37 @@ var lectures = {
         id: 2,
         ordindal: 2,
         type: "Lecture",
-        title: "Lecture 5: Databases",
-        description: "We will talk about how to store huge amounts of data",
+        title: "Physical Lilypads and Lily Evans",
+        description: "Harry Potter was a fine lad. Today we take a look at his mother's history, and Aunt Petunia's secret.",
         time_posted: 1337623117267,
-        time_length: 2026,
+        time_length: 2033,
+        thumbnail: "http://url.to/thumbnail/here.jpg"
+    },
+    3: {
+        id: 3,
+        ordindal: 3,
+        type: "Lecture",
+        title: "Boring People and the Sun",
+        description: "We discuss ways in which we could send boring people into the sun, because hey, why not?",
+        time_posted: 1337623117267,
+        time_length: 4145,
+        thumbnail: "http://url.to/thumbnail/here.jpg"
+    },
+    4: {
+        id: 4,
+        ordindal: 1,
+        type: "Tutorial",
+        title: "Learning Angular the Hard Way",
+        description: "We take a look at one of the most disgusting frameworks available, and how you too can make shitty products.",
+        time_posted: 1337623117267,
+        time_length: 1000,
         thumbnail: "http://url.to/thumbnail/here.jpg"
     }
   }
 }
 
 var COURSE_ID = 1;
-var LECTURE_ID = 2;
+var LECTURE_ID = 4;
 var COMMENT_ID = 0;
 var BOOKMARK_ID = 0;
 

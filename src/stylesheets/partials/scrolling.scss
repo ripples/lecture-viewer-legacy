@@ -9,6 +9,7 @@
 
 /*  Place on dynamically sized headers or footers
     within a scrollable content container
+    TODO : UNUSED.
 */
 @mixin fixed-header-and-footer--scrollable-content--fixed-component() {
   display: table-row;

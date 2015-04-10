@@ -8,6 +8,10 @@ var CourseList = React.createClass({
 
   displayName: 'CourseList',
 
+  propTypes: {
+    onSelectCourse: React.PropTypes.func,
+  },
+
   mixins: [CreateStoreMixin([CourseStore])],
 
   /*============================== @LIFECYCLE ==============================*/
@@ -32,9 +36,8 @@ var CourseList = React.createClass({
 
   /*============================== @HANDLING ==============================*/
 
-  handleCourseClick: function() {
-    // TODO : LINK to this Course's Context (ROUTER)
-    // CommentActionCreator.requestComments(props.course_id, props.lecture_id);
+  handleCourseClick: function(course) {
+    this.props.onSelectCourse(course);
   },
 
   /*============================== @RENDERING ==============================*/
@@ -43,15 +46,15 @@ var CourseList = React.createClass({
 
     var courses = this.state.courses.map(function(course, i) {
       return (
-        <li key={i}>
+        <li key={i} onClick={this.handleCourseClick.bind(this, course)}>
           <Course course={course}/>
         </li>
       )
-    });
+    }, this);
 
     return (
       <div className='course-list'>
-        <h1>Courses</h1>
+        <span>Courses</span>
         <ul>
           {courses}
         </ul>
