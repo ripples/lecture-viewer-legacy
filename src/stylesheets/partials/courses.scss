@@ -1,0 +1,66 @@
+@import './scrolling';
+@import './colors';
+
+.course-list-container {
+  @include fixed-header-and-footer--scrollable-content--wrapper();
+}
+
+.course-list {
+  @include fixed-header-and-footer--scrollable-content--content();
+  ul {
+    li:first-of-type {
+      .course {
+        margin-top: 10px !important;
+      }
+    }
+    li:last-of-type {
+      .course {
+        margin-bottom: 0px !important;
+        border-bottom: none;
+      }
+    }
+  }
+  .course {
+    margin: 0px 10px 15px 10px; padding-bottom: 10px;
+    border-bottom: 1px $dark-line solid;
+    &__identifier {
+      margin-right: 10px;
+      vertical-align: baseline;
+      text-transform: uppercase;
+      font-size: $course-header-text-size; color: $lighter-gray-text;
+    }
+    &__semester {
+      text-transform: uppercase;
+      vertical-align: baseline;
+      font-size: $course-header-text-size; color: $lighter-gray-text;
+    }
+    &__name {
+      font-size: $course-title-text-size; color: $white; font-style: strong;
+      &:hover {
+        cursor: pointer; cursor: hand;
+        text-decoration: underline;
+      }
+    }
+    &__description {
+      margin: 5px 0px 5px 0px;
+      font-size: $course-description-text-size; color: $ultralight-gray-text;
+    }
+    &__section {
+      font-size: $course-detail-text-size; color: $dark-button-text;
+      margin-right: 10px;
+    }
+    &__instructor {
+      font-size: $course-detail-text-size; color: $dark-button-text;
+    }
+  }
+}
+
+.course-list-heading {
+  border-bottom: 1px $dark-line solid;
+  &__label {
+    display: inline-block;
+    padding: 10px 0px 10px 0px;
+    font-size: $header-text-size; color: $white; font-style: strong;
+    text-transform: uppercase;
+  }
+}

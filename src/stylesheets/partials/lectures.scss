@@ -34,6 +34,7 @@
     &:hover {
       color: $white;
       cursor: pointer; cursor: hand;
+      text-decoration: underline;
     }
     &:hover:before {
       border-right-color: $white;
@@ -74,7 +75,7 @@
     font-size: $list-component-subheader-text-size; color: $lighter-gray-text;
   }
   &__title {
-    margin: 10px 0px 10px 0px;
+    margin: 5px 0px 10px 0px;
     font-size: $list-component-title-text-size; color: $white; font-style: strong;
   }
   &__description {

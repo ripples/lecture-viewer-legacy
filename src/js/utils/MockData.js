@@ -10,11 +10,11 @@ var courses = {
     department_shorthand: "CS",
     course_name: "Web Scalability",
     course_number: "497s",
-    description: "A \"class\" about web stuff",
+    description: "Learn about making some super cool scalable solutions.",
     section: "01",
     term: "Spring",
     year: 2015,
-    instructor_id : "23ffaaccdd2330002288",
+    instructor_id : "Tim Richards",
   },
   2: {
     id: 2,
@@ -22,11 +22,11 @@ var courses = {
     department_shorthand: "CS",
     course_name: "Web Programming",
     course_number: "326",
-    description: "Intro to web stuff",
+    description: "Work with Javascript and HTML to make some dope ass projects!",
     section: "01",
     term: "Spring",
     year: 2015,
-    instructor_id : "23ffaaccdd2330002288",
+    instructor_id : "Tim Richards",
   }
 };
 var lectures = {

@@ -3,7 +3,7 @@ var Lecture               = require('./Lecture');
 var CreateStoreMixin      = require('../../mixins/CreateStoreMixin');
 var LectureStore          = require('../../stores/LectureStore');
 var LectureActionCreator  = require('../../actions/LectureActionCreator');
-var ScrollContentWrapper = require('../helpers/ScrollContentWrapper');
+var ScrollContentWrapper  = require('../helpers/ScrollContentWrapper');
 
 var LectureList = React.createClass({
 

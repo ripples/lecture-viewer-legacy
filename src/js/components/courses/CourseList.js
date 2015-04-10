@@ -3,6 +3,7 @@ var Course               = require('./Course');
 var CreateStoreMixin     = require('../../mixins/CreateStoreMixin');
 var CourseStore          = require('../../stores/CourseStore');
 var CourseActionCreator  = require('../../actions/CourseActionCreator');
+var ScrollContentWrapper = require('../helpers/ScrollContentWrapper');
 
 var CourseList = React.createClass({
 
@@ -46,18 +47,30 @@ var CourseList = React.createClass({
 
     var courses = this.state.courses.map(function(course, i) {
       return (
-        <li key={i} onClick={this.handleCourseClick.bind(this, course)}>
-          <Course course={course}/>
+        <li key={i}>
+          <Course course={course} onClick={this.handleCourseClick.bind(this, course)}/>
         </li>
       )
     }, this);
 
     return (
-      <div className='course-list'>
-        <span>Courses</span>
-        <ul>
-          {courses}
-        </ul>
+      <div className='course-list-container'>
+        {this.renderHeading()}
+        <ScrollContentWrapper>
+          <div className='course-list'>
+            <ul>
+              {courses}
+            </ul>
+          </div>
+        </ScrollContentWrapper>
+      </div>
+    );
+  },
+
+  renderHeading: function() {
+    return (
+      <div className='course-list-heading'>
+        <h1 className='course-list-heading__label'>Courses</h1>
       </div>
     );
   }

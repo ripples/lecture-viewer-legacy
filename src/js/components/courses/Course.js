@@ -18,7 +18,8 @@ var Course = React.createClass({
       term:                 React.PropTypes.string.isRequired,
       year:                 React.PropTypes.number.isRequired,
       instructor_id:        React.PropTypes.string.isRequired
-    }).isRequired
+    }).isRequired,
+    onClick: React.PropTypes.func.isRequired
   },
 
   /*============================== @HANDLING ==============================*/
@@ -31,13 +32,20 @@ var Course = React.createClass({
 
   getFormattedIdentifier: function() {
     return  this.props.course.department_shorthand + '-' +
-            this.props.course.course_number + ' Section ' +
-            this.props.course.section;
+            this.props.course.course_number
   },
 
   getFormattedSemester: function() {
     return  this.props.course.term + ' ' +
             this.props.course.year;
+  },
+
+  getFormattedSection: function() {
+    return  'Section: ' + this.props.course.section;
+  },
+
+  getFormattedInstructor: function() {
+    return  'Instructor: ' + this.props.course.instructor_id;
   },
 
   /*============================== @RENDERING ==============================*/
@@ -47,8 +55,10 @@ var Course = React.createClass({
       <div className='course' onClick={this.handleCourseClick}>
         <h3 className='course__identifier'>{this.getFormattedIdentifier()}</h3>
         <h3 className='course__semester'>{this.getFormattedSemester()}</h3>
-        <h2 className='course__name'>{this.props.course.course_name}</h2>
-        <p className='course__description'>{this.props.course.description}</p>
+        <h4 className='course__name' onClick={this.props.onClick}>{this.props.course.course_name}</h4>
+        <p  className='course__description'>{this.props.course.description}</p>
+        <h3 className='course__section'>{this.getFormattedSection()}</h3>
+        <h3 className='course__instructor'>{this.getFormattedInstructor()}</h3>
       </div>
     );
   }
