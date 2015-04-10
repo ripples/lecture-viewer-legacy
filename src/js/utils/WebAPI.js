@@ -83,7 +83,7 @@ var API {
 	delete_user : function (user_id){
 		var promise = new Promise (function (resolve, reject){
 			request
-				.delete('/user/' + user_id)
+				.del('/user/' + user_id)
 				.end( function (err, res){
 					if(res.status === "success"){
 						resolve(res.data);
@@ -176,7 +176,7 @@ var API {
 	mark_notifications_read : function (){
 		var promise = new Promise (function (resolve, reject){
 			request
-				.delete('/user/notification')
+				.del('/user/notification')
 				.end(function (err, res){
 					if(res.status === "success"){
 						resolve(res);
@@ -194,7 +194,7 @@ var API {
 	mark_notification_read : function (notification){
 		var promise = new Promise (function (resolve, reject){
 			request
-				.delete('/delete/notification/' + notification)
+				.del('/delete/notification/' + notification)
 				.end(function (err, res){
 					if(res.status === "success"){
 						resolve(res);
@@ -231,7 +231,7 @@ var API {
 	delete_bookmark : function (bookmark_id){
 		var promise = new Promise (function (resolve, reject){
 			request
-				.delete('/user/bookmark/' + bookmark_id)
+				.del('/user/bookmark/' + bookmark_id)
 				.end( function (err, res){
 					if(res.status === "success"){
 						resolve(res);
@@ -360,7 +360,7 @@ var API {
 	delete_course : function (course_id){
 		var promise = new Promise( function (resolve, reject){
 			request
-				.delete('/course/'+course_id)
+				.del('/course/'+course_id)
 				.end( function (err, res){
 					if(res.status === "success"){
 						resolve(res);
@@ -415,7 +415,7 @@ var API {
 	delete_comment : function (course_id, lecture_id, comment_id){
 		var promise = new Promise(function (resolve, reject){
 			request
-				.delete('/course/'+course_id+'/lecture/'+lecture_id+'/comment/'+comment_id)
+				.del('/course/'+course_id+'/lecture/'+lecture_id+'/comment/'+comment_id)
 				.end(function (err, res){
 					if(res.status === "success"){
 						resolve(res);
@@ -508,7 +508,7 @@ var API {
 	delete_user_roster : function (course_id, user_id){
 		var promise = new Promise(function (resolve, reject){
 			request
-				.delete('/course/'+course_id+'/roster/'+user_id)
+				.del('/course/'+course_id+'/roster/'+user_id)
 				.end(function (err, res){
 					if(res.status === "success"){
 						resolve(res);
@@ -526,7 +526,7 @@ var API {
 	delete_attachment : function (course_id, lecture_id, attachment_id){
 		var promise = new Promise(function (resolve, reject){
 			request
-				.delete('/course/'+course_id+'/lecture/'+lecture_id+'/attachment/'+attachment_id)
+				.del('/course/'+course_id+'/lecture/'+lecture_id+'/attachment/'+attachment_id)
 				.end(function (err, res){
 					if(res.status === "success"){
 						resolve(res);
@@ -581,7 +581,7 @@ var API {
 	delete_lecture : function (course_id, lecture_id){
 		var promise = new Promise(function (resolve, reject){
 			request
-				.delete('/course/'+course_id+'/lecture/'+lecture_id)
+				.del('/course/'+course_id+'/lecture/'+lecture_id)
 				.end(function (err, res){
 					if(res.status === "success"){
 						resolve(res);
