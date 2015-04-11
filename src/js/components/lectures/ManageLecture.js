@@ -79,11 +79,18 @@ var ManageLecture = React.createClass({
   render : function() {
     return (
       <div className="manage-lecture">
-        <h1>Manage Lecture {this.state.lecture.ordinal}</h1>
-        Lecture {this.state.lecture.id} <br/>
-        Title: <input type="text" name="lecture-title" value={this.state.lecture.title} onChange={this.handleTitleChange}/> <br/>
-        Description: <textarea type="text" name="lecture-description" value={this.state.lecture.description} onChange={this.handleDescriptionChange}/> <br/>
-        <button onClick={this.handleSave}>Save Changes</button>
+        <div>
+          <h1>Manage Lecture{this.state.lecture.id}</h1> <br/>
+        </div>
+        <div>
+          <p>Title:</p> <input type="text" name="lecture-title" value={this.state.lecture.title} onChange={this.handleTitleChange}/> <br/>
+        </div>
+        <div>
+          <p>Description:</p> <textarea type="text" rows="10" name="lecture-description" value={this.state.lecture.description} onChange={this.handleDescriptionChange}/> <br/>
+        </div>
+        <div>
+          <button onClick={this.handleSave}>Save Changes</button>
+        </div>
       </div>
     );
   }

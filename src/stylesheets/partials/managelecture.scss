@@ -1,0 +1,36 @@
+@import './scrolling';
+@import './colors';
+@import './fonts';
+
+.manage-lecture {
+  div {
+    * {
+      margin: 5px;
+      font-family: $font-stack;
+      color: $dark-gray-text;
+    }
+    h1 {
+      font-size: $header-text-size;
+      padding: 5px;
+    }
+    p {
+      font-size: $small-header-text-size;
+    }
+    input, textarea {
+      display: inline-block;
+      width: 80%;
+      padding: 5px;
+      font-size: $input-text-size;
+      border: solid 1px $mid-gray;
+      background-color: #fff;
+    }
+    textarea {
+      height: auto;
+      resize: none;
+    }
+  }
+  button {
+    margin: 10px;
+    background-color: $mid-gray;
+  }
+}
