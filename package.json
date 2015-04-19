@@ -1,6 +1,8 @@
 { 
-  "name": "lecture-viewer-back-end",
-  "version": "0.0.0",
+  "name": "lecture-viewer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "gulpfile.js",
   "engines": {
     "node": "0.10.x"
   },
@@ -32,6 +34,33 @@
     "sleep": "~2.0.0",
     "supertest": "0.15.0",
     "unzip": "~0.1.11",
-    "validator": "~3.36.0"
+    "validator": "~3.36.0",
+
+    "assign": "^0.1.7",
+    "faker": "^2.1.2",
+    "flux": "^2.0.1",
+    "keymirror": "^0.1.1",
+    "moment": "^2.9.0",
+    "object-assign": "^2.0.0",
+    "pluralize": "^1.1.2",
+    "promise": "^6.1.0",
+    "react": "^0.12.2",
+    "react-bootstrap": "^0.17.0",
+    "react-onclickoutside": "^0.2.2",
+    "react-router": "^0.12.2",
+    "react-simpletabs": "^0.6.1",
+    "react-tabs": "^0.1.2"
+
+  },
+
+  "devDependencies": {
+    "gulp": "^3.8.10",
+    "gulp-browserify": "^0.5.1",
+    "gulp-concat": "^2.4.3",
+    "gulp-livereload": "^3.7.0",
+    "gulp-ruby-sass": "^1.0.1",
+    "reactify": "^1.0.0",
+    "st": "^0.5.2"
   }
+
 }

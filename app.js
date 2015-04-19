@@ -5,6 +5,14 @@ var cookieParser = require('cookie-parser');
 var app        = express();
 var port       = process.env.PORT || 3000;
 
+app.get('/', function(req,res) 
+{
+    res.sendFile(__dirname + "/front_end/dist/index.html");
+});
+
+app.use(express.static(__dirname+"/front_end/dist/"));
+
+
 // Route locations
 var userRoutes = require('./routes/user/index');
 var courseRoutes = require('./routes/course/index');
@@ -80,10 +88,16 @@ app.use('/auth', authRoutes);
 if (app.get('env') === 'development') {
     app.use(function(err, req, res, next) {
         res.status(err.status || 500);
-        res.render('error', {
+
+        console.log(err.message);
+        console.log(err);
+
+        res.send(err.message);
+
+        /*res.render('error', {
             message: err.message,
             error: err
-        });
+        });*/
     });
 }
 
@@ -91,10 +105,14 @@ if (app.get('env') === 'development') {
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
     res.status(err.status || 500);
-    res.render('error', {
+
+    console.log(err.message);
+
+    res.send(err.message);
+    /*res.render('error', {
         message: err.message,
         error: {}
-    });
+    });*/
 });
 
 var server = app.listen(port, function() {

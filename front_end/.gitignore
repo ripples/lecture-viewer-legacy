@@ -14,7 +14,8 @@ pids
 lib-cov
 
 # Do not push your production code. Retrive the source and then run gulp
-dist
+# not right now...
+# dist
 
 # node-waf configuration
 .lock-wscript
