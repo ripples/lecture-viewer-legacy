@@ -1,0 +1,93 @@
+@import './partials/colors';
+@import './partials/fonts';
+@import './partials/glyphs';
+@import './partials/comments';
+@import './partials/navigation';
+@import './partials/lectures';
+@import './partials/courses';
+@import './partials/managelecture';
+
+/*============================== @BASE ==============================*/
+
+// Prevents long text from overflowing container
+@mixin word-wrap() {
+  word-break:     break-word;
+  -webkit-hyphens: auto;
+  -moz-hyphens:    auto;
+  hyphens:         auto;
+}
+
+html, body {
+  position: relative;
+  height: 100%;
+  margin: 0; padding: 0;
+  font-family: $font-stack;
+  background: $light-gray;
+  @include word-wrap();
+}
+
+ul, ol {
+  list-style: none;
+  margin: 0; padding: 0;
+}
+
+p {
+  margin: 0; padding: 0;
+}
+
+a {
+  &:link {
+    color: inherit;
+  }
+  &:hover {
+    color: inherit;
+  }
+  &:active {
+    color: inherit;
+  }
+}
+
+h1, h2, h3, h4, h5, h6,  {
+  display: inline-block;
+  vertical-align: bottom;
+  margin: 0;
+  font-weight:normal;
+}
+
+.hide {
+    display: none;
+}
+
+.show {
+    display: normal;
+}
+
+textarea {
+  &:focus {
+    outline:0;
+  }
+}
+
+button, input[type=submit], input[type=button], input[type=text] {
+  padding: 5px 10px 5px 10px;
+  border: none;
+  font-size: $button-text-size; font-weight: normal;
+  &:focus {
+    outline:0;
+    .input:focus {
+    outline: none !important;
+    border:1px solid red;
+    box-shadow: 0 0 10px #719ECE;
+}
+  }
+  &.open {
+    &:after {
+      @include arrow-up();
+    }
+  }
+  &.closed {
+    &:after {
+      @include arrow-down();
+    }
+  }
+}
