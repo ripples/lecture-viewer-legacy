@@ -5,12 +5,12 @@ var cookieParser = require('cookie-parser');
 var app        = express();
 var port       = process.env.PORT || 3000;
 
-app.get('/', function(req,res) 
+app.get('/', function(req,res)
 {
-    res.sendFile(__dirname + "/front_end/dist/index.html");
+    res.sendFile(__dirname + "/production/index.html");
 });
 
-app.use(express.static(__dirname+"/front_end/dist/"));
+app.use(express.static(__dirname+"/production/"));
 
 
 // Route locations
@@ -35,23 +35,23 @@ app.use(session({ secret: 'umass497',
 app.use(devlog('dev'));
 
 
-app.use('*', function( req, res, next ) 
+app.use('*', function( req, res, next )
 {
-    
-    res.sendSuccess = function( data ) 
+
+    res.sendSuccess = function( data )
     {
          response = {
-            'status': 'success', 
+            'status': 'success',
             'data': data
         }
 
-        res.send(response); 
+        res.send(response);
     }
 
-    res.sendFail = function( message ) 
+    res.sendFail = function( message )
     {
         response = {
-            'status': 'fail', 
+            'status': 'fail',
             'data': {
                 'message': message
             }
@@ -63,7 +63,7 @@ app.use('*', function( req, res, next )
     res.sendError = function( message )
     {
         response = {
-            'status': 'error', 
+            'status': 'error',
             'data': {
                 'message': message
             }
