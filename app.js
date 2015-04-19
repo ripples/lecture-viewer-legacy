@@ -12,16 +12,21 @@ app.get('/', function(req,res)
 
 app.use(express.static(__dirname+"/production/"));
 
-
 // Route locations
 var userRoutes = require('./routes/user/index');
 var courseRoutes = require('./routes/course/index');
 var authRoutes = require('./routes/auth/index');
 
+// Redis client
+var redis = require('redis');
+var redisClient = redis.createClient();
+// can also use var redisClient = redis.createClient(port, host);
+// to specify specific port and ip where redis server lives
+
 // Will need to eventually transition to Redis
 var session = require('express-session');
-var passport = require('passport');
 
+var auth = require('./authentication');
 
 // Tell node to interpret post data as JSON
 app.use(bodyParser.json());
@@ -33,7 +38,6 @@ app.use(session({ secret: 'umass497',
 
 // Activate path request logging in console
 app.use(devlog('dev'));
-
 
 app.use('*', function( req, res, next )
 {

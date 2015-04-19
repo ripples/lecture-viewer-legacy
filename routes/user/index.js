@@ -49,7 +49,7 @@ router.post('/', function(req,res) {
                 //I will need to know why it failed... Logic problem or a legit error
                 res.sendFail(err);
             }
-        });   
+        });
     }
     else {
         res.sendFail("Incorrect parameters");

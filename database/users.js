@@ -122,6 +122,34 @@ exports.getUserRoleById = function(id, callback) {
 };
 
 /*
+  Method to get the whole user's document in the database by email and password.
+  Used in login stage
+ */
+exports.getUserByCredentials = function(email, password, callback) {
+    // To be implemented..
+    // callback function will take in eror and user object parameters
+    // -----
+    // If error encountered while querying database,
+    //      return with error string in callback
+    //      ex: callback('Error doing this and this!', undefined);
+    // If no user found in database,
+    //      return with undefined error, and undefined user object
+    //      ex: callback(undefined, undefined), or callback();
+    // If user found in database,
+    //      return with undefined error, and user object
+    //      ex: callback(undefined, userObjectHere);
+
+    // Temporary implementation for testing below...
+    var user = {
+        email: 'test@test.edu',
+        password: 'testpass',
+        id: '10341'
+    }
+
+    callback(undefined, user);
+}
+
+/*
   Method to get the whole user's document in the database by objectId.
  */
 exports.getUserById = function(id, callback) {

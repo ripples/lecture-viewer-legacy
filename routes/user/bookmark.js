@@ -64,7 +64,7 @@ module.exports = {
 
         //Delete specific bookmark
         router.delete('/bookmark/:bookmark_id', function(req,res) {
-            
+
             //Delete the bookmark
 
             res.send({'status': 'success'});
