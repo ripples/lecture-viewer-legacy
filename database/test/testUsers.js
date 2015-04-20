@@ -151,8 +151,8 @@ describe('Testing User collection:', function(){
   /*
    * Test role update by id
    */
-  it('role update by ID: ID', function(done) {
-    db_api.users.updateUsersRole(testUser._id, "student",function(err, user) {
+  it('Role update by ID: ID', function(done) {
+    db_api.users.setUserRoleById(testUser._id, "student",function(err, user) {
       assert.equal(err, null);
       user.role.should.eql('student');
       done();
@@ -162,10 +162,21 @@ describe('Testing User collection:', function(){
   /*
    * Tests role update by Email
    */
-  it('role update by Email: Email', function(done) {
-    db_api.users.updateUsersRoleByEmail(testUser.email, "prof",function(err, user) {
+  it('Role update by Email: Email', function(done) {
+    db_api.users.setUserRoleByEmail(testUser.email, "prof",function(err, user) {
       assert.equal(err, null);
       user.role.should.eql('prof');
+      done();
+    });
+  });
+
+    /*
+   * Tests getuserbyemail
+   */
+  it('Get user by Email: Email', function(done) {
+    db_api.users.getUserByEmail(testUser.email, function(err, user) {
+      assert.equal(err, null);
+      user.email.should.eql(testUser.email);
       done();
     });
   });
