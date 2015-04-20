@@ -73,6 +73,10 @@ var ManageLecture = React.createClass({
     // TODO : Unmount component? Close modal? This will prbably be handled by the parent component.
     // Or you will likely transitionTo a new route.
   },
+  
+  handleCancel : function(e) {
+    
+  },
 
   /*============================== @RENDERING ==============================*/
 
@@ -90,6 +94,7 @@ var ManageLecture = React.createClass({
         </div>
         <div>
           <button onClick={this.handleSave}>Save Changes</button>
+          <button onClick={this.handleCancel}>Cancel</button>
         </div>
       </div>
     );
