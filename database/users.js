@@ -186,3 +186,14 @@ exports.setUsernameById = function(id, newUsername, callback) {
       callback
   );
 };
+
+/*
+ * Updates user's role by id
+ */
+exports.setUserRoleById = function(id, newUserRole, callback) {
+  this.findByIdAndUpdate(
+      id,
+      {$set: {role : newUserRole}},
+      callback
+  );
+};
