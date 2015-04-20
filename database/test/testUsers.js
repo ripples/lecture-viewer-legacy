@@ -147,6 +147,23 @@ describe('Testing User collection:', function(){
       done();
     });
   });
+      /*
+   * test role update by id
+   */
+  it('role update by ID: ID', function(done) {
+    db_api.users.updateUsersRole(testUser._id, "student",function(err, user) {
+      assert.equal(err, null);
+      user.role.should.eql('student');
+      done();
+    });
+  });
+  it('role update by Email: Email', function(done) {
+    db_api.users.updateUsersRoleByEmail(testUser.email, "prof",function(err, user) {
+      assert.equal(err, null);
+      user.role.should.eql('prof');
+      done();
+    });
+  });
 });
 
 
