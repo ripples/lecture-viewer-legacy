@@ -98,7 +98,7 @@ exports.createCourse = function(department, courseNumber, courseTitle, semester,
     if (err) {
       callback(err);
     }
-    else if (course) {
+    else if (!course) {
 	    callback(department + " " + courseNumber + " " + semester + " " + year + " already exists.")
     }
     else {
@@ -109,7 +109,12 @@ exports.createCourse = function(department, courseNumber, courseTitle, semester,
 	      instructor: instructor,
 	      semester: semester,
 	      year: year
-      }, callback);
+      }, function(err, course){
+          console.log(err);
+          console.log(course);
+          console.log(callback);
+          callback(err,course);
+      });
     }
   })
 };

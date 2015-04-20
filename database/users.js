@@ -50,7 +50,7 @@ exports.createUser = function(email, password, firstName, lastName, role, callba
         },
         role: role
       }, function(err, newUser) {
-	      callback(undefined, newUser._id);
+	      callback(undefined, newUser);
       });
     }
   });

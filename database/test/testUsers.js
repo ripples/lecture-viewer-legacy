@@ -3,6 +3,9 @@ var should = require('chai').should();
 var assert = require('assert');
 
 describe('Testing User collection:', function(){
+  
+   this.timeout(10000);
+
   /*
    *  precondition
    */
@@ -10,13 +13,14 @@ describe('Testing User collection:', function(){
 
   before(function(done){
     db_api.user.dropUserDatabase(function() {
-      db_api.user.createUser('test@test.com', 'password', 'username', 'role', function (err, doc) {
+      db_api.user.createUser('test@test.com', 'password', 'first', 'last', 'role', function (err, doc) {
         testUser = doc;
         assert.equal(err, null);
         assert.notEqual(testUser, null);
         assert.equal(testUser.email, 'test@test.com');
         assert.equal(testUser.password, 'password');
-        assert.equal(testUser.username, 'username');
+        assert.equal(testUser.name.first, 'first');
+        assert.equal(testUser.name.last, 'last');
         assert.equal(testUser.role, 'role');
         done();
       });

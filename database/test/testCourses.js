@@ -3,36 +3,43 @@ var should = require('chai').should();
 var assert = require('assert');
 
 describe('Testing Courses collection:', function() {
+	
+	this.timeout(10000);
+
 	/*
 	 * Preconditions.
 	 */
 	 var testCourse = null;
 	 var testUser   = null;
 	 before(function(done){
-	 	// mongoose.connect('mongodb://freddy:freddy@ds043170.mongolab.com:43170/learn_u');
 	 	db_api.course.dropCoursesDatabase(function(){
-	 		db_api.course.createCourse('Fall','Sociology','SOC101', function(err,course) {
+	 		db_api.course.createCourse('CS','CS121','Intro to CS','Fall','2015','Tim', function(err,course) {
 	 		  testCourse = course;
 	 		  assert.equal(err,null);
 	 		  assert.notEqual(testCourse, null);
 	 		  assert.equal(testCourse.semester, 'Fall');
-	 		  assert.equal(testCourse.department,'Sociology');
-	 		  assert.equal(testCourse.courseNumber, 'SOC101');
+	 		  assert.equal(testCourse.department,'CS');
+	 		  assert.equal(testCourse.courseNumber, 'CS121');
+
 	 		  done();
 	 		});
 	 	});
 	 });
 	 //required for a test user.
 	 before(function(done){
+
 	 	db_api.user.dropUserDatabase(function(){
-		 	db_api.user.createUser('test20@test.com', 'password', 'username', 'role', function(err,usr){
+		 	db_api.user.createUser('test20@test.com', 'password', 'first', 'last', 'role', function(err,usr){
 		 		testUser = usr;
 		        assert.equal(err, null);
 		        assert.notEqual(testUser, null);
+
 		        assert.equal(testUser.email, 'test20@test.com');
 		        assert.equal(testUser.password, 'password');
-		        assert.equal(testUser.username, 'username');
+		        assert.equal(testUser.name.first, 'first');
+		        assert.equal(testUser.name.last, 'last');
 		        assert.equal(testUser.role, 'role');
+
 		        done();
 			});		 		
 	 	});
@@ -56,13 +63,13 @@ describe('Testing Courses collection:', function() {
 	   */
 	   var newCourse = null;//for deletion.
 	   it('creates a new course: semester, department ourseNumber',function(done){
-		    db_api.course.createCourse('Spring','Psychology','PS101',function(err,course){
+		    db_api.course.createCourse('CS','CS121','Intro to CS','Fall','2015','Tim', function(err,course) {
 	 		  newCourse = course;
 	 		  assert.equal(err,null);
 	 		  assert.notEqual(course, null);
-	 		  assert.equal(course.semester, 'Spring');
-	 		  assert.equal(course.department,'Psychology');
-	 		  assert.equal(course.courseNumber, 'PS101');
+	 		  assert.equal(course.semester, 'Fall');
+	 		  assert.equal(course.department,'CS');
+	 		  assert.equal(course.courseNumber, 'CS121');
 	 		  done();
 		 	});
 		}); 	
@@ -103,9 +110,9 @@ describe('Testing Courses collection:', function() {
 	      	db_api.course.getCourseById(testCourse._id, function(err,course){
 	      		assert.equal(err, null);
 	      		assert.notEqual(course,null);
-	      		assert.equal(course.courseNumber, 'SOC101');
+	      		assert.equal(course.courseNumber, 'CS121');
 	      		assert.equal(course.semester, 'Fall');
-	      		assert.equal(course.department,'Sociology');
+	      		assert.equal(course.department,'CS');
 	      		course._id.should.eql(testCourse._id);
 	      		done();
 	      	});
