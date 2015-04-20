@@ -57,7 +57,7 @@ var CourseEdit = React.createClass({
     return (
       <div class='course_edit'>
         {this.renderCourseInfo()}
-        {this.renderInfoEditButton()} <br/>
+        {this.renderInfoEditButton()}
         {this.renderRosterEditButton()} <br/><br/>
       </div>
     )
@@ -67,12 +67,12 @@ var CourseEdit = React.createClass({
     var course = this.props.course;
     if (this.state.isEditingInfo){
       return <form>
-              Department <input type="text" name="course__deparment" value={course.department}/> <br/>
-              Number <input type="text" name="course__number" value={course.course_number}/>
-              Section <input type="text" name="course__section" value={course.section}/> <br/>
-              Term <input type="text" name="course__term" value={course.term}/>
-              Year <input type="text" name="course__year" value={course.year}/> <br/>
-              Description <br/> <textarea type="text" name="course__description" value={course.description}/> <br/>
+              <p>Department</p> <input type="text" name="course__deparment" value={course.department}/> <br/>
+              <div>Number</div> <input type="text" name="course__number" value={course.course_number}/>
+              <div>Section</div> <input type="text" name="course__section" value={course.section}/> <br/>
+              <div>Term</div> <input type="text" name="course__term" value={course.term}/>
+              <div>Year</div> <input type="text" name="course__year" value={course.year}/> <br/>
+              <p>Description</p> <br/> <textarea type="text" name="course__description" value={course.description}/> <br/>
             </form>;
     } else {
       return <Course course={course}/>;

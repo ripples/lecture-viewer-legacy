@@ -15,14 +15,24 @@
     }
     p {
       font-size: $small-header-text-size;
+      display: inline-block;
+      float: left;
+      width: 120px;
     }
     input, textarea {
       display: inline-block;
-      width: 80%;
+      width: 85%;
       padding: 5px;
       font-size: $input-text-size;
       border: solid 1px $mid-gray;
       background-color: #fff;
+      color: black;
+      &:hover, &:focus {
+        border-color: $gray4;
+      }
+      &:focus {
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.125);
+      }
     }
     textarea {
       height: auto;
@@ -30,7 +40,17 @@
     }
   }
   button {
+    width: 120px;
     margin: 10px;
     background-color: $mid-gray;
+    cursor: pointer;
+    border: solid 1px $gray3;
+    &:hover {
+      border: solid 1px $gray4;
+      box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.125);
+    }
+    & + button {
+      float: right;
+    }
   }
 }
