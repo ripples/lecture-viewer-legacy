@@ -38,7 +38,6 @@ app.use(devlog('dev'));
 
 app.use('*', function( req, res, next )
 {
-
     res.sendSuccess = function( data )
     {
          response = {

@@ -2,21 +2,12 @@ var express = require('express');
 var router = express.Router();
 var validator = require('validator');
 
-var database = require('../../database');
-var redis = require('../../database/redis');
+var database = require("../../database/index.js");
+var auth = require("../../authentication");
 
 //Add module routes
 require('./bookmark').setup(router);
 require('./notification').setup(router);
-
-/*-----MOCK DATA-------*/
-/*var mock_uid = '2394798792';
-var mock_fname = 'Jane';
-var mock_lname = 'Doe';
-var mock_course_list = [{'name': 'CS497S Scalable Web Systems', 'id': '2348276591'}];
-var mock_profile_picture = 'http://faculty.sites.uci.edu/ltemplate/files/2011/04/generic_profile.jpg';
-*/
-/*-----MOCK DATA-------*/
 
 //Create an account
 router.post('/', function(req,res) {
@@ -50,7 +41,7 @@ router.post('/', function(req,res) {
                 //I will need to know why it failed... Logic problem or a legit error
                 res.sendFail(err);
             }
-        });
+        });   
     }
     else {
         res.sendFail("Incorrect parameters");
@@ -58,92 +49,86 @@ router.post('/', function(req,res) {
 });
 
 //Get logged in user info
-router.get('/', function(req,res) {
-    var token = req.body.token;
-    if(!token) return res.send(200, {
-        status: 'failed',
-        data: {
-            message: 'No user currently logged in.'
-        }
-    });
+router.get('/', auth.verify , function(req,res) {
 
-    var tokenUUID = jwt.decode(token, auth.secret);
+    console.log(req.user);
 
-    redis.get(tokenUUID, function(err, data) {
-        if(err || !data)
-            return res.send(200, {
-                status: 'failed',
-                data: {
-                    message: 'Failed to retrieve user data from Redis.'
-                }
-            });
-        else {
-            var userData = JSON.parse(data);
+    database.user.getUserById(user_id, function(err, user)
+    {
+        if(err)
+            res.sendFail(err);
+        else{
+
+            var resUser = {};
 
             //TODO add other stuff like courses, email, etc...
-            var returnData = {
-                first_name: userData.name.first,
-                last_name: userData.name.last,
-                course_list: userdata.courses
-            }
 
-            res.send(200, {
-                status: 'success',
-                data: returnData
-            });
+            resUser.first_name = user.first_name;
+            resUser.last_name = user.last_name;
+            resUser.user_id = user_id;
+
+            res.sendSuccess(resUser);
         }
     });
 });
 
 //Delete current user
-router.delete('/', function(req,res) {
+router.delete('/', auth.verify, function(req,res) {
 
     //Delete user in database
 
-    var token = req.body.token;
-    if(!token) return res.send(403, {
-        status: 'failed',
-        data: {
-            message: 'No user currently logged in.'
+    //Can't be completed until session is enabled
+
+    var user_id = req.session.user_id;
+
+    database.user.deleteUserById(user_id, function(err, user)
+    {
+        if(err)
+        {
+            res.sendFail(err);
         }
-    });
-
-    var tokenUUID = jwt.decode(token, auth.secret);
-
-    redis.get(tokenUUID, function(err, data) {
-        if(err || !data)
-            return res.send(403, {
-                status: 'failed',
-                data: {
-                    message: 'Failed to retrieve user data from Redis.'
-                }
-            })
-        else {
-            var user_id = JSON.parse(data).user_id;
-
-            database.user.deleteUserById(user_id, function(err, user) {
-                if(err) {
-                    res.send(403, {
-                        status: 'failed',
-                        data: {
-                            message: 'Failed to remove user from database.'
-                        }
-                    });
-                } else {
-                    res.send(200, {
-                        status: 'success',
-                        data: {
-                            user_id: user_id
-                        }
-                    });
-                }
-            });
+        else
+        {
+            res.sendSuccess(user);
         }
     });
 });
 
+//Delete a user
+router.delete('/:user_id', auth.verify, function(req,res) {
+
+    //Delete user in database
+
+    //TODO check for admin rights
+
+    var user_id = req.params.user_id;//req.session.user_id;
+
+    if(user_id)
+    {
+        if(validator.isMongoId(user_id) == false)
+        {
+            res.sendFail("User ID is not a valid MongoID");
+            return;
+        }
+
+        database.user.deleteUserById(user_id, function(err, user)
+        {
+            if(err)
+                res.sendFail(err);
+            else{
+                //Todo get user by id and send back here
+                res.sendSuccess(user);
+            }
+        });
+    }
+    else{
+        res.sendFail("Did not supply a user_id in the url");
+    }
+});
+
+
 //Get user
-router.get('/:user_id', function(req,res) {
+router.get('/:user_id', auth.verify, function(req,res) {
 
     //Get user info from database
 
@@ -174,7 +159,7 @@ router.get('/:user_id', function(req,res) {
 });
 
 //Edit user profile
-router.put('/:user_id', function(req,res) {
+router.put('/:user_id', auth.verify, function(req,res) {
 
     //Todo check if matches logged in or is admin?
 

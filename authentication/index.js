@@ -37,7 +37,8 @@ function createAndStoreToken(user, cb) {
     ex: router.get('/example', auth.verify, function(req, res) { ... });
 */
 function verify(req, res, next) {
-    var token = req.body.token;
+
+    var token = req.headers.authorization || req.body.token;
     if(!token) return res.send(403);
 
     var tokenUUID = jwt.decode(token, secret);
