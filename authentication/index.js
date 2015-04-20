@@ -4,9 +4,11 @@ var uuid = require('node-uuid');
 var redis = require('../database/redis');
 var database = require('../database');
 
-// Default token ttl (in seconds)
-var ttl = 60 * 60 * 3 // 3 hours
-var secret = 'awesomesauce';
+// Will load in all necessary constant variables
+var config = require('./config');
+
+var ttl = config.TOKEN_TTL;
+var secret = config.TOKEN_SECRET;
 
 function createToken(cb) {
     var tokenUUID = uuid.v4();

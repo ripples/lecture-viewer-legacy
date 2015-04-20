@@ -1,23 +1,29 @@
 var nodemailer = require('nodemailer');
 
+var config = require('./config');
+
 var transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
-        user: 'jyanyuk@gmail.com',
-        pass: '<censored>'
+        user: config.VERIFIER_EMAIL_ADDR,
+        pass: config.VERIFIER_EMAIL_PASS
     }
 });
 
-var mailOptions = {
-    from: "Lecture Viewer <test@test.com>", // Sender address
-    to: "jyanyuk@umass.edu", // List of receivers
-    subject: "Test from Lecture Viewer Emailer", // Subject line
-    text: "Testing Lecture Viewer Emailer", // Plaintext body
-    html: "<b>Testing Lecture Viewer Emailer</b>\n<h1>Hello :D</h1>" // HTML body
-}
+function send(verify_id, email_address, cb) {
+    var verificationURL = 'http://localhost:3000/auth/verify/' + verify_id;
 
-exports.test = function() {
+    var mailOptions = {
+        from: 'CS497 Lecture Viewer <' + config.VERIFIER_EMAIL_ADDR + '>', // Sender address
+        to: email_address, // List of receivers
+        subject: 'Verify your email address', // Subject line
+        text: 'Thanks for signing up! \nTo confirm your email address with the CS497 Lecture Viewer, click on the link below: \n' + verificationURL, // Plaintext body
+        html: '<h2>Thanks for signing up! </h2>\nTo confirm your email address with the CS497 Lecture Viewer, click on the link below: \n<a href="' + verificationURL + '">Verify Email</a>' // HTML body
+    }
+
     transporter.sendMail(mailOptions, function(err, res) {
-        console.log(err || res);
+        cb(err, res);
     });
 }
+
+exports.send = send;
