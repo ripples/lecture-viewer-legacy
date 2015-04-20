@@ -60,7 +60,7 @@ describe('Testing Courses collection:', function() {
      * Tests the createCourse method creates a course properly.
      */
     var newCourse = null; //for deletion.
-    it('creates a new course: semester, department ourseNumber', function(done) {
+    it('creates a new course: semester, department courseNumber', function(done) {
         db_api.course.createCourse('CS', 'CS121', 'Intro to CS', 'Fall', '2015', 'Tim', function(err, course) {
             newCourse = course;
             assert.equal(err, null);
@@ -209,5 +209,19 @@ describe('Testing Courses collection:', function() {
             count._id.should.eql(newCourse._id);
             done();
         });
+
+
+   it('updates a course', function(done) {
+       db_api.course.updateCourse(testCourse._id, 'Mathematics', 'Math101','Intro to Algebra','Spring','2013', function(err, count) {
+           assert.equal(err, null);
+           assert.notEqual(count, null);
+           count.semester.should.eql('Spring');
+           count.department.should.eql('Mathematics');
+           count.courseNumber.should.eql('Math101');
+           count.courseTitle.should.eql('Intro to Algebra');
+           count.year.should.eql('2013');
+           done();
+       });
+   });
     });
 });

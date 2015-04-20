@@ -191,4 +191,5 @@ describe('Testing User collection:', function() {
             done();
         });
     });
+
 });
