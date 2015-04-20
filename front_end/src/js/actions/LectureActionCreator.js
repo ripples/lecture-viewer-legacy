@@ -35,6 +35,17 @@ var LectureActionCreator = {
     });
   },
 
+  requestMedia: function(course_id, lecture_id) {
+    var media = API.getLectureMedia(course_id, lecture_id);
+    log('REQUEST_MEDIA', 'media', media);
+    Dispatcher.dispatch({
+      actionType: ActionConstants.REQUEST_MEDIA,
+      course_id: course_id,
+      lecture_id: lecture_id,
+      media: media
+    });
+  },
+
   saveLecture: function(course_id, lecture_id, lecture) {
     var updatedLecture = API.saveLecture(course_id, lecture_id, lecture);
     log('UPDATE_LECTURE', 'updatedLecture', updatedLecture);

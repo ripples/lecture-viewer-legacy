@@ -9,14 +9,6 @@ var LectureContextSidebar = React.createClass({
     lecture_id: React.PropTypes.number.isRequired
   },
 
-  // TODO : Remove after handling props via Routing
-  getDefaultProps: function() {
-    return {
-      course_id: 1,
-      lecture_id: 1
-    };
-  },
-
   getInitialState: function() {
     return {
       open: true
@@ -35,8 +27,7 @@ var LectureContextSidebar = React.createClass({
   render: function() {
     return (
       <div className='lecture-context-sidebar'>
-        <CommentsContainer course_id={this.props.course_id}
-          lecture_id={this.props.lecture_id}/>
+        <CommentsContainer {...this.props}/>
       </div>
     );
   }

@@ -22,8 +22,9 @@ var CourseList = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    this.setState(this.getStateFromStores(nextProps));
-    this.contextDidChange(nextProps);
+    if(nextProps != this.props) {
+      this.setState(this.getStateFromStores(nextProps));
+    }
   },
 
   getStateFromStores: function(props) {
