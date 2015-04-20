@@ -143,6 +143,7 @@ describe('Testing User collection:', function(){
   it('retrieves user by ID: ID', function(done) {
     db_api.user.getUserById(testUser._id, function(err, user) {
       assert.equal(err, null);
+      assert.notEqual(user,null);
       user.email.should.eql('test@test.com');
       done();
     });
@@ -152,8 +153,9 @@ describe('Testing User collection:', function(){
    * Test role update by id
    */
   it('Role update by ID: ID', function(done) {
-    db_api.users.setUserRoleById(testUser._id, "student",function(err, user) {
+    db_api.user.setUserRoleById(testUser._id, "student",function(err, user) {
       assert.equal(err, null);
+      assert.notEqual(user,null);
       user.role.should.eql('student');
       done();
     });
@@ -163,19 +165,21 @@ describe('Testing User collection:', function(){
    * Tests role update by Email
    */
   it('Role update by Email: Email', function(done) {
-    db_api.users.setUserRoleByEmail(testUser.email, "prof",function(err, user) {
+    db_api.user.setUserRoleByEmail(testUser.email, "prof",function(err, user) {
       assert.equal(err, null);
+      assert.notEqual(user,null);
       user.role.should.eql('prof');
       done();
     });
   });
 
-    /*
+   /*
    * Tests getuserbyemail
    */
   it('Get user by Email: Email', function(done) {
-    db_api.users.getUserByEmail(testUser.email, function(err, user) {
+    db_api.user.getUserByEmail(testUser.email, function(err, user) {
       assert.equal(err, null);
+      assert.notEqual(user,null);
       user.email.should.eql(testUser.email);
       done();
     });
