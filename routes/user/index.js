@@ -70,12 +70,14 @@ router.get('/', function(req,res) {
     var tokenUUID = jwt.decode(token, auth.secret);
 
     redis.get(tokenUUID, function(err, data) {
-        if(err || !data) return res.send(200, {
-            status: 'failed',
-            data: {
-                message: 'Failed to retrieve user data from Redis.'
-            }
-        }) else {
+        if(err || !data)
+            return res.send(200, {
+                status: 'failed',
+                data: {
+                    message: 'Failed to retrieve user data from Redis.'
+                }
+            });
+        else {
             var userData = JSON.parse(data);
 
             //TODO add other stuff like courses, email, etc...
@@ -109,12 +111,14 @@ router.delete('/', function(req,res) {
     var tokenUUID = jwt.decode(token, auth.secret);
 
     redis.get(tokenUUID, function(err, data) {
-        if(err || !data) return res.send(403, {
-            status: 'failed',
-            data: {
-                message: 'Failed to retrieve user data from Redis.'
-            }
-        }) else {
+        if(err || !data)
+            return res.send(403, {
+                status: 'failed',
+                data: {
+                    message: 'Failed to retrieve user data from Redis.'
+                }
+            })
+        else {
             var user_id = JSON.parse(data).user_id;
 
             database.user.deleteUserById(user_id, function(err, user) {

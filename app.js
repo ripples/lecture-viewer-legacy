@@ -36,6 +36,8 @@ app.use(session({ secret: 'umass497',
                   resave: true,
                   saveUninitialized: true }));
 
+require('./authentication/mailer').test();
+
 // Activate path request logging in console
 app.use(devlog('dev'));
 

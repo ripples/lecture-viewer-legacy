@@ -1,6 +1,8 @@
 var jwt = require('jwt-simple');
 var uuid = require('node-uuid');
+
 var redis = require('../database/redis');
+var database = require('../database');
 
 // Default token ttl (in seconds)
 var ttl = 60 * 60 * 3 // 3 hours
