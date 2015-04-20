@@ -3,19 +3,11 @@ var router = express.Router();
 var validator = require('validator');
 
 var database = require("../../database/index.js");
+var auth = require("../../authentication");
 
 //Add module routes
 require('./bookmark').setup(router);
 require('./notification').setup(router);
-
-/*-----MOCK DATA-------*/
-/*var mock_uid = '2394798792';
-var mock_fname = 'Jane';
-var mock_lname = 'Doe';
-var mock_course_list = [{'name': 'CS497S Scalable Web Systems', 'id': '2348276591'}];
-var mock_profile_picture = 'http://faculty.sites.uci.edu/ltemplate/files/2011/04/generic_profile.jpg';
-*/
-/*-----MOCK DATA-------*/
 
 //Create an account
 router.post('/', function(req,res) {
@@ -49,7 +41,7 @@ router.post('/', function(req,res) {
                 //I will need to know why it failed... Logic problem or a legit error
                 res.sendFail(err);
             }
-        });
+        });   
     }
     else {
         res.sendFail("Incorrect parameters");
@@ -57,11 +49,9 @@ router.post('/', function(req,res) {
 });
 
 //Get logged in user info
-router.get('/', function(req,res) {
+router.get('/', auth.verify , function(req,res) {
 
-    //Can't be completed until session is enabled
-
-    var user_id = req.session.user_id;
+    console.log(req.user);
 
     database.user.getUserById(user_id, function(err, user)
     {
@@ -83,7 +73,7 @@ router.get('/', function(req,res) {
 });
 
 //Delete current user
-router.delete('/', function(req,res) {
+router.delete('/', auth.verify, function(req,res) {
 
     //Delete user in database
 
@@ -105,7 +95,7 @@ router.delete('/', function(req,res) {
 });
 
 //Delete a user
-router.delete('/:user_id', function(req,res) {
+router.delete('/:user_id', auth.verify, function(req,res) {
 
     //Delete user in database
 
@@ -138,7 +128,7 @@ router.delete('/:user_id', function(req,res) {
 
 
 //Get user
-router.get('/:user_id', function(req,res) {
+router.get('/:user_id', auth.verify, function(req,res) {
 
     //Get user info from database
 
@@ -169,7 +159,7 @@ router.get('/:user_id', function(req,res) {
 });
 
 //Edit user profile
-router.put('/:user_id', function(req,res) {
+router.put('/:user_id', auth.verify, function(req,res) {
 
     //Todo check if matches logged in or is admin?
 
