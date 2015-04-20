@@ -81,11 +81,6 @@ router.get('/verify/:verify_id', function(req,res)
 	res.send("Verify! " + req.params.verify_id);
 });
 
-router.get('/example', auth.verify, function(req, res) {
-	res.send('worked!');
-})
-
-
 //Reset email sent email with link
 router.post('/password/forgot', function(req,res)
 {

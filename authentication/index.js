@@ -21,9 +21,9 @@ function createAndStoreToken(user, cb) {
         if(!token) return cb('Error generating token.');
 
         // Now store (token -> user) in Redis as (key -> value) pair
-        var uuid = jwt.decode(token, secret);
+        var tokenUUID = jwt.decode(token, secret);
 
-        redis.setex(uuid, ttl, JSON.stringify(user), function(err, data) {
+        redis.setex(tokenUUID, ttl, JSON.stringify(user), function(err, data) {
             if(err || !data) return cb('Error setting value in Redis.');
             else return cb(undefined, token);
         });
@@ -38,9 +38,9 @@ function verify(req, res, next) {
     var token = req.body.token;
     if(!token) return res.send(403);
 
-    var uuid = jwt.decode(token, secret);
+    var tokenUUID = jwt.decode(token, secret);
 
-    redis.get(uuid, function(err, data) {
+    redis.get(tokenUUID, function(err, data) {
         if(err || !data) return res.send(403);
         else {
             req.user = JSON.parse(data);
@@ -52,9 +52,9 @@ function verify(req, res, next) {
 function expireToken(token, cb) {
     if(!token) return cb('No token passed into function.');
 
-    var uuid = jwt.decode(token);
+    var tokenUUID = jwt.decode(token);
 
-    redis.del(uuid, function(err, data) {
+    redis.del(tokenUUID, function(err, data) {
         if(err) return cb('Error querying Redis.');
         else return cb();
     });
@@ -63,9 +63,9 @@ function expireToken(token, cb) {
 function refreshToken(token, cb) {
     if(!token) return cb('No token passed into function.');
 
-    var uuid = jwt.decode(token);
+    var tokenUUID = jwt.decode(token);
 
-    redis.expire(uuid, ttl, function(err, data) {
+    redis.expire(tokenUUID, ttl, function(err, data) {
         if(err) return cb('Error querying Redis.');
         else return cb();
     });
@@ -75,5 +75,6 @@ exports.createAndStoreToken = createAndStoreToken
 exports.verify = verify;
 exports.expireToken = expireToken;
 exports.refreshToken = refreshToken;
+exports.secret = secret;
 
 // need to add functionality to refresh and expire tokens
