@@ -208,3 +208,19 @@ exports.setUserRoleByEmail = function(email, newUserRole, callback) {
       callback
   );
 };
+
+/*
+ * Method to get the user by email
+ */
+ exports.getUserByEmail = function(email, callback) {
+    User.findOne({
+        email: email
+    }, function(err, user) {
+        if (err)
+            callback(err);
+        else if (!user)
+            callback("user does not exist");
+        else
+            callback(undefined, user);
+    });
+};
