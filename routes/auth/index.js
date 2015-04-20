@@ -64,10 +64,15 @@ router.post('/login', function(req,res)
 	});
 });
 
-//Logs a user out
+//Logs a user out - assumes token in body
 router.post('/logout', function(req,res)
 {
-	res.send("Logout!");
+	auth.expireToken(req.body.token, function(err) {
+		res.send(200, {
+			status: 'success',
+			data: {}
+		});
+	});
 });
 
 //Verify email with link
