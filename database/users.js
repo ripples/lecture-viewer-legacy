@@ -191,7 +191,7 @@ exports.setUsernameById = function(id, newUsername, callback) {
  * Updates user's role by id
  */
 exports.setUserRoleById = function(id, newUserRole, callback) {
-  this.findByIdAndUpdate(
+  User.findByIdAndUpdate(
       id,
       {$set: {role : newUserRole}},
       callback
@@ -202,7 +202,7 @@ exports.setUserRoleById = function(id, newUserRole, callback) {
  * Updates user's role by Email
  */
 exports.setUserRoleByEmail = function(email, newUserRole, callback) {
-  this.findOneAndUpdate(
+  User.findOneAndUpdate(
       {email: email},
       {$set: {role : newUserRole}},
       callback
