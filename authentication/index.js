@@ -60,8 +60,20 @@ function expireToken(token, cb) {
     });
 }
 
+function refreshToken(token, cb) {
+    if(!token) return cb('No token passed into function.');
+
+    var uuid = jwt.decode(token);
+
+    redis.expire(uuid, ttl, function(err, data) {
+        if(err) return cb('Error querying Redis.');
+        else return cb();
+    });
+}
+
 exports.createAndStoreToken = createAndStoreToken
 exports.verify = verify;
 exports.expireToken = expireToken;
+exports.refreshToken = refreshToken;
 
 // need to add functionality to refresh and expire tokens

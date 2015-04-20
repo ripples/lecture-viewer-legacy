@@ -10,7 +10,7 @@ router.post('/login', function(req,res)
 	var email = req.body.email;
 	var password = req.body.password;
 
-	if(!body || !password)
+	if(!req.body || !password)
 		return res.send(403, {
 			status: 'failed',
 			data: {
@@ -80,6 +80,10 @@ router.get('/verify/:verify_id', function(req,res)
 {
 	res.send("Verify! " + req.params.verify_id);
 });
+
+router.get('/example', auth.verify, function(req, res) {
+	res.send('worked!');
+})
 
 
 //Reset email sent email with link
