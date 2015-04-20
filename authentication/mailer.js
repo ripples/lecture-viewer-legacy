@@ -1,14 +1,12 @@
 var nodemailer = require('nodemailer');
-var smtpTransport = require('nodemailer-smtp-transport');
 
-var transporter = nodemailer.createTransport(smtpTransport({
-    host: 'localhost',
-    port: 25,
+var transporter = nodemailer.createTransport({
+    service: 'Gmail',
     auth: {
-        user: 'username',
-        pass: 'password'
+        user: 'jyanyuk@gmail.com',
+        pass: '<censored>'
     }
-}));
+});
 
 var mailOptions = {
     from: "Lecture Viewer <test@test.com>", // Sender address

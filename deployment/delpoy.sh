@@ -35,3 +35,12 @@ sudo npm install gulp -g
 
 echo "Running Gulp to generate client side code from source"
 gulp
+
+echo "Installing Haraka SMTP mail server"
+npm install -g Haraka
+
+echo "Creating the Haraka SMTP service"
+haraka -i $FOLDER_NAME
+
+echo "Starting the Haraka SMTP service"
+sudo haraka -c $FOLDER_NAME

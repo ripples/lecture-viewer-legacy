@@ -23,20 +23,15 @@ var redisClient = redis.createClient();
 // can also use var redisClient = redis.createClient(port, host);
 // to specify specific port and ip where redis server lives
 
-// Will need to eventually transition to Redis
-var session = require('express-session');
-
 var auth = require('./authentication');
 
 // Tell node to interpret post data as JSON
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
-app.use(session({ secret: 'umass497',
-                  resave: true,
-                  saveUninitialized: true }));
 
-require('./authentication/mailer').test();
+// Verification mailer test
+//require('./authentication/mailer').test();
 
 // Activate path request logging in console
 app.use(devlog('dev'));
@@ -95,15 +90,8 @@ if (app.get('env') === 'development') {
     app.use(function(err, req, res, next) {
         res.status(err.status || 500);
 
-        console.log(err.message);
-        console.log(err);
-
-        res.send(err.message);
-
-        /*res.render('error', {
-            message: err.message,
-            error: err
-        });*/
+        console.log(err.message + ', ' + err);
+        res.send(err.message + ', ' + err);
     });
 }
 
@@ -113,12 +101,7 @@ app.use(function(err, req, res, next) {
     res.status(err.status || 500);
 
     console.log(err.message);
-
     res.send(err.message);
-    /*res.render('error', {
-        message: err.message,
-        error: {}
-    });*/
 });
 
 var server = app.listen(port, function() {
