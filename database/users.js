@@ -197,3 +197,14 @@ exports.setUserRoleById = function(id, newUserRole, callback) {
       callback
   );
 };
+
+/*
+ * Updates user's role by Email
+ */
+exports.setUserRoleByEmail = function(email, newUserRole, callback) {
+  this.findOneAndUpdate(
+      {email: email},
+      {$set: {role : newUserRole}},
+      callback
+  );
+};
