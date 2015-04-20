@@ -30,9 +30,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 
-// Verification mailer test
-//require('./authentication/mailer').test();
-
 // Activate path request logging in console
 app.use(devlog('dev'));
 
