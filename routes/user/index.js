@@ -22,13 +22,21 @@ router.post('/', function(req,res) {
         }
 
         //Attempts to create new user using database methods
-        database.user.createUser(req.body.email,req.body.password,req.body.first_name, req.body.last_name,"student", function(err, user_id)
+        database.user.createUser(req.body.email,req.body.password,req.body.first_name, req.body.last_name,"student", function(err, user)
         {
             //If no error, send back user data
             if(err == undefined)
             {
-                //I will need the user data to be returned to me in a user variable
-                res.sendSuccess({"user_id" : user_id});
+
+                var resUser = {}
+                resUser.email = user.email;
+                resUser.user_id = user._id;
+                resUser.first_name = user.name.first;
+                resUser.last_name = user.name.last;
+                resUser.role = user.role;
+
+
+                res.sendSuccess(resUser);
 
                 /*---------------------------------------
 
@@ -102,7 +110,7 @@ router.delete('/:user_id', auth.verify, function(req,res) {
     //TODO check for admin rights
     console.log(req.user);
 
-    if(req.user._id != "admin")
+    if(req.user.role != "admin")
     {
         res.sendFail("Not an admin");
         return;
