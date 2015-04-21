@@ -51,9 +51,10 @@ router.post('/', function(req,res) {
 //Get logged in user info
 router.get('/', auth.verify , function(req,res) {
 
+    console.log("Logged in user...");
     console.log(req.user);
 
-    user_id = req.user_id;
+    user_id = req.user._id;
 
     database.user.getUserById(user_id, function(err, user)
     {
@@ -63,10 +64,11 @@ router.get('/', auth.verify , function(req,res) {
 
             var resUser = {};
 
-            //TODO add other stuff like courses, email, etc...
-
-            resUser.first_name = user.first_name;
-            resUser.last_name = user.last_name;
+            resUser.first_name = user.name.first;
+            resUser.last_name = user.name.last;
+            resUser.email = user.email;
+            resUser.role = user.role;
+            resUser.bookmarks = user.bookmarks;
             resUser.user_id = user_id;
 
             res.sendSuccess(resUser);
@@ -77,11 +79,7 @@ router.get('/', auth.verify , function(req,res) {
 //Delete current user
 router.delete('/', auth.verify, function(req,res) {
 
-    //Delete user in database
-
-    //Can't be completed until session is enabled
-
-    var user_id = req.session.user_id;
+    var user_id = req.user._id;
 
     database.user.deleteUserById(user_id, function(err, user)
     {
@@ -102,8 +100,15 @@ router.delete('/:user_id', auth.verify, function(req,res) {
     //Delete user in database
 
     //TODO check for admin rights
+    console.log(req.user);
 
-    var user_id = req.params.user_id;//req.session.user_id;
+    if(req.user._id != "admin")
+    {
+        res.sendFail("Not an admin");
+        return;
+    }
+
+    var user_id = req.params.user_id;
 
     if(user_id)
     {
@@ -161,11 +166,9 @@ router.get('/:user_id', auth.verify, function(req,res) {
 });
 
 //Edit user profile
-router.put('/:user_id', auth.verify, function(req,res) {
+router.put('/', auth.verify, function(req,res) {
 
-    //Todo check if matches logged in or is admin?
-
-    var user_id = req.params.user_id;//req.session.user_id;
+    var user_id = req.user._id;//req.session.user_id;
 
     if(req.body.first_name == undefined || req.body.last_name == undefined)
     {
