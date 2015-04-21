@@ -1,0 +1,878 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Lecture Viewer API</title><link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/slate/bootstrap.min.css"><link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,700|Inconsolata|Raleway:200"><style>/* Highlight.js Theme Tomorrow Night Eighties */
+pre{color:#fff;background:#272b30;border:1px solid rgba(255, 255, 255, 0.2)}
+pre code{display:block;padding:.5em;background:#272b30}
+.hljs-comment,.hljs-title{color:#999}.hljs-variable,.hljs-attribute,.hljs-tag,.hljs-regexp,.ruby .hljs-constant,.xml .hljs-tag .hljs-title,.xml .hljs-pi,.xml .hljs-doctype,.html .hljs-doctype,.css .hljs-id,.css .hljs-class,.css .hljs-pseudo{color:#f2777a}.hljs-number,.hljs-preprocessor,.hljs-pragma,.hljs-built_in,.hljs-literal,.hljs-params,.hljs-constant{color:#f99157}.ruby .hljs-class .hljs-title,.css .hljs-rules .hljs-attribute{color:#fc6}.hljs-string,.hljs-value,.hljs-inheritance,.hljs-header,.ruby .hljs-symbol,.xml .hljs-cdata{color:#9c9}.css .hljs-hexcolor{color:#6cc}.hljs-function,.python .hljs-decorator,.python .hljs-title,.ruby .hljs-function .hljs-title,.ruby .hljs-title .hljs-keyword,.perl .hljs-sub,.javascript .hljs-title,.coffeescript .hljs-title{color:#69c}.hljs-keyword,.javascript .hljs-function{color:#c9c}.hljs{display:block;background:#2d2d2d;color:#ccc;padding:.5em}.coffeescript .javascript,.javascript .xml,.tex .hljs-formula,.xml .javascript,.xml .vbscript,.xml .css,.xml .hljs-cdata{opacity:.5}</style><style>body,
+h4,
+h5 {
+  font-family: 'Roboto' sans-serif !important;
+}
+h1,
+h2,
+h3,
+.aglio {
+  font-family: 'Raleway' sans-serif !important;
+}
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a {
+  display: none;
+}
+h1:hover a,
+h2:hover a,
+h3:hover a,
+h4:hover a,
+h5:hover a {
+  display: inline;
+}
+code {
+  color: #222;
+  background-color: #aaa;
+  font-family: 'Inconsolata' monospace !important;
+}
+a[data-target] {
+  cursor: pointer;
+}
+h4 {
+  font-size: 100%;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.back-to-top {
+  position: fixed;
+  z-index: 1;
+  bottom: 0px;
+  right: 24px;
+  padding: 4px 8px;
+  color: #aaa;
+  background-color: #171b20;
+  text-decoration: none !important;
+  border-top: 1px solid rgba(0,0,0,0.1);
+  border-left: 1px solid rgba(0,0,0,0.1);
+  border-right: 1px solid rgba(0,0,0,0.1);
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+.panel {
+  overflow: hidden;
+}
+.panel-heading code {
+  margin-left: 3px;
+  color: #000;
+  background-color: rgba(255,255,255,0.7);
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+.panel-heading h3 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+a.list-group-item:hover {
+  background-color: #f8f8f8;
+  border-left: 2px solid #555;
+  padding-left: 15px;
+}
+.indent {
+  display: block;
+  text-indent: 16px;
+}
+.list-group-item {
+  padding-left: 16px;
+}
+.list-group-item .toggle .open {
+  display: block;
+}
+.list-group-item .toggle .closed {
+  display: none;
+}
+.list-group-item.collapsed .toggle .open {
+  display: none;
+}
+.list-group-item.collapsed .toggle .closed {
+  display: block;
+}
+a.list-group-item:hover {
+  background-color: #4b5159;
+  border-left-color: #c8c8c8;
+}
+a.list-group-item {
+  font-size: 13px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+a.list-group-item.heading {
+  font-size: 15px;
+  background-color: #3e444c;
+}
+a.list-group-item.heading:hover {
+  background-color: #4b5159;
+}
+.list-group-item.collapse {
+  display: none;
+}
+.list-group-item.collapse.in {
+  display: block;
+}
+.list-group-item a span.closed {
+  display: none;
+}
+.list-group-item a span.open {
+  display: block;
+}
+.list-group-item a.collapsed span.closed {
+  display: block;
+}
+.list-group-item a.collapsed span.open {
+  display: none;
+}
+#nav {
+  width: inherit;
+  margin-top: 38px;
+  max-width: 255px;
+  top: 0;
+  bottom: 0;
+  padding-right: 12px;
+  padding-bottom: 12px;
+  overflow-y: auto;
+}
+@media (max-width: 1199px) {
+  #nav {
+    max-width: 212px;
+  }
+}
+</style></head><body><a href="#top" class="text-muted back-to-top"><i class="fa fa-toggle-up"></i>&nbsp;Back to top</a><div class="container"><div class="row"><div class="col-md-3"><nav id="nav" class="hidden-sm hidden-xs affix nav"><div class="list-group"><a href="#" class="list-group-item heading">Home</a></div><div class="list-group"><a data-toggle="" data-target="#page:users-menu" href="#page:users" class="list-group-item heading collapsed">Users</a><div id="page:users-menu"><a href="#page:users,header:users-user-generic" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">User Generic</a><a href="#page:users,header:users-user-generic-post" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-success"><i class="fa fa-plus"></i></span><span class="indent">Create User</span></a><a href="#page:users,header:users-user-generic-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Get User</span></a><a href="#page:users,header:users-user-generic-put" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-warning"><i class="fa fa-pencil"></i></span><span class="indent">Update User</span></a><a href="#page:users,header:users-user-generic-delete" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-danger"><i class="fa fa-times"></i></span><span class="indent">Delete User</span></a><a href="#page:users,header:users-user-specific" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">User Specific</a><a href="#page:users,header:users-user-specific-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Get User</span></a><a href="#page:users,header:users-user-specific-delete" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-danger"><i class="fa fa-times"></i></span><span class="indent">Delete User</span></a></div></div><div class="list-group"><a data-toggle="" data-target="#page:authentication-menu" href="#page:authentication" class="list-group-item heading collapsed">Authentication</a><div id="page:authentication-menu"><a href="#page:authentication,header:authentication-auth-verify" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Auth Verify</a><a href="#page:authentication,header:authentication-auth-verify-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Verification</span></a><a href="#page:authentication,header:authentication-auth-login" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Auth Login</a><a href="#page:authentication,header:authentication-auth-login-post" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-success"><i class="fa fa-plus"></i></span><span class="indent">Login</span></a><a href="#page:authentication,header:authentication-auth-logout" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Auth Logout</a><a href="#page:authentication,header:authentication-auth-logout-post" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-success"><i class="fa fa-plus"></i></span><span class="indent">Logout</span></a></div></div><div class="list-group"><a data-toggle="" data-target="#page:notifications-menu" href="#page:notifications" class="list-group-item heading collapsed">Notifications</a><div id="page:notifications-menu"><a href="#page:notifications,header:notifications-notifications-generic" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Notifications Generic</a><a href="#page:notifications,header:notifications-notifications-generic-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Get Notifications</span></a><a href="#page:notifications,header:notifications-notifications-generic-delete" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-danger"><i class="fa fa-times"></i></span><span class="indent">Mark Read All Notifications</span></a><a href="#page:notifications,header:notifications-notifications-specific" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Notifications Specific</a><a href="#page:notifications,header:notifications-notifications-specific-delete" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-danger"><i class="fa fa-times"></i></span><span class="indent">Mark Read Notification</span></a></div></div><div class="list-group"><a data-toggle="" data-target="#page:bookmarks-menu" href="#page:bookmarks" class="list-group-item heading collapsed">Bookmarks</a><div id="page:bookmarks-menu"><a href="#page:bookmarks,header:bookmarks-bookmark-generic" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Bookmark Generic</a><a href="#page:bookmarks,header:bookmarks-bookmark-generic-post" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-success"><i class="fa fa-plus"></i></span><span class="indent">Create Bookmark</span></a><a href="#page:bookmarks,header:bookmarks-bookmark-specific" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Bookmark Specific</a><a href="#page:bookmarks,header:bookmarks-bookmark-specific-delete" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-danger"><i class="fa fa-times"></i></span><span class="indent">Delete Bookmark</span></a><a href="#page:bookmarks,header:bookmarks-bookmark-specific-put" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-warning"><i class="fa fa-pencil"></i></span><span class="indent">Edit Bookmark</span></a><a href="#page:bookmarks,header:bookmarks-bookmark-course-specific" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Bookmark Course Specific</a><a href="#page:bookmarks,header:bookmarks-bookmark-course-specific-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Get Course Bookmarks</span></a><a href="#page:bookmarks,header:bookmarks-bookmark-lecture-specific" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Bookmark Lecture Specific</a><a href="#page:bookmarks,header:bookmarks-bookmark-lecture-specific-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Get Lecture Bookmarks</span></a></div></div><div class="list-group"><a data-toggle="" data-target="#page:courses-menu" href="#page:courses" class="list-group-item heading collapsed">Courses</a><div id="page:courses-menu"><a href="#page:courses,header:courses-course-generic" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Course Generic</a><a href="#page:courses,header:courses-course-generic-post" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-success"><i class="fa fa-plus"></i></span><span class="indent">Add A Course</span></a><a href="#page:courses,header:courses-course-specific" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Course Specific</a><a href="#page:courses,header:courses-course-specific-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Get Course</span></a><a href="#page:courses,header:courses-course-specific-put" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-warning"><i class="fa fa-pencil"></i></span><span class="indent">Edit Course</span></a><a href="#page:courses,header:courses-course-specific-delete" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-danger"><i class="fa fa-times"></i></span><span class="indent">Delete Course</span></a></div></div><div class="list-group"><a data-toggle="" data-target="#page:roster-menu" href="#page:roster" class="list-group-item heading collapsed">Roster</a><div id="page:roster-menu"><a href="#page:roster,header:roster-roster-generic" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Roster Generic</a><a href="#page:roster,header:roster-roster-generic-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Get Course Roster</span></a><a href="#page:roster,header:roster-roster-generic-post" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-success"><i class="fa fa-plus"></i></span><span class="indent">Add Single User To Roster</span></a><a href="#page:roster,header:roster-roster-generic-post" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-success"><i class="fa fa-plus"></i></span><span class="indent">Add Users To Roster</span></a><a href="#page:roster,header:roster-roster-specific" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Roster Specific</a><a href="#page:roster,header:roster-roster-specific-delete" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-danger"><i class="fa fa-times"></i></span><span class="indent">Remove User From Roster</span></a></div></div><div class="list-group"><a data-toggle="" data-target="#page:lectures-menu" href="#page:lectures" class="list-group-item heading collapsed">Lectures</a><div id="page:lectures-menu"><a href="#page:lectures,header:lectures-lecture-generic" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Lecture Generic</a><a href="#page:lectures,header:lectures-lecture-generic-post" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-success"><i class="fa fa-plus"></i></span><span class="indent">TODO Add Lecture Man.</span></a><a href="#page:lectures,header:lectures-lecture-generic-post" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-success"><i class="fa fa-plus"></i></span><span class="indent">Add Lecture Auto</span></a><a href="#page:lectures,header:lectures-lecture-specific" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Lecture Specific</a><a href="#page:lectures,header:lectures-lecture-specific-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Get A Lecture</span></a><a href="#page:lectures,header:lectures-lecture-specific-put" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-warning"><i class="fa fa-pencil"></i></span><span class="indent">Edit A Lecture</span></a><a href="#page:lectures,header:lectures-lecture-specific-delete" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-danger"><i class="fa fa-times"></i></span><span class="indent">Delete A Lecture</span></a></div></div><div class="list-group"><a data-toggle="" data-target="#page:attachments-menu" href="#page:attachments" class="list-group-item heading collapsed">Attachments</a><div id="page:attachments-menu"><a href="#page:attachments,header:attachments-attachment-generic" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Attachment Generic</a><a href="#page:attachments,header:attachments-attachment-generic-post" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-success"><i class="fa fa-plus"></i></span><span class="indent">Add Attachment</span></a><a href="#page:attachments,header:attachments-attachment-specific" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Attachment Specific</a><a href="#page:attachments,header:attachments-attachment-specific-delete" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-danger"><i class="fa fa-times"></i></span><span class="indent">Delete Attachment</span></a></div></div><div class="list-group"><a data-toggle="" data-target="#page:comments-menu" href="#page:comments" class="list-group-item heading collapsed">Comments</a><div id="page:comments-menu"><a href="#page:comments,header:comments-comment-generic" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Comment Generic</a><a href="#page:comments,header:comments-comment-generic-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Get Lecture Comments</span></a><a href="#page:comments,header:comments-comment-generic-post" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-success"><i class="fa fa-plus"></i></span><span class="indent">Add Lecture Comment</span></a><a href="#page:comments,header:comments-comment-specific" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Comment Specific</a><a href="#page:comments,header:comments-comment-specific-delete" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-danger"><i class="fa fa-times"></i></span><span class="indent">Delete Comment</span></a><a href="#page:comments,header:comments-comment-specific-put" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-warning"><i class="fa fa-pencil"></i></span><span class="indent">Edit Comment</span></a><a href="#page:comments,header:comments-comment-specific-post" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-success"><i class="fa fa-plus"></i></span><span class="indent">Reply To Comment</span></a></div></div></nav></div><div class="col-md-8"><div data-bind="visible: page() == 'home'"><header><div class="page-header"><h1 id="top">Lecture Viewer API</h1></div></header><div class="description"><p><span style="font-size:16px" >LectureViewer API will be utilized by the React front end and will allow for CRUD operations by being the middle man for the database. </span></p>
+<blockquote>
+<p><span style="color:orange;">NOTE: This is an <em>incomplete</em> API at the moment. The base url calls are all defined but not all of the request/response data is finalized</span></p>
+</blockquote>
+<h2>Authentication</h2>
+<hr>
+<p><span style="font-size:16px" >Almost every API call defined in this document will require a user to be logegd in. To verify that you are logged in, you will pass a token to the backend with every API request you make. You can do this by setting the “Authorization” header in your request to pass the token that is returned by <a href="#page:authentication,header:authentication-auth-login-post"><b>login</b></a>.</span></p>
+<pre><code>    <span class="hljs-attribute">Authorization</span>: <span class="hljs-string">eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9</span>
+</code></pre>
+<h2>API Responses</h2>
+<hr>
+<p><span style="font-size:16px" >These are examples of the responses that one can expect to recieve from the API</span></p>
+<h3><span style="color:rgb(41, 171, 41);">A Successful Response</span></h3>
+<p>This shows a response example of what a correctly used api with no errors would look like</p>
+<pre><code class="language-javascript">    
+{
+    <span class="hljs-string">"status"</span> : <span class="hljs-string">"success"</span>,
+    <span class="hljs-string">"data"</span> :
+        {
+            <span class="hljs-string">"first_name"</span>:<span class="hljs-string">"Jane"</span>,
+            <span class="hljs-string">"last_name"</span>:<span class="hljs-string">"Doe"</span>,
+            <span class="hljs-string">"email"</span>:<span class="hljs-string">"jdoe@umass.edu"</span>,
+            <span class="hljs-string">"role"</span>:<span class="hljs-string">"student"</span>,
+            <span class="hljs-string">"courses"</span>:[],
+            <span class="hljs-string">"user_id"</span>:<span class="hljs-string">"55366107d76f149f57d3ee56"</span>
+        }
+}
+
+</code></pre>
+<h3><span style="color:orange;">A Failed Response</span></h3>
+<p>This shows a response example of what an improperly formatted api call looks like</p>
+<pre><code class="language-javascript">    
+{
+    <span class="hljs-string">"status"</span> : <span class="hljs-string">"fail"</span>,
+    <span class="hljs-string">"data"</span> : {<span class="hljs-string">"message"</span>:<span class="hljs-string">"Incorrect parameters"</span>}
+}
+
+</code></pre>
+<h3><span style="color:red;">An Error Response</span></h3>
+<p>This shows a response example of what an internal error would return</p>
+<pre><code class="language-javascript">    
+{
+    <span class="hljs-string">"status"</span> : <span class="hljs-string">"error"</span>,
+    <span class="hljs-string">"data"</span> : { <span class="hljs-string">"message"</span> : <span class="hljs-string">"There was a database connection error"</span> }
+}
+
+</code></pre>
+<h2>Current Points of Confusion</h2>
+<hr>
+</div><a href="#page:users" class="btn btn-default pull-right">Next&nbsp;<i class="fa fa-arrow-circle-right"></i></a><div class="clearfix"></div><hr></div><div data-bind="visible: page() == 'users', style: {marginTop: page() == 'users' ? '38px' : ''}"><div class="panel panel-default"><div class="panel-heading"><h3 id="users">Users&nbsp;<a href="#page:users"><i class="fa fa-link"></i></a></h3></div><div class="panel-body"><h4 id="users-user-generic">User Generic&nbsp;<a href="#page:users,header:users-user-generic"><i class="fa fa-link"></i></a></h4><section id="users-user-generic-post" class="panel panel-success"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Create User</span></div><div style="float:left"><a href="#page:users,header:users-user-generic-post" class="btn btn-xs btn-success">POST</a></div><div style="overflow:hidden"><code>/user</code></div></div><div class="panel-body"><p>Creates a new user</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#2eee507e9f7e1d203d8b527b0deb5b39" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="2eee507e9f7e1d203d8b527b0deb5b39" class="list-group-item panel-collapse collapse"><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">email</span>" : <span class="hljs-value"><span class="hljs-string">"jdoe@umass.edu"</span></span>,
+    "<span class="hljs-attribute">password</span>" : <span class="hljs-value"><span class="hljs-string">"password"</span></span>,
+    "<span class="hljs-attribute">first_name</span>" : <span class="hljs-value"><span class="hljs-string">"Jane"</span></span>,
+    "<span class="hljs-attribute">last_name</span>" : <span class="hljs-value"><span class="hljs-string">"Doe"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#bbbdd2ce5e61c147f2e8fb18aacbf0de" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="bbbdd2ce5e61c147f2e8fb18aacbf0de" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"success"</span></span>,
+    "<span class="hljs-attribute">data</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">user_id</span>": <span class="hljs-value"><span class="hljs-string">"5536624cd76f149f57d3ee57"</span></span>,
+        "<span class="hljs-attribute">email</span>" : <span class="hljs-value"><span class="hljs-string">"jdoe@umass.edu"</span></span>,
+        "<span class="hljs-attribute">first_name</span>" : <span class="hljs-value"><span class="hljs-string">"Jane"</span></span>,
+        "<span class="hljs-attribute">last_name</span>" : <span class="hljs-value"><span class="hljs-string">"Doe"</span></span>,
+        "<span class="hljs-attribute">role</span>": <span class="hljs-value"><span class="hljs-string">"student"</span>
+    </span>}
+</span>}
+</code></pre></li></ul></section><section id="users-user-generic-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Get User</span></div><div style="float:left"><a href="#page:users,header:users-user-generic-get" class="btn btn-xs btn-info">GET</a></div><div style="overflow:hidden"><code>/user</code></div></div><div class="panel-body"><p>Gets current user info (private)</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#d144ff724c0e0cc596d7e59d07ededc8" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="d144ff724c0e0cc596d7e59d07ededc8" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>    {
+        "<span class="hljs-attribute">status</span>":<span class="hljs-value"><span class="hljs-string">"success"</span></span>,
+        "<span class="hljs-attribute">data</span>":<span class="hljs-value">{
+            "<span class="hljs-attribute">first_name</span>":<span class="hljs-value"><span class="hljs-string">"Jane"</span></span>,
+            "<span class="hljs-attribute">last_name</span>":<span class="hljs-value"><span class="hljs-string">"Doe"</span></span>,
+            "<span class="hljs-attribute">email</span>":<span class="hljs-value"><span class="hljs-string">"jdoe@umass.edu"</span></span>,
+            "<span class="hljs-attribute">role</span>":<span class="hljs-value"><span class="hljs-string">"student"</span></span>,
+            "<span class="hljs-attribute">courses</span>":<span class="hljs-value">[{"<span class="hljs-attribute">name</span>" : <span class="hljs-value"><span class="hljs-string">"CS187 Data Structures"</span></span>, "<span class="hljs-attribute">course_id</span>": <span class="hljs-value"><span class="hljs-string">"4cdfb11e1f3c000000007822"</span></span>}]</span>,
+            "<span class="hljs-attribute">user_id</span>":<span class="hljs-value"><span class="hljs-string">"55366107d76f149f57d3ee56"</span>
+        </span>}
+    </span>}
+
+</code></pre></li></ul></section><section id="users-user-generic-put" class="panel panel-warning"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Update User</span></div><div style="float:left"><a href="#page:users,header:users-user-generic-put" class="btn btn-xs btn-warning">PUT</a></div><div style="overflow:hidden"><code>/user</code></div></div><div class="panel-body"><p>Updates the current user’s info</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#77e210457b71ba59fe140131e909b5a3" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="77e210457b71ba59fe140131e909b5a3" class="list-group-item panel-collapse collapse"><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">first_name</span>": <span class="hljs-value"><span class="hljs-string">"Jan"</span></span>,
+    "<span class="hljs-attribute">last_name</span>": <span class="hljs-value"><span class="hljs-string">"Does"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#537210a21cd05262c529ee7a118a6314" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="537210a21cd05262c529ee7a118a6314" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">status</span>":<span class="hljs-value"><span class="hljs-string">"success"</span></span>,
+    "<span class="hljs-attribute">data</span>":<span class="hljs-value">{
+        "<span class="hljs-attribute">first_name</span>":<span class="hljs-value"><span class="hljs-string">"Jan"</span></span>,
+        "<span class="hljs-attribute">last_name</span>":<span class="hljs-value"><span class="hljs-string">"Does"</span></span>,
+        "<span class="hljs-attribute">email</span>":<span class="hljs-value"><span class="hljs-string">"jdoe@umass.edu"</span></span>,
+        "<span class="hljs-attribute">role</span>":<span class="hljs-value"><span class="hljs-string">"student"</span></span>,
+        "<span class="hljs-attribute">courses</span>":<span class="hljs-value">[{"<span class="hljs-attribute">name</span>" : <span class="hljs-value"><span class="hljs-string">"CS187 Data Structures"</span></span>, "<span class="hljs-attribute">course_id</span>": <span class="hljs-value"><span class="hljs-string">"4cdfb11e1f3c000000007822"</span></span>}]</span>,
+        "<span class="hljs-attribute">user_id</span>":<span class="hljs-value"><span class="hljs-string">"55366107d76f149f57d3ee56"</span>
+    </span>}
+</span>}
+</code></pre></li></ul></section><section id="users-user-generic-delete" class="panel panel-danger"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Delete User</span></div><div style="float:left"><a href="#page:users,header:users-user-generic-delete" class="btn btn-xs btn-danger">DELETE</a></div><div style="overflow:hidden"><code>/user</code></div></div><div class="panel-body"><p>Deletes the current user</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#ac77806590122a3fffe628107b46270d" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="ac77806590122a3fffe628107b46270d" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"success"</span></span>,
+    "<span class="hljs-attribute">data</span>":<span class="hljs-value">{
+        "<span class="hljs-attribute">first_name</span>":<span class="hljs-value"><span class="hljs-string">"Jane"</span></span>,
+        "<span class="hljs-attribute">last_name</span>":<span class="hljs-value"><span class="hljs-string">"Doe"</span></span>,
+        "<span class="hljs-attribute">email</span>":<span class="hljs-value"><span class="hljs-string">"jdoe@umass.edu"</span></span>,
+        "<span class="hljs-attribute">role</span>":<span class="hljs-value"><span class="hljs-string">"student"</span></span>,
+        "<span class="hljs-attribute">courses</span>":<span class="hljs-value">[{"<span class="hljs-attribute">name</span>" : <span class="hljs-value"><span class="hljs-string">"CS187 Data Structures"</span></span>, "<span class="hljs-attribute">course_id</span>": <span class="hljs-value"><span class="hljs-string">"4cdfb11e1f3c000000007822"</span></span>}]</span>,
+        "<span class="hljs-attribute">user_id</span>":<span class="hljs-value"><span class="hljs-string">"55366107d76f149f57d3ee56"</span>
+    </span>}
+</span>}
+</code></pre></li></ul></section><h4 id="users-user-specific">User Specific&nbsp;<a href="#page:users,header:users-user-specific"><i class="fa fa-link"></i></a></h4><p>These api calls will only be used by the specified user so giving an “id” param may be pointless…</p>
+<section id="users-user-specific-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Get User</span></div><div style="float:left"><a href="#page:users,header:users-user-specific-get" class="btn btn-xs btn-info">GET</a></div><div style="overflow:hidden"><code>/user/{user_id}</code></div></div><div class="panel-body"><p>Gets a user’s info (public)</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>user_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the specified user</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#f128016f2c112242687301b309be91d4" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="f128016f2c112242687301b309be91d4" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"success"</span></span>,
+    "<span class="hljs-attribute">data</span>":<span class="hljs-value">{
+        "<span class="hljs-attribute">first_name</span>": <span class="hljs-value"><span class="hljs-string">"Jane"</span></span>,
+        "<span class="hljs-attribute">last_name</span>": <span class="hljs-value"><span class="hljs-string">"Doe"</span></span>,
+        "<span class="hljs-attribute">user_id</span>": <span class="hljs-value"><span class="hljs-string">"5536624cd76f149f57d3ee57"</span>
+    </span>}
+</span>}
+</code></pre></li></ul></section><section id="users-user-specific-delete" class="panel panel-danger"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Delete User</span></div><div style="float:left"><a href="#page:users,header:users-user-specific-delete" class="btn btn-xs btn-danger">DELETE</a></div><div style="overflow:hidden"><code>/user/{user_id}</code></div></div><div class="panel-body"><p>Deletes a user (admin)</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>user_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the specified user</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#6340d1919a7c05fcfdb5963280647144" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="6340d1919a7c05fcfdb5963280647144" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"success"</span></span>,
+    "<span class="hljs-attribute">data</span>":<span class="hljs-value">{
+        "<span class="hljs-attribute">first_name</span>":<span class="hljs-value"><span class="hljs-string">"Jane"</span></span>,
+        "<span class="hljs-attribute">last_name</span>":<span class="hljs-value"><span class="hljs-string">"Doe"</span></span>,
+        "<span class="hljs-attribute">email</span>":<span class="hljs-value"><span class="hljs-string">"jdoe@umass.edu"</span></span>,
+        "<span class="hljs-attribute">role</span>":<span class="hljs-value"><span class="hljs-string">"student"</span></span>,
+        "<span class="hljs-attribute">courses</span>":<span class="hljs-value">[{"<span class="hljs-attribute">name</span>" : <span class="hljs-value"><span class="hljs-string">"CS187 Data Structures"</span></span>, "<span class="hljs-attribute">course_id</span>": <span class="hljs-value"><span class="hljs-string">"4cdfb11e1f3c000000007822"</span></span>}]</span>,
+        "<span class="hljs-attribute">user_id</span>":<span class="hljs-value"><span class="hljs-string">"55366107d76f149f57d3ee56"</span>
+    </span>}
+</span>}
+</code></pre></li></ul></section></div></div><a href="#page:authentication" class="btn btn-default pull-right">Next&nbsp;<i class="fa fa-arrow-circle-right"></i></a><a href="#" class="btn btn-default"><i class="fa fa-arrow-circle-left"></i> Previous</a><div class="clearfix"></div><hr></div><div data-bind="visible: page() == 'authentication', style: {marginTop: page() == 'authentication' ? '38px' : ''}"><div class="panel panel-default"><div class="panel-heading"><h3 id="authentication">Authentication&nbsp;<a href="#page:authentication"><i class="fa fa-link"></i></a></h3></div><div class="panel-body"><h4 id="authentication-auth-verify">Auth Verify&nbsp;<a href="#page:authentication,header:authentication-auth-verify"><i class="fa fa-link"></i></a></h4><section id="authentication-auth-verify-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Verification</span></div><div style="float:left"><a href="#page:authentication,header:authentication-auth-verify-get" class="btn btn-xs btn-info">GET</a></div><div style="overflow:hidden"><code>/auth/verify/{verify_id}</code></div></div><div class="panel-body"><p>Allows a user to verify that they own their email.</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>verify_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>Randomly generated unique number that was emailed in a link to the user</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#6ac986e3406a13d3f47ce3f454e167ba" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="6ac986e3406a13d3f47ce3f454e167ba" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">status</span>" : <span class="hljs-value"><span class="hljs-string">"success"</span></span>,
+    "<span class="hljs-attribute">data</span>" :<span class="hljs-value">{
+
+    }
+</span>}
+</code></pre></li></ul></section><h4 id="authentication-auth-login">Auth Login&nbsp;<a href="#page:authentication,header:authentication-auth-login"><i class="fa fa-link"></i></a></h4><section id="authentication-auth-login-post" class="panel panel-success"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Login</span></div><div style="float:left"><a href="#page:authentication,header:authentication-auth-login-post" class="btn btn-xs btn-success">POST</a></div><div style="overflow:hidden"><code>/auth/login</code></div></div><div class="panel-body"><p>Allows a user to log into the system</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#a6fe0a7c755e4c4f7696de344a50d2d6" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="a6fe0a7c755e4c4f7696de344a50d2d6" class="list-group-item panel-collapse collapse"><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">email</span>" : <span class="hljs-value"><span class="hljs-string">"jdoe@umass.edu"</span></span>,
+    "<span class="hljs-attribute">password</span>" : <span class="hljs-value"><span class="hljs-string">"password"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#a1fbc3fe665d3bbc2baac87ed7b82c39" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="a1fbc3fe665d3bbc2baac87ed7b82c39" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">status</span>" : <span class="hljs-value"><span class="hljs-string">"success"</span></span>,
+    "<span class="hljs-attribute">data</span>" : <span class="hljs-value">{
+        "<span class="hljs-attribute">token</span>":<span class="hljs-value"><span class="hljs-string">"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9"</span>
+    </span>}
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>403</code></strong><a data-toggle="collapse" data-target="#4d6fb4bdd3c5e5e9a31f472eda5098bd" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="4d6fb4bdd3c5e5e9a31f472eda5098bd" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">status</span>" : <span class="hljs-value"><span class="hljs-string">"fail"</span></span>,
+    "<span class="hljs-attribute">data</span>" :<span class="hljs-value">{
+        "<span class="hljs-attribute">message</span>" : <span class="hljs-value"><span class="hljs-string">"The email and/or password are incorrect"</span>
+    </span>}
+</span>}
+</code></pre></li></ul></section><h4 id="authentication-auth-logout">Auth Logout&nbsp;<a href="#page:authentication,header:authentication-auth-logout"><i class="fa fa-link"></i></a></h4><section id="authentication-auth-logout-post" class="panel panel-success"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Logout</span></div><div style="float:left"><a href="#page:authentication,header:authentication-auth-logout-post" class="btn btn-xs btn-success">POST</a></div><div style="overflow:hidden"><code>/auth/logout</code></div></div><div class="panel-body"><p>Allows a user to log themselves out of the system. Will delete session info on server.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#79af2a0188f2b8ff52b6aa3cbdc16630" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="79af2a0188f2b8ff52b6aa3cbdc16630" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">status</span>" : <span class="hljs-value"><span class="hljs-string">"success"</span></span>,
+    "<span class="hljs-attribute">data</span>" :<span class="hljs-value">{
+
+    }
+</span>}
+</code></pre></li></ul></section></div></div><a href="#page:notifications" class="btn btn-default pull-right">Next&nbsp;<i class="fa fa-arrow-circle-right"></i></a><a href="#page:users" class="btn btn-default"><i class="fa fa-arrow-circle-left"></i> Previous</a><div class="clearfix"></div><hr></div><div data-bind="visible: page() == 'notifications', style: {marginTop: page() == 'notifications' ? '38px' : ''}"><div class="panel panel-default"><div class="panel-heading"><h3 id="notifications">Notifications&nbsp;<a href="#page:notifications"><i class="fa fa-link"></i></a></h3></div><div class="panel-body"><h4 id="notifications-notifications-generic">Notifications Generic&nbsp;<a href="#page:notifications,header:notifications-notifications-generic"><i class="fa fa-link"></i></a></h4><section id="notifications-notifications-generic-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Get Notifications</span></div><div style="float:left"><a href="#page:notifications,header:notifications-notifications-generic-get" class="btn btn-xs btn-info">GET</a></div><div style="overflow:hidden"><code>/user/notification</code></div></div><div class="panel-body"><p>Gets the notifications of the logged in user</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#63d0d049a8b77b555712c6a3ee41cb5b" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="63d0d049a8b77b555712c6a3ee41cb5b" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">status</span>":<span class="hljs-value"><span class="hljs-string">"success"</span></span>,
+    "<span class="hljs-attribute">data</span>":<span class="hljs-value">{
+
+        "<span class="hljs-attribute">notifications</span>" : <span class="hljs-value">[
+            {
+                "<span class="hljs-attribute">type</span>" : <span class="hljs-value"><span class="hljs-string">"added to course"</span></span>,
+                "<span class="hljs-attribute">course_name</span>" : <span class="hljs-value"><span class="hljs-string">"CS187 Data Structures"</span></span>,
+                "<span class="hljs-attribute">course_id</span>" : <span class="hljs-value"><span class="hljs-string">"4cdfb11e1f3c000000007822"</span></span>,
+                "<span class="hljs-attribute">date</span>" : <span class="hljs-value"><span class="hljs-string">"03/02/2015 01:28:22"</span>
+            </span>},
+            {
+                "<span class="hljs-attribute">type</span>" : <span class="hljs-value"><span class="hljs-string">"new lecture"</span></span>,
+                "<span class="hljs-attribute">course_name</span>" : <span class="hljs-value"><span class="hljs-string">"CS187 Data Structures"</span></span>,
+                "<span class="hljs-attribute">course_id</span>" : <span class="hljs-value"><span class="hljs-string">"4cdfb11e1f3c000000007822"</span></span>,
+                "<span class="hljs-attribute">lecture_name</span>" : <span class="hljs-value"><span class="hljs-string">"Lecture 5: Can we really trust arrays?"</span></span>,
+                "<span class="hljs-attribute">lecture_id</span>" : <span class="hljs-value"><span class="hljs-string">"8dfaa22e1f3c000000003312"</span></span>,
+                "<span class="hljs-attribute">date</span>" : <span class="hljs-value"><span class="hljs-string">"03/01/2015 11:21:12"</span>
+            </span>},
+            {
+                "<span class="hljs-attribute">type</span>" : <span class="hljs-value"><span class="hljs-string">"reply"</span></span>,
+                "<span class="hljs-attribute">course_name</span>" : <span class="hljs-value"><span class="hljs-string">"CS187 Data Structures"</span></span>,
+                "<span class="hljs-attribute">course_id</span>" : <span class="hljs-value"><span class="hljs-string">"4cdfb11e1f3c000000007822"</span></span>,
+                "<span class="hljs-attribute">lecture_name</span>" : <span class="hljs-value"><span class="hljs-string">"Lecture 5: Can we really trust arrays?"</span></span>,
+                "<span class="hljs-attribute">lecture_id</span>" : <span class="hljs-value"><span class="hljs-string">"8dfaa22e1f3c000000003312"</span></span>,
+                "<span class="hljs-attribute">comment</span>" : <span class="hljs-value"><span class="hljs-string">"What's an array?"</span></span>,
+                "<span class="hljs-attribute">comment_id</span>" : <span class="hljs-value"><span class="hljs-string">"8dfaa22eff3c242000003312"</span>
+                <span class="hljs-string">"reply"</span> : <span class="hljs-string">"\*facepalm\* its soo simple dude."</span></span>,
+                "<span class="hljs-attribute">replier_name</span>" : <span class="hljs-value"><span class="hljs-string">"That Guy"</span></span>,
+                "<span class="hljs-attribute">replier_id</span>" : <span class="hljs-value"><span class="hljs-string">"8dfaa22e1f3c242000003312"</span>
+                <span class="hljs-string">"date"</span> : <span class="hljs-string">"03/02/2015 01:28:22"</span>
+            </span>}
+        ]
+    </span>}
+</span>}
+</code></pre></li></ul></section><section id="notifications-notifications-generic-delete" class="panel panel-danger"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Mark Read All Notifications</span></div><div style="float:left"><a href="#page:notifications,header:notifications-notifications-generic-delete" class="btn btn-xs btn-danger">DELETE</a></div><div style="overflow:hidden"><code>/user/notification</code></div></div><div class="panel-body"><p>Marks all notifications as read</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#565da7e2cd1373101a7aa4862f689297" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="565da7e2cd1373101a7aa4862f689297" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">status</span>" : <span class="hljs-value"><span class="hljs-string">"success"</span></span>,
+    "<span class="hljs-attribute">data</span>" : <span class="hljs-value">{
+        "<span class="hljs-attribute">notification_ids</span>" : <span class="hljs-value">[
+            <span class="hljs-string">"39ffccaa00002311"</span>,
+            <span class="hljs-string">"85ff4ccaa00002323"</span>,
+            <span class="hljs-string">"3134ccaa000023547"</span>,
+            <span class="hljs-string">"11284cca00023575"</span>
+            ]
+    </span>}
+</span>}
+</code></pre></li></ul></section><h4 id="notifications-notifications-specific">Notifications Specific&nbsp;<a href="#page:notifications,header:notifications-notifications-specific"><i class="fa fa-link"></i></a></h4><section id="notifications-notifications-specific-delete" class="panel panel-danger"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Mark Read Notification</span></div><div style="float:left"><a href="#page:notifications,header:notifications-notifications-specific-delete" class="btn btn-xs btn-danger">DELETE</a></div><div style="overflow:hidden"><code>/user/notification/{notification_id}</code></div></div><div class="panel-body"><p>Marks a notification as read</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>notification_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of a specified notification</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#39452f5b4068aa4352ef64be50dd4ea3" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="39452f5b4068aa4352ef64be50dd4ea3" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">status</span>" : <span class="hljs-value"><span class="hljs-string">"success"</span></span>,
+    "<span class="hljs-attribute">data</span>" : <span class="hljs-value">{
+        "<span class="hljs-attribute">notification_id</span>" : <span class="hljs-value"><span class="hljs-string">"3984ccaa00002323"</span>
+    </span>}
+</span>}
+</code></pre></li></ul></section></div></div><a href="#page:bookmarks" class="btn btn-default pull-right">Next&nbsp;<i class="fa fa-arrow-circle-right"></i></a><a href="#page:authentication" class="btn btn-default"><i class="fa fa-arrow-circle-left"></i> Previous</a><div class="clearfix"></div><hr></div><div data-bind="visible: page() == 'bookmarks', style: {marginTop: page() == 'bookmarks' ? '38px' : ''}"><div class="panel panel-default"><div class="panel-heading"><h3 id="bookmarks">Bookmarks&nbsp;<a href="#page:bookmarks"><i class="fa fa-link"></i></a></h3></div><div class="panel-body"><h4 id="bookmarks-bookmark-generic">Bookmark Generic&nbsp;<a href="#page:bookmarks,header:bookmarks-bookmark-generic"><i class="fa fa-link"></i></a></h4><section id="bookmarks-bookmark-generic-post" class="panel panel-success"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Create Bookmark</span></div><div style="float:left"><a href="#page:bookmarks,header:bookmarks-bookmark-generic-post" class="btn btn-xs btn-success">POST</a></div><div style="overflow:hidden"><code>/user/bookmark</code></div></div><div class="panel-body"><p>Creates a bookmark for the current user</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#7a215a9221c299c3aba1c09277755c74" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="7a215a9221c299c3aba1c09277755c74" class="list-group-item panel-collapse collapse"><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">course_id</span>" : <span class="hljs-value"><span class="hljs-string">"dfb11e1f3c23000000007855"</span></span>,
+    "<span class="hljs-attribute">lecture_id</span>" : <span class="hljs-value"><span class="hljs-string">"4cdfb11e1f3c000000007822"</span></span>,
+    "<span class="hljs-attribute">label</span>" : <span class="hljs-value"><span class="hljs-string">"New Bookmark! :D"</span></span>,
+    "<span class="hljs-attribute">time</span>" : <span class="hljs-value"><span class="hljs-string">"140"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#69b5fd33304b9c0a8063a0c4451add64" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="69b5fd33304b9c0a8063a0c4451add64" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">status</span>" : <span class="hljs-value"><span class="hljs-string">"success"</span></span>,
+    "<span class="hljs-attribute">data</span>":<span class="hljs-value">{
+        "<span class="hljs-attribute">bookmark_id</span>" : <span class="hljs-value"><span class="hljs-string">"dfaa1e1f3c23000000007855"</span></span>,
+        "<span class="hljs-attribute">course_id</span>" : <span class="hljs-value"><span class="hljs-string">"aaaa1e1f3c23000000007855"</span></span>,
+        "<span class="hljs-attribute">lecture_id</span>" : <span class="hljs-value"><span class="hljs-string">"4cdfb11e1f3c000000007822"</span></span>,
+        "<span class="hljs-attribute">label</span>" : <span class="hljs-value"><span class="hljs-string">"New Bookmark! :D"</span></span>,
+        "<span class="hljs-attribute">time</span>" : <span class="hljs-value"><span class="hljs-string">"140"</span>
+    </span>}
+</span>}
+</code></pre></li></ul></section><h4 id="bookmarks-bookmark-specific">Bookmark Specific&nbsp;<a href="#page:bookmarks,header:bookmarks-bookmark-specific"><i class="fa fa-link"></i></a></h4><section id="bookmarks-bookmark-specific-delete" class="panel panel-danger"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Delete Bookmark</span></div><div style="float:left"><a href="#page:bookmarks,header:bookmarks-bookmark-specific-delete" class="btn btn-xs btn-danger">DELETE</a></div><div style="overflow:hidden"><code>/user/bookmark/{bookmark_id}</code></div></div><div class="panel-body"><p>Deletes a specified bookmark based on it’s ID</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>bookmark_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the specified bookmark</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#75e48b0ed3cc16811c7cf092fc5e0176" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="75e48b0ed3cc16811c7cf092fc5e0176" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">status</span>" : <span class="hljs-value"><span class="hljs-string">"success"</span></span>,
+    "<span class="hljs-attribute">data</span>" : <span class="hljs-value">{
+        "<span class="hljs-attribute">bookmark_id</span>" : <span class="hljs-value"><span class="hljs-string">"dfaa1e1f3c23000000007855"</span>
+    </span>}
+</span>}
+</code></pre></li></ul></section><section id="bookmarks-bookmark-specific-put" class="panel panel-warning"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Edit Bookmark</span></div><div style="float:left"><a href="#page:bookmarks,header:bookmarks-bookmark-specific-put" class="btn btn-xs btn-warning">PUT</a></div><div style="overflow:hidden"><code>/user/bookmark/{bookmark_id}</code></div></div><div class="panel-body"><p>Edits a specified bookmark based on it’s ID</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>bookmark_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the specified bookmark</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#305a4aee3471f76a802fc0bd60d54cb9" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="305a4aee3471f76a802fc0bd60d54cb9" class="list-group-item panel-collapse collapse"><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">label</span>" : <span class="hljs-value"><span class="hljs-string">"This is the new label!"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#6f827d7c7f586eddedec43f62efb00e8" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="6f827d7c7f586eddedec43f62efb00e8" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">status</span>" : <span class="hljs-value"><span class="hljs-string">"success"</span></span>,
+    "<span class="hljs-attribute">data</span>" : <span class="hljs-value">{
+        "<span class="hljs-attribute">bookmark_id</span>" : <span class="hljs-value"><span class="hljs-string">"dfaa1e1f3c23000000007855"</span></span>,
+        "<span class="hljs-attribute">course_id</span>" : <span class="hljs-value"><span class="hljs-string">"aaaa1e1f3c23000000007855"</span></span>,
+        "<span class="hljs-attribute">lecture_id</span>" : <span class="hljs-value"><span class="hljs-string">"4cdfb11e1f3c000000007822"</span></span>,
+        "<span class="hljs-attribute">label</span>" : <span class="hljs-value"><span class="hljs-string">"This is the new label!"</span></span>,
+        "<span class="hljs-attribute">time</span>" : <span class="hljs-value"><span class="hljs-string">"140"</span>
+    </span>}
+</span>}
+</code></pre></li></ul></section><h4 id="bookmarks-bookmark-course-specific">Bookmark Course Specific&nbsp;<a href="#page:bookmarks,header:bookmarks-bookmark-course-specific"><i class="fa fa-link"></i></a></h4><section id="bookmarks-bookmark-course-specific-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Get Course Bookmarks</span></div><div style="float:left"><a href="#page:bookmarks,header:bookmarks-bookmark-course-specific-get" class="btn btn-xs btn-info">GET</a></div><div style="overflow:hidden"><code>/user/bookmark/course/{course_id}</code></div></div><div class="panel-body"><p>Gets all of the current user’s bookmarks for a specified course</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>course_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the specified course</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#ee5dc5bba46b1cf090ee3a280cfb97ca" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="ee5dc5bba46b1cf090ee3a280cfb97ca" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">status</span>" : <span class="hljs-value"><span class="hljs-string">"success"</span></span>,
+    "<span class="hljs-attribute">data</span>" : <span class="hljs-value">{
+            "<span class="hljs-attribute">bookmarks</span>" : <span class="hljs-value">[
+                {
+                    "<span class="hljs-attribute">bookmark_id</span>" : <span class="hljs-value"><span class="hljs-string">"bbda1e1f3c23000000007551"</span></span>,
+                    "<span class="hljs-attribute">label</span>" : <span class="hljs-value"><span class="hljs-string">"This is a bookmark!"</span></span>,
+                    "<span class="hljs-attribute">time</span>" : <span class="hljs-value"><span class="hljs-string">"2000"</span></span>,
+                    "<span class="hljs-attribute">lecture_id</span>" : <span class="hljs-value"><span class="hljs-string">"dfaa1e1f3c23000000007855"</span>
+                </span>},
+                {
+                    "<span class="hljs-attribute">bookmark_id</span>" : <span class="hljs-value"><span class="hljs-string">"bbda1e1f3c23000000001111"</span></span>,
+                    "<span class="hljs-attribute">label</span>" : <span class="hljs-value"><span class="hljs-string">"This is a bookmark too!"</span></span>,
+                    "<span class="hljs-attribute">time</span>" : <span class="hljs-value"><span class="hljs-string">"11"</span></span>,
+                    "<span class="hljs-attribute">lecture_id</span>" : <span class="hljs-value"><span class="hljs-string">"ccca1e1f3c23000000007444"</span>
+                </span>},
+            ]
+    </span>}
+</span>}
+</code></pre></li></ul></section><h4 id="bookmarks-bookmark-lecture-specific">Bookmark Lecture Specific&nbsp;<a href="#page:bookmarks,header:bookmarks-bookmark-lecture-specific"><i class="fa fa-link"></i></a></h4><section id="bookmarks-bookmark-lecture-specific-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Get Lecture Bookmarks</span></div><div style="float:left"><a href="#page:bookmarks,header:bookmarks-bookmark-lecture-specific-get" class="btn btn-xs btn-info">GET</a></div><div style="overflow:hidden"><code>/user/bookmark/{course_id}/lecture/{lecture_id}</code></div></div><div class="panel-body"><p>Gets all of the current user’s bookmarks for a specified lecture</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>course_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the specified course</p>
+</dd><dt>lecture_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the specified lecture</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#f29c33f3c2eac0b8f7250056dfa22083" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="f29c33f3c2eac0b8f7250056dfa22083" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">status</span>" : <span class="hljs-value"><span class="hljs-string">"success"</span></span>,
+    "<span class="hljs-attribute">data</span>" : <span class="hljs-value">{
+            "<span class="hljs-attribute">bookmarks</span>" : <span class="hljs-value">[
+                {
+                    "<span class="hljs-attribute">bookmark_id</span>" : <span class="hljs-value"><span class="hljs-string">"bbda1e1f3c23000000007551"</span></span>,
+                    "<span class="hljs-attribute">label</span>" : <span class="hljs-value"><span class="hljs-string">"This is a bookmark!"</span></span>,
+                    "<span class="hljs-attribute">time</span>" : <span class="hljs-value"><span class="hljs-string">"27854724576"</span>
+                </span>},
+                {
+                    "<span class="hljs-attribute">bookmark_id</span>" : <span class="hljs-value"><span class="hljs-string">"bbda1e1f3c23000000001111"</span></span>,
+                    "<span class="hljs-attribute">label</span>" : <span class="hljs-value"><span class="hljs-string">"This is a bookmark too!"</span></span>,
+                    "<span class="hljs-attribute">time</span>" : <span class="hljs-value"><span class="hljs-string">"27854714576"</span>
+                </span>},
+            ]
+    </span>}
+</span>}
+</code></pre></li></ul></section></div></div><a href="#page:courses" class="btn btn-default pull-right">Next&nbsp;<i class="fa fa-arrow-circle-right"></i></a><a href="#page:notifications" class="btn btn-default"><i class="fa fa-arrow-circle-left"></i> Previous</a><div class="clearfix"></div><hr></div><div data-bind="visible: page() == 'courses', style: {marginTop: page() == 'courses' ? '38px' : ''}"><div class="panel panel-default"><div class="panel-heading"><h3 id="courses">Courses&nbsp;<a href="#page:courses"><i class="fa fa-link"></i></a></h3></div><div class="panel-body"><h4 id="courses-course-generic">Course Generic&nbsp;<a href="#page:courses,header:courses-course-generic"><i class="fa fa-link"></i></a></h4><section id="courses-course-generic-post" class="panel panel-success"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Add A Course</span></div><div style="float:left"><a href="#page:courses,header:courses-course-generic-post" class="btn btn-xs btn-success">POST</a></div><div style="overflow:hidden"><code>/course</code></div></div><div class="panel-body"><p>Adds a course to the system</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#2cff192de9dff9477382dd3192868fb0" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="2cff192de9dff9477382dd3192868fb0" class="list-group-item panel-collapse collapse"><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">department</span>" : <span class="hljs-value"><span class="hljs-string">"Computer Science"</span></span>,
+    "<span class="hljs-attribute">course_name</span>" : <span class="hljs-value"><span class="hljs-string">"Web Scalability"</span></span>,
+    "<span class="hljs-attribute">course_number</span>" : <span class="hljs-value"><span class="hljs-string">"497s"</span></span>,
+    "<span class="hljs-attribute">term</span>" : <span class="hljs-value"><span class="hljs-string">"Spring"</span></span>,
+    "<span class="hljs-attribute">year</span>" : <span class="hljs-value"><span class="hljs-string">"2015"</span></span>,
+    "<span class="hljs-attribute">instructor_email</span>" : <span class="hljs-value"><span class="hljs-string">"instructor@umass.edu"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#7df89b986c889804f6ef80b776202f4a" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="7df89b986c889804f6ef80b776202f4a" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">status</span>" : <span class="hljs-value"><span class="hljs-string">"success"</span></span>,
+    "<span class="hljs-attribute">data</span>" : <span class="hljs-value">{
+        "<span class="hljs-attribute">course_id</span>" : <span class="hljs-value"><span class="hljs-string">"55aadfeecd3300113344"</span></span>,
+        "<span class="hljs-attribute">department</span>" : <span class="hljs-value"><span class="hljs-string">"Computer Science"</span></span>,
+        "<span class="hljs-attribute">course_name</span>" : <span class="hljs-value"><span class="hljs-string">"Web Scalability"</span></span>,
+        "<span class="hljs-attribute">course_number</span>" : <span class="hljs-value"><span class="hljs-string">"497s"</span></span>,
+        "<span class="hljs-attribute">term</span>" : <span class="hljs-value"><span class="hljs-string">"Spring"</span></span>,
+        "<span class="hljs-attribute">year</span>" : <span class="hljs-value"><span class="hljs-string">"2015"</span></span>,
+        "<span class="hljs-attribute">instructor_email</span>" : <span class="hljs-value"><span class="hljs-string">"instructor@umass.edu"</span>
+    </span>}
+</span>}
+</code></pre></li></ul></section><h4 id="courses-course-specific">Course Specific&nbsp;<a href="#page:courses,header:courses-course-specific"><i class="fa fa-link"></i></a></h4><section id="courses-course-specific-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Get Course</span></div><div style="float:left"><a href="#page:courses,header:courses-course-specific-get" class="btn btn-xs btn-info">GET</a></div><div style="overflow:hidden"><code>/course/{course_id}</code></div></div><div class="panel-body"><p>Gets all of the information for a specified course</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>course_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID for specified course</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#87f597758ec3c82192f31250eb0823b6" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="87f597758ec3c82192f31250eb0823b6" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">department</span>" : <span class="hljs-value"><span class="hljs-string">"Computer Science"</span></span>,
+    "<span class="hljs-attribute">department_shorthand</span>" : <span class="hljs-value"><span class="hljs-string">"CS"</span></span>,
+    "<span class="hljs-attribute">course_name</span>" : <span class="hljs-value"><span class="hljs-string">"Web Scalability"</span></span>,
+    "<span class="hljs-attribute">course_number</span>" : <span class="hljs-value"><span class="hljs-string">"497s"</span></span>,
+    "<span class="hljs-attribute">description</span>" : <span class="hljs-value"><span class="hljs-string">"A \"class\" about web stuff"</span></span>,
+    "<span class="hljs-attribute">section</span>" : <span class="hljs-value"><span class="hljs-string">"01"</span></span>,
+    "<span class="hljs-attribute">term</span>" : <span class="hljs-value"><span class="hljs-string">"Spring"</span></span>,
+    "<span class="hljs-attribute">year</span>" : <span class="hljs-value"><span class="hljs-string">"2015"</span></span>,
+    "<span class="hljs-attribute">instructor_id</span>" : <span class="hljs-value"><span class="hljs-string">"23ffaaccdd2330002288"</span></span>,
+    "<span class="hljs-attribute">lectures</span>":
+        <span class="hljs-value">[
+            {
+                "<span class="hljs-attribute">lecture_id</span>" : <span class="hljs-value"><span class="hljs-string">"27dcccad253452a00011"</span></span>,
+                "<span class="hljs-attribute">title</span>" : <span class="hljs-value"><span class="hljs-string">"Lecture 4: What is the Interwebs?"</span></span>,
+                "<span class="hljs-attribute">description</span>" : <span class="hljs-value"><span class="hljs-string">"This lecture is awesome and you don't want to miss it"</span></span>,
+                "<span class="hljs-attribute">time_posted</span>" : <span class="hljs-value"><span class="hljs-string">"1337622367267"</span></span>,
+                "<span class="hljs-attribute">time_length</span>" : <span class="hljs-value"><span class="hljs-string">"3026"</span></span>,
+                "<span class="hljs-attribute">thumbnail</span>" : <span class="hljs-value"><span class="hljs-string">"http://url.to/thumbnail/here.jpg"</span>
+            </span>},
+            {
+                "<span class="hljs-attribute">lecture_id</span>" : <span class="hljs-value"><span class="hljs-string">"113ccad253452a00222"</span></span>,
+                "<span class="hljs-attribute">title</span>" : <span class="hljs-value"><span class="hljs-string">"Lecture 5: Databases"</span></span>,
+                "<span class="hljs-attribute">description</span>" : <span class="hljs-value"><span class="hljs-string">"We will talk about how to store huge amounts of data"</span></span>,
+                "<span class="hljs-attribute">time_posted</span>" : <span class="hljs-value"><span class="hljs-string">"1337623117267"</span></span>,
+                "<span class="hljs-attribute">time_length</span>" : <span class="hljs-value"><span class="hljs-string">"2026"</span></span>,
+                "<span class="hljs-attribute">thumbnail</span>" : <span class="hljs-value"><span class="hljs-string">"http://url.to/thumbnail/here.jpg"</span>
+            </span>}
+        ]
+</span>}
+</code></pre></li></ul></section><section id="courses-course-specific-put" class="panel panel-warning"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Edit Course</span></div><div style="float:left"><a href="#page:courses,header:courses-course-specific-put" class="btn btn-xs btn-warning">PUT</a></div><div style="overflow:hidden"><code>/course/{course_id}</code></div></div><div class="panel-body"><p>Edits a course’s basic information</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>course_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID for specified course</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#11b67625b7751a4ed7e8ae85f1e21822" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="11b67625b7751a4ed7e8ae85f1e21822" class="list-group-item panel-collapse collapse"><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">department</span>" : <span class="hljs-value"><span class="hljs-string">"Computer Science"</span></span>,
+    "<span class="hljs-attribute">department_shorthand</span>" : <span class="hljs-value"><span class="hljs-string">"CS"</span></span>,
+    "<span class="hljs-attribute">course_name</span>" : <span class="hljs-value"><span class="hljs-string">"Web Scalability"</span></span>,
+    "<span class="hljs-attribute">course_number</span>" : <span class="hljs-value"><span class="hljs-string">"497s"</span></span>,
+    "<span class="hljs-attribute">description</span>" : <span class="hljs-value"><span class="hljs-string">"A \"class\" about web stuff"</span></span>,
+    "<span class="hljs-attribute">section</span>" : <span class="hljs-value"><span class="hljs-string">"01"</span></span>,
+    "<span class="hljs-attribute">term</span>" : <span class="hljs-value"><span class="hljs-string">"Spring"</span></span>,
+    "<span class="hljs-attribute">year</span>" : <span class="hljs-value"><span class="hljs-string">"2015"</span></span>,
+    "<span class="hljs-attribute">instructor_email</span>" : <span class="hljs-value"><span class="hljs-string">"instructor@umass.edu"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#151c8d80eaf662e9640cb4e5349e7110" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="151c8d80eaf662e9640cb4e5349e7110" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">status</span>" : <span class="hljs-value"><span class="hljs-string">"success"</span></span>,
+    "<span class="hljs-attribute">data</span>" : <span class="hljs-value">{
+        "<span class="hljs-attribute">course_id</span>" : <span class="hljs-value"><span class="hljs-string">"aabbf22313f0001231"</span></span>,
+        "<span class="hljs-attribute">department</span>" : <span class="hljs-value"><span class="hljs-string">"Computer Science"</span></span>,
+        "<span class="hljs-attribute">department_shorthand</span>" : <span class="hljs-value"><span class="hljs-string">"CS"</span></span>,
+        "<span class="hljs-attribute">course_name</span>" : <span class="hljs-value"><span class="hljs-string">"Web Scalability"</span></span>,
+        "<span class="hljs-attribute">course_number</span>" : <span class="hljs-value"><span class="hljs-string">"497s"</span></span>,
+        "<span class="hljs-attribute">description</span>" : <span class="hljs-value"><span class="hljs-string">"A \"class\" about web stuff"</span></span>,
+        "<span class="hljs-attribute">section</span>" : <span class="hljs-value"><span class="hljs-string">"01"</span></span>,
+        "<span class="hljs-attribute">term</span>" : <span class="hljs-value"><span class="hljs-string">"Spring"</span></span>,
+        "<span class="hljs-attribute">year</span>" : <span class="hljs-value"><span class="hljs-string">"2015"</span></span>,
+        "<span class="hljs-attribute">instructor_email</span>" : <span class="hljs-value"><span class="hljs-string">"instructor@umass.edu"</span>
+    </span>}
+</span>}
+</code></pre></li></ul></section><section id="courses-course-specific-delete" class="panel panel-danger"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Delete Course</span></div><div style="float:left"><a href="#page:courses,header:courses-course-specific-delete" class="btn btn-xs btn-danger">DELETE</a></div><div style="overflow:hidden"><code>/course/{course_id}</code></div></div><div class="panel-body"><p>Deletes a specified course</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>course_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID for specified course</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#efcc8215d9603020dc6f9880c4e30204" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="efcc8215d9603020dc6f9880c4e30204" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">status</span>" : <span class="hljs-value"><span class="hljs-string">"success"</span></span>,
+    "<span class="hljs-attribute">data</span>" : <span class="hljs-value">{
+        "<span class="hljs-attribute">course_id</span>" : <span class="hljs-value"><span class="hljs-string">"aabbf22313f0001231"</span>
+    </span>}
+</span>}
+</code></pre></li></ul></section></div></div><a href="#page:roster" class="btn btn-default pull-right">Next&nbsp;<i class="fa fa-arrow-circle-right"></i></a><a href="#page:bookmarks" class="btn btn-default"><i class="fa fa-arrow-circle-left"></i> Previous</a><div class="clearfix"></div><hr></div><div data-bind="visible: page() == 'roster', style: {marginTop: page() == 'roster' ? '38px' : ''}"><div class="panel panel-default"><div class="panel-heading"><h3 id="roster">Roster&nbsp;<a href="#page:roster"><i class="fa fa-link"></i></a></h3></div><div class="panel-body"><h4 id="roster-roster-generic">Roster Generic&nbsp;<a href="#page:roster,header:roster-roster-generic"><i class="fa fa-link"></i></a></h4><section id="roster-roster-generic-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Get Course Roster</span></div><div style="float:left"><a href="#page:roster,header:roster-roster-generic-get" class="btn btn-xs btn-info">GET</a></div><div style="overflow:hidden"><code>/course/{course_id}/roster/</code></div></div><div class="panel-body"><p>Gets the roster of the specified course</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>course_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the course</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#931494cb5395b2bf60011b16ff82c2fa" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="931494cb5395b2bf60011b16ff82c2fa" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code><span class="hljs-collection">{
+    <span class="hljs-string">"status"</span> : <span class="hljs-string">"success"</span>,
+    <span class="hljs-string">"data"</span> : <span class="hljs-collection">{
+        roster : <span class="hljs-collection">[
+            <span class="hljs-collection">{
+                <span class="hljs-string">"first_name"</span>: <span class="hljs-string">"Jane"</span>,
+                <span class="hljs-string">"last_name"</span>: <span class="hljs-string">"Doe"</span>,
+                <span class="hljs-string">"user_id"</span>: <span class="hljs-string">"5536624cd76f149f57d3ee57"</span>
+            }</span>,
+            <span class="hljs-collection">{
+                <span class="hljs-string">"first_name"</span>: <span class="hljs-string">"John"</span>,
+                <span class="hljs-string">"last_name"</span>: <span class="hljs-string">"Doe"</span>,
+                <span class="hljs-string">"user_id"</span>: <span class="hljs-string">"4536624cd76f149f57d3ee12"</span>
+            }</span>
+        ]</span>
+    }</span>
+}</span>
+</code></pre></li></ul></section><section id="roster-roster-generic-post" class="panel panel-success"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Add Single User To Roster</span></div><div style="float:left"><a href="#page:roster,header:roster-roster-generic-post" class="btn btn-xs btn-success">POST</a></div><div style="overflow:hidden"><code>/course/{course_id}/roster/</code></div></div><div class="panel-body"><p>Adds a <em>single</em> user by <em>email</em> to the roster of the specified course</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>course_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the course</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#b2fe640c76af0d9897aa93ed73f3a233" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="b2fe640c76af0d9897aa93ed73f3a233" class="list-group-item panel-collapse collapse"><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">email</span>" : <span class="hljs-value"><span class="hljs-string">"jdoe@umass.edu"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#b921567deeac333592cb367106c02afd" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="b921567deeac333592cb367106c02afd" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code><span class="hljs-collection">{
+    <span class="hljs-string">"status"</span> : <span class="hljs-string">"success"</span>,
+    <span class="hljs-string">"data"</span> :<span class="hljs-collection">{
+        roster : <span class="hljs-collection">[
+            <span class="hljs-collection">{
+                <span class="hljs-string">"first_name"</span>: <span class="hljs-string">"Jane"</span>,
+                <span class="hljs-string">"last_name"</span>: <span class="hljs-string">"Doe"</span>,
+                <span class="hljs-string">"user_id"</span>: <span class="hljs-string">"5536624cd76f149f57d3ee57"</span>
+            }</span>,
+            <span class="hljs-collection">{
+                <span class="hljs-string">"first_name"</span>: <span class="hljs-string">"John"</span>,
+                <span class="hljs-string">"last_name"</span>: <span class="hljs-string">"Doe"</span>,
+                <span class="hljs-string">"user_id"</span>: <span class="hljs-string">"4536624cd76f149f57d3ee12"</span>
+            }</span>
+        ]</span>
+    }</span>
+}</span>
+</code></pre></li></ul></section><section id="roster-roster-generic-post" class="panel panel-success"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Add Users To Roster</span></div><div style="float:left"><a href="#page:roster,header:roster-roster-generic-post" class="btn btn-xs btn-success">POST</a></div><div style="overflow:hidden"><code>/course/{course_id}/roster/</code></div></div><div class="panel-body"><p>Adds a <em>group</em> of users by a file of <em>emails</em> to the roster of the specified course</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>course_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the course</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#786e73470a09177cd9c4a4671a2dfe31" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="786e73470a09177cd9c4a4671a2dfe31" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">multipart/form-data; boundary=---BOUNDARY</span><br></code></pre><h5>Body</h5><pre><code><span class="hljs-comment">-----BOUNDARY</span>
+    Content-Disposition: form-data; <span class="hljs-property">name</span>=<span class="hljs-string">"upload"</span>; filename=<span class="hljs-string">"roster.csv"</span>
+    Content-Type: <span class="hljs-type">text</span>/plain
+
+<span class="hljs-comment">-----BOUNDARY</span>
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#f14bedf181d8d2c04f243462cd1f64d7" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="f14bedf181d8d2c04f243462cd1f64d7" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code><span class="hljs-collection">{
+    <span class="hljs-string">"status"</span> : <span class="hljs-string">"success"</span>,
+    <span class="hljs-string">"data"</span> :<span class="hljs-collection">{
+        roster : <span class="hljs-collection">[
+            <span class="hljs-collection">{
+                <span class="hljs-string">"first_name"</span>: <span class="hljs-string">"Jane"</span>,
+                <span class="hljs-string">"last_name"</span>: <span class="hljs-string">"Doe"</span>,
+                <span class="hljs-string">"user_id"</span>: <span class="hljs-string">"5536624cd76f149f57d3ee57"</span>
+            }</span>,
+            <span class="hljs-collection">{
+                <span class="hljs-string">"first_name"</span>: <span class="hljs-string">"John"</span>,
+                <span class="hljs-string">"last_name"</span>: <span class="hljs-string">"Doe"</span>,
+                <span class="hljs-string">"user_id"</span>: <span class="hljs-string">"4536624cd76f149f57d3ee12"</span>
+            }</span>
+        ]</span>
+    }</span>
+}</span>
+</code></pre></li></ul></section><h4 id="roster-roster-specific">Roster Specific&nbsp;<a href="#page:roster,header:roster-roster-specific"><i class="fa fa-link"></i></a></h4><section id="roster-roster-specific-delete" class="panel panel-danger"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Remove User From Roster</span></div><div style="float:left"><a href="#page:roster,header:roster-roster-specific-delete" class="btn btn-xs btn-danger">DELETE</a></div><div style="overflow:hidden"><code>/course/{course_id}/roster/{user_id}</code></div></div><div class="panel-body"><p>Removes a specified user from the specified course</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>course_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the course</p>
+</dd><dt>user_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the user</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#a5cffb80ed473132dcdb66d1aed4403e" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="a5cffb80ed473132dcdb66d1aed4403e" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">status</span>" : <span class="hljs-value"><span class="hljs-string">"success"</span></span>,
+    "<span class="hljs-attribute">data</span>" : <span class="hljs-value">{
+        "<span class="hljs-attribute">first_name</span>": <span class="hljs-value"><span class="hljs-string">"John"</span></span>,
+        "<span class="hljs-attribute">last_name</span>": <span class="hljs-value"><span class="hljs-string">"Doe"</span></span>,
+        "<span class="hljs-attribute">user_id</span>": <span class="hljs-value"><span class="hljs-string">"4536624cd76f149f57d3ee12"</span>
+    </span>}
+</span>}
+</code></pre></li></ul></section></div></div><a href="#page:lectures" class="btn btn-default pull-right">Next&nbsp;<i class="fa fa-arrow-circle-right"></i></a><a href="#page:courses" class="btn btn-default"><i class="fa fa-arrow-circle-left"></i> Previous</a><div class="clearfix"></div><hr></div><div data-bind="visible: page() == 'lectures', style: {marginTop: page() == 'lectures' ? '38px' : ''}"><div class="panel panel-default"><div class="panel-heading"><h3 id="lectures">Lectures&nbsp;<a href="#page:lectures"><i class="fa fa-link"></i></a></h3></div><div class="panel-body"><h4 id="lectures-lecture-generic">Lecture Generic&nbsp;<a href="#page:lectures,header:lectures-lecture-generic"><i class="fa fa-link"></i></a></h4><section id="lectures-lecture-generic-post" class="panel panel-success"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">TODO Add Lecture Man.</span></div><div style="float:left"><a href="#page:lectures,header:lectures-lecture-generic-post" class="btn btn-xs btn-success">POST</a></div><div style="overflow:hidden"><code>/course/{course_id}/lecture</code></div></div><div class="panel-body"><p>Allows a lecture to be added manually such as a screencast</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>course_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the course</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#e99811d0d4478499a5db60bc55148877" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="e99811d0d4478499a5db60bc55148877" class="list-group-item panel-collapse collapse"><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">title</span>" : <span class="hljs-value"><span class="hljs-string">"Lecture 1: How to API"</span></span>,
+    "<span class="hljs-attribute">description</span>" : <span class="hljs-value"><span class="hljs-string">"For this lecture, we will just REST"</span></span>,
+
+}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#43a0e09367ef50068edb5e3b22a63548" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="43a0e09367ef50068edb5e3b22a63548" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">status</span>" : <span class="hljs-value"><span class="hljs-string">"success"</span></span>,
+    "<span class="hljs-attribute">data</span>" : <span class="hljs-value">{
+        "<span class="hljs-attribute">lecture_id</span>" : <span class="hljs-value"><span class="hljs-string">"ff2653ca16000ff32cd"</span>
+    </span>}
+</span>}
+</code></pre></li></ul></section><section id="lectures-lecture-generic-post" class="panel panel-success"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Add Lecture Auto</span></div><div style="float:left"><a href="#page:lectures,header:lectures-lecture-generic-post" class="btn btn-xs btn-success">POST</a></div><div style="overflow:hidden"><code>/course/{course_id}/lecture</code></div></div><div class="panel-body"><p>Allows a lecture to be added automatically via the lecture capturing system</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>course_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the course</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#eb46b3b34b3c044f7662092c63a6a65e" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="eb46b3b34b3c044f7662092c63a6a65e" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">multipart/form-data; boundary=---BOUNDARY</span><br></code></pre><h5>Body</h5><pre><code><span class="hljs-comment">-----BOUNDARY</span>
+Content-Disposition: form-data; <span class="hljs-property">name</span>=<span class="hljs-string">"upload"</span>; filename=<span class="hljs-string">"zippedFolder.zip"</span>
+Content-Type: <span class="hljs-type">application</span>/x-zip-compressed
+
+<span class="hljs-comment">----WebKitFormBoundary7MA4YWxkTrZu0gW</span>
+Content-Disposition: form-data; <span class="hljs-property">name</span>=<span class="hljs-string">"date"</span>
+
+<span class="hljs-number">1</span>/<span class="hljs-number">2</span>/<span class="hljs-number">3</span> <span class="hljs-number">1</span>:<span class="hljs-number">22</span>:<span class="hljs-number">11</span>
+<span class="hljs-comment">-----BOUNDARY</span>
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#abc3a0c9dedaf07ebad4cd115138502c" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="abc3a0c9dedaf07ebad4cd115138502c" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">status</span>" : <span class="hljs-value"><span class="hljs-string">"success"</span></span>,
+    "<span class="hljs-attribute">data</span>" : <span class="hljs-value">{
+        "<span class="hljs-attribute">lecture_id</span>" : <span class="hljs-value"><span class="hljs-string">"ff2653ca16000ff32cd"</span>
+    </span>}
+</span>}
+</code></pre></li></ul></section><h4 id="lectures-lecture-specific">Lecture Specific&nbsp;<a href="#page:lectures,header:lectures-lecture-specific"><i class="fa fa-link"></i></a></h4><section id="lectures-lecture-specific-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Get A Lecture</span></div><div style="float:left"><a href="#page:lectures,header:lectures-lecture-specific-get" class="btn btn-xs btn-info">GET</a></div><div style="overflow:hidden"><code>/course/{course_id}/lecture/{lecture_id}</code></div></div><div class="panel-body"><p>Gets a specified lecture</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>course_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the course</p>
+</dd><dt>lecture_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the lecture</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#fcab916cb6759713f478164a76756f61" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="fcab916cb6759713f478164a76756f61" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">status</span>" : <span class="hljs-value"><span class="hljs-string">"success"</span></span>,
+    "<span class="hljs-attribute">data</span>" : <span class="hljs-value">{
+        "<span class="hljs-attribute">title</span>" : <span class="hljs-value"><span class="hljs-string">"Lecture 4: What is the Interwebs?"</span></span>,
+        "<span class="hljs-attribute">description</span>" : <span class="hljs-value"><span class="hljs-string">"This lecture is awesome and you don't want to miss it"</span></span>,
+        "<span class="hljs-attribute">time_posted</span>" : <span class="hljs-value"><span class="hljs-string">"1337622367267"</span></span>,
+        "<span class="hljs-attribute">time_length</span>" : <span class="hljs-value"><span class="hljs-string">"3026"</span></span>,
+        "<span class="hljs-attribute">thumbnail</span>" : <span class="hljs-value"><span class="hljs-string">"http://url.to/thumbnail/here.jpg"</span>
+    </span>}
+</span>}
+</code></pre></li></ul></section><section id="lectures-lecture-specific-put" class="panel panel-warning"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Edit A Lecture</span></div><div style="float:left"><a href="#page:lectures,header:lectures-lecture-specific-put" class="btn btn-xs btn-warning">PUT</a></div><div style="overflow:hidden"><code>/course/{course_id}/lecture/{lecture_id}</code></div></div><div class="panel-body"><p>Edits a specified lecture</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>course_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the course</p>
+</dd><dt>lecture_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the lecture</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#8dbdc97b7b5c3d515abc4ff85ca1629a" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="8dbdc97b7b5c3d515abc4ff85ca1629a" class="list-group-item panel-collapse collapse"><h5>Body</h5><pre><code>    {
+        "<span class="hljs-attribute">title</span>" : <span class="hljs-value"><span class="hljs-string">"Lecture 4: What is the Interwebs?"</span></span>,
+        "<span class="hljs-attribute">description</span>" : <span class="hljs-value"><span class="hljs-string">"This lecture is awesome and you don't want to miss it"</span></span>,
+        "<span class="hljs-attribute">time_posted</span>" : <span class="hljs-value"><span class="hljs-string">"1337622367267"</span></span>,
+        "<span class="hljs-attribute">time_length</span>" : <span class="hljs-value"><span class="hljs-string">"3026"</span></span>,
+        "<span class="hljs-attribute">thumbnail</span>" : <span class="hljs-value"><span class="hljs-string">"http://url.to/thumbnail/here.jpg"</span>
+    </span>}
+
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#0ad05a954d7c7c4fb616721a12fc3321" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="0ad05a954d7c7c4fb616721a12fc3321" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">status</span>" : <span class="hljs-value"><span class="hljs-string">"success"</span></span>,
+    "<span class="hljs-attribute">data</span>" : <span class="hljs-value">{
+        "<span class="hljs-attribute">course_id</span>" : <span class="hljs-value"><span class="hljs-string">"225ccddaadc100021212"</span></span>,
+        "<span class="hljs-attribute">lecture_id</span>" : <span class="hljs-value"><span class="hljs-string">"27dcccad253452a00011"</span></span>,
+        "<span class="hljs-attribute">title</span>" : <span class="hljs-value"><span class="hljs-string">"Lecture 4: What is the Interwebs?"</span></span>,
+        "<span class="hljs-attribute">description</span>" : <span class="hljs-value"><span class="hljs-string">"This lecture is awesome and you don't want to miss it"</span></span>,
+        "<span class="hljs-attribute">time_posted</span>" : <span class="hljs-value"><span class="hljs-string">"1337622367267"</span></span>,
+        "<span class="hljs-attribute">time_length</span>" : <span class="hljs-value"><span class="hljs-string">"3026"</span></span>,
+        "<span class="hljs-attribute">thumbnail</span>" : <span class="hljs-value"><span class="hljs-string">"http://url.to/thumbnail/here.jpg"</span>
+    </span>}
+</span>}
+</code></pre></li></ul></section><section id="lectures-lecture-specific-delete" class="panel panel-danger"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Delete A Lecture</span></div><div style="float:left"><a href="#page:lectures,header:lectures-lecture-specific-delete" class="btn btn-xs btn-danger">DELETE</a></div><div style="overflow:hidden"><code>/course/{course_id}/lecture/{lecture_id}</code></div></div><div class="panel-body"><p>Deletes a specified lecture</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>course_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the course</p>
+</dd><dt>lecture_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the lecture</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#d016240db0ef8fc11b7c2601feaa4fd9" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="d016240db0ef8fc11b7c2601feaa4fd9" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">status</span>" : <span class="hljs-value"><span class="hljs-string">"success"</span></span>,
+    "<span class="hljs-attribute">data</span>" : <span class="hljs-value">{
+        "<span class="hljs-attribute">course_id</span>" : <span class="hljs-value"><span class="hljs-string">"121314000ff121"</span></span>,
+        "<span class="hljs-attribute">lecture_id</span>" : <span class="hljs-value"><span class="hljs-string">"abbf3141000023"</span>
+    </span>}
+</span>}
+</code></pre></li></ul></section></div></div><a href="#page:attachments" class="btn btn-default pull-right">Next&nbsp;<i class="fa fa-arrow-circle-right"></i></a><a href="#page:roster" class="btn btn-default"><i class="fa fa-arrow-circle-left"></i> Previous</a><div class="clearfix"></div><hr></div><div data-bind="visible: page() == 'attachments', style: {marginTop: page() == 'attachments' ? '38px' : ''}"><div class="panel panel-default"><div class="panel-heading"><h3 id="attachments">Attachments&nbsp;<a href="#page:attachments"><i class="fa fa-link"></i></a></h3></div><div class="panel-body"><h4 id="attachments-attachment-generic">Attachment Generic&nbsp;<a href="#page:attachments,header:attachments-attachment-generic"><i class="fa fa-link"></i></a></h4><section id="attachments-attachment-generic-post" class="panel panel-success"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Add Attachment</span></div><div style="float:left"><a href="#page:attachments,header:attachments-attachment-generic-post" class="btn btn-xs btn-success">POST</a></div><div style="overflow:hidden"><code>/course/{course_id}/lecture/{lecture_id}/attachment</code></div></div><div class="panel-body"><p>Adds an attachment to a lecture</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>course_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the course</p>
+</dd><dt>lecture_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the lecture</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#8e56ba6f3a12e5301cf9ab193f70733e" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="8e56ba6f3a12e5301cf9ab193f70733e" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">multipart/form-data; boundary=---BOUNDARY</span><br></code></pre><h5>Body</h5><pre><code><span class="hljs-comment">-----BOUNDARY</span>
+Content-Disposition: form-data; <span class="hljs-property">name</span>=<span class="hljs-string">"upload"</span>; filename=<span class="hljs-string">"program1.js"</span>
+Content-Type: <span class="hljs-type">text</span>/plain
+
+<span class="hljs-comment">----WebKitFormBoundary7MA4YWxkTrZu0gW</span>
+Content-Disposition: form-data; <span class="hljs-property">name</span>=<span class="hljs-string">"name"</span>
+
+Program <span class="hljs-number">1</span>
+<span class="hljs-comment">-----BOUNDARY</span>
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#d2a35e1f0c3a30c35beed1e227bb86bd" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="d2a35e1f0c3a30c35beed1e227bb86bd" class="list-group-item panel-collapse collapse"><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">status</span>" : <span class="hljs-value"><span class="hljs-string">"success"</span></span>,
+    "<span class="hljs-attribute">data</span>" : <span class="hljs-value">{
+        "<span class="hljs-attribute">attachment_id</span>" : <span class="hljs-value"><span class="hljs-string">"4972ddffcca200001234"</span></span>,
+        "<span class="hljs-attribute">attachment_url</span>" : <span class="hljs-value"><span class="hljs-string">"program1.js"</span></span>,
+        "<span class="hljs-attribute">attachment_name</span>" : <span class="hljs-value"><span class="hljs-string">"Program 1"</span>
+        <span class="hljs-string">"course_id"</span> : <span class="hljs-string">"144ffa1230001212"</span></span>,
+        "<span class="hljs-attribute">lecture_id</span>" : <span class="hljs-value"><span class="hljs-string">"12ff51216aac0001"</span>
+    </span>}
+</span>}
+</code></pre></li></ul></section><h4 id="attachments-attachment-specific">Attachment Specific&nbsp;<a href="#page:attachments,header:attachments-attachment-specific"><i class="fa fa-link"></i></a></h4><section id="attachments-attachment-specific-delete" class="panel panel-danger"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Delete Attachment</span></div><div style="float:left"><a href="#page:attachments,header:attachments-attachment-specific-delete" class="btn btn-xs btn-danger">DELETE</a></div><div style="overflow:hidden"><code>/course/{course_id}/lecture/{lecture_id}/attachment/{attachment_id}</code></div></div><div class="panel-body"><p>Deletes an attachment from a lecture</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>course_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the course</p>
+</dd><dt>lecture_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the lecture</p>
+</dd><dt>attachment_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the attachment</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#7c7bfd03a1fc3760b6922fe3840ef70d" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="7c7bfd03a1fc3760b6922fe3840ef70d" class="list-group-item panel-collapse collapse"><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">status</span>" : <span class="hljs-value"><span class="hljs-string">"success"</span></span>,
+    "<span class="hljs-attribute">data</span>" : <span class="hljs-value">{
+        "<span class="hljs-attribute">attachment_id</span>" : <span class="hljs-value"><span class="hljs-string">"4972ddffcca200001234"</span></span>,
+        "<span class="hljs-attribute">course_id</span>" : <span class="hljs-value"><span class="hljs-string">"144ffa1230001212"</span></span>,
+        "<span class="hljs-attribute">lecture_id</span>" : <span class="hljs-value"><span class="hljs-string">"12ff51216aac0001"</span>
+    </span>}
+</span>}
+</code></pre></li></ul></section></div></div><a href="#page:comments" class="btn btn-default pull-right">Next&nbsp;<i class="fa fa-arrow-circle-right"></i></a><a href="#page:lectures" class="btn btn-default"><i class="fa fa-arrow-circle-left"></i> Previous</a><div class="clearfix"></div><hr></div><div data-bind="visible: page() == 'comments', style: {marginTop: page() == 'comments' ? '38px' : ''}"><div class="panel panel-default"><div class="panel-heading"><h3 id="comments">Comments&nbsp;<a href="#page:comments"><i class="fa fa-link"></i></a></h3></div><div class="panel-body"><h4 id="comments-comment-generic">Comment Generic&nbsp;<a href="#page:comments,header:comments-comment-generic"><i class="fa fa-link"></i></a></h4><section id="comments-comment-generic-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Get Lecture Comments</span></div><div style="float:left"><a href="#page:comments,header:comments-comment-generic-get" class="btn btn-xs btn-info">GET</a></div><div style="overflow:hidden"><code>/course/{course_id}/lecture/{lecture_id}/comment</code></div></div><div class="panel-body"><p>Gets the comments for the specified lecture</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>course_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the course</p>
+</dd><dt>lecture_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the lecture</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#87d1f129dc72cae6f37e58928bae0b88" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="87d1f129dc72cae6f37e58928bae0b88" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">status</span>" : <span class="hljs-value"><span class="hljs-string">"success"</span></span>,
+    "<span class="hljs-attribute">data</span>" : <span class="hljs-value">{
+        "<span class="hljs-attribute">commments</span>" : <span class="hljs-value">[
+            {
+                "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"Bill Howard"</span></span>,
+                "<span class="hljs-attribute">user_id</span>": <span class="hljs-value"><span class="hljs-string">"190accdff12700001123"</span></span>,
+                "<span class="hljs-attribute">posted_date</span>": <span class="hljs-value"><span class="hljs-string">"19836263546"</span></span>,
+                "<span class="hljs-attribute">time</span>" : <span class="hljs-value"><span class="hljs-string">"1234"</span></span>,
+                "<span class="hljs-attribute">content</span>": <span class="hljs-value"><span class="hljs-string">"Explain slide 55 in more detail please"</span></span>,
+                "<span class="hljs-attribute">replies</span>": <span class="hljs-value">[
+                    {
+                        "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"Jane Doe"</span></span>,
+                        "<span class="hljs-attribute">user_id</span>": <span class="hljs-value"><span class="hljs-string">"12aacdd12700004444"</span></span>,
+                        "<span class="hljs-attribute">posted_date</span>": <span class="hljs-value"><span class="hljs-string">"19836293546"</span></span>,
+                        "<span class="hljs-attribute">time</span>" : <span class="hljs-value"><span class="hljs-string">"1234"</span></span>,
+                        "<span class="hljs-attribute">content</span>": <span class="hljs-value"><span class="hljs-string">"It's talking about the internet"</span></span>,
+                        "<span class="hljs-attribute">replies</span>": <span class="hljs-value">[
+
+                        ]
+                    </span>}
+                ]
+            </span>},
+            {
+                "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"John Doe"</span></span>,
+                "<span class="hljs-attribute">user_id</span>": <span class="hljs-value"><span class="hljs-string">"999fcdff12700005353"</span></span>,
+                "<span class="hljs-attribute">posted_date</span>": <span class="hljs-value"><span class="hljs-string">"19836213516"</span></span>,
+                "<span class="hljs-attribute">time</span>" : <span class="hljs-value"><span class="hljs-string">"1234"</span></span>,
+                "<span class="hljs-attribute">content</span>": <span class="hljs-value"><span class="hljs-string">"This was a really helpful part of the lecture."</span></span>,
+                "<span class="hljs-attribute">replies</span>": <span class="hljs-value">[
+
+                ]
+            </span>}
+        ]
+    </span>}
+</span>}
+</code></pre></li></ul></section><section id="comments-comment-generic-post" class="panel panel-success"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Add Lecture Comment</span></div><div style="float:left"><a href="#page:comments,header:comments-comment-generic-post" class="btn btn-xs btn-success">POST</a></div><div style="overflow:hidden"><code>/course/{course_id}/lecture/{lecture_id}/comment</code></div></div><div class="panel-body"><p>Adds a new comment to the specified lecture</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>course_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the course</p>
+</dd><dt>lecture_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the lecture</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#84ae5568643f6d6d3164ba96d935bc44" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="84ae5568643f6d6d3164ba96d935bc44" class="list-group-item panel-collapse collapse"><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">content</span>" : <span class="hljs-value"><span class="hljs-string">"Is this the krusty krab?"</span></span>,
+    "<span class="hljs-attribute">posted_date</span>" : <span class="hljs-value"><span class="hljs-string">"23252323232"</span>
+    <span class="hljs-string">"time"</span> : <span class="hljs-string">"1234"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#6efba167bcb1379131e034a28a1b6486" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="6efba167bcb1379131e034a28a1b6486" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">status</span>" : <span class="hljs-value"><span class="hljs-string">"success"</span></span>,
+    "<span class="hljs-attribute">data</span>" : <span class="hljs-value">{
+        "<span class="hljs-attribute">comment_id</span>" : <span class="hljs-value"><span class="hljs-string">"123bcda1300002211"</span></span>,
+        "<span class="hljs-attribute">content</span>" : <span class="hljs-value"><span class="hljs-string">"Is this the krusty krab?"</span></span>,
+        "<span class="hljs-attribute">posted_date</span>" : <span class="hljs-value"><span class="hljs-string">"23252323232"</span>
+        <span class="hljs-string">"time"</span> : <span class="hljs-string">"1234"</span>
+    </span>}
+</span>}
+</code></pre></li></ul></section><h4 id="comments-comment-specific">Comment Specific&nbsp;<a href="#page:comments,header:comments-comment-specific"><i class="fa fa-link"></i></a></h4><section id="comments-comment-specific-delete" class="panel panel-danger"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Delete Comment</span></div><div style="float:left"><a href="#page:comments,header:comments-comment-specific-delete" class="btn btn-xs btn-danger">DELETE</a></div><div style="overflow:hidden"><code>/course/{course_id}/lecture/{lecture_id}/comment/{comment_id}</code></div></div><div class="panel-body"><p>Deletes the specified comment (We may need to keep the comment but change the content to &quot;[Deleted]&quot;)</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>course_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the course</p>
+</dd><dt>lecture_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the lecture</p>
+</dd><dt>comment_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the comment</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#8a9dc0b83523bbe9c0b4229f95b29190" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="8a9dc0b83523bbe9c0b4229f95b29190" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">status</span>" : <span class="hljs-value"><span class="hljs-string">"success"</span></span>,
+    "<span class="hljs-attribute">data</span>" : <span class="hljs-value">{
+        "<span class="hljs-attribute">comment_id</span>" : <span class="hljs-value"><span class="hljs-string">"4972ddffcca200001234"</span></span>,
+        "<span class="hljs-attribute">course_id</span>" : <span class="hljs-value"><span class="hljs-string">"144ffa1230001212"</span></span>,
+        "<span class="hljs-attribute">lecture_id</span>" : <span class="hljs-value"><span class="hljs-string">"12ff51216aac0001"</span>
+    </span>}
+</span>}
+</code></pre></li></ul></section><section id="comments-comment-specific-put" class="panel panel-warning"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Edit Comment</span></div><div style="float:left"><a href="#page:comments,header:comments-comment-specific-put" class="btn btn-xs btn-warning">PUT</a></div><div style="overflow:hidden"><code>/course/{course_id}/lecture/{lecture_id}/comment/{comment_id}</code></div></div><div class="panel-body"><p>Edits the specified comment</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>course_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the course</p>
+</dd><dt>lecture_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the lecture</p>
+</dd><dt>comment_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the comment</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#888e9f39a38153b894d2b1dc2ae3dee9" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="888e9f39a38153b894d2b1dc2ae3dee9" class="list-group-item panel-collapse collapse"><h5>Body</h5><pre><code>    {  
+        "<span class="hljs-attribute">content</span>" : <span class="hljs-value"><span class="hljs-string">"Is this the chum bucket?"</span>
+    </span>}
+
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#80c9af69a20227f1fd3c4f4ff927d12c" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="80c9af69a20227f1fd3c4f4ff927d12c" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">status</span>" : <span class="hljs-value"><span class="hljs-string">"success"</span></span>,
+    "<span class="hljs-attribute">data</span>" : <span class="hljs-value">{
+
+        "<span class="hljs-attribute">comment_id</span>" : <span class="hljs-value"><span class="hljs-string">"123bcda1300002211"</span></span>,
+        "<span class="hljs-attribute">content</span>" : <span class="hljs-value"><span class="hljs-string">"Is this the chum bucket?"</span></span>,
+        "<span class="hljs-attribute">posted_date</span>" : <span class="hljs-value"><span class="hljs-string">"23252323232"</span></span>,
+        "<span class="hljs-attribute">time</span>" : <span class="hljs-value"><span class="hljs-string">"1234"</span></span>,
+        "<span class="hljs-attribute">course_id</span>" : <span class="hljs-value"><span class="hljs-string">"144ffa1230001212"</span></span>,
+        "<span class="hljs-attribute">lecture_id</span>" : <span class="hljs-value"><span class="hljs-string">"12ff51216aac0001"</span>
+    </span>}
+</span>}
+</code></pre></li></ul></section><section id="comments-comment-specific-post" class="panel panel-success"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Reply To Comment</span></div><div style="float:left"><a href="#page:comments,header:comments-comment-specific-post" class="btn btn-xs btn-success">POST</a></div><div style="overflow:hidden"><code>/course/{course_id}/lecture/{lecture_id}/comment/{comment_id}</code></div></div><div class="panel-body"><p>Replies to a specified comment</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>course_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the course</p>
+</dd><dt>lecture_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the lecture</p>
+</dd><dt>comment_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>ID of the comment</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#9a3ec319250fb452643fb98d75928cc1" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="9a3ec319250fb452643fb98d75928cc1" class="list-group-item panel-collapse collapse"><h5>Body</h5><pre><code>{  
+    "<span class="hljs-attribute">content</span>" : <span class="hljs-value"><span class="hljs-string">"No this is patrick."</span></span>,
+    "<span class="hljs-attribute">posted_date</span>" : <span class="hljs-value"><span class="hljs-string">"1342425525"</span></span>,
+    "<span class="hljs-attribute">time</span>" : <span class="hljs-value"><span class="hljs-string">"1234"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#5bd47ee886dee04424b28b73bb5f64d1" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="5bd47ee886dee04424b28b73bb5f64d1" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">status</span>" : <span class="hljs-value"><span class="hljs-string">"success"</span></span>,
+    "<span class="hljs-attribute">data</span>" : <span class="hljs-value">{
+        "<span class="hljs-attribute">parent_comment_id</span>" : <span class="hljs-value"><span class="hljs-string">"4972ddffcca200001234"</span></span>,
+        "<span class="hljs-attribute">reply_comment_id</span>" : <span class="hljs-value"><span class="hljs-string">"ffacd34529800002422"</span></span>,
+        "<span class="hljs-attribute">content</span>" : <span class="hljs-value"><span class="hljs-string">"No this is patrick."</span></span>,
+        "<span class="hljs-attribute">posted_date</span>" : <span class="hljs-value"><span class="hljs-string">"1342425525"</span></span>,
+        "<span class="hljs-attribute">time</span>" : <span class="hljs-value"><span class="hljs-string">"1234"</span>
+    </span>}
+</span>}
+</code></pre></li></ul></section></div></div><a href="#page:attachments" class="btn btn-default"><i class="fa fa-arrow-circle-left"></i> Previous</a><div class="clearfix"></div><hr></div></div></div></div><p style="text-align: center;" class="text-muted">Generated by&nbsp;<a href="https://github.com/danielgtaylor/aglio" class="aglio">aglio</a>&nbsp;on 21 Apr 2015</p><div id="localFile" style="display: none; position: absolute; top: 0; left: 0; width: 100%; color: white; background: red; font-size: 150%; text-align: center; padding: 1em;">This page may not display correctly when opened as a local file. Instead, view it from a web server.
+
+</div></body><script src="//code.jquery.com/jquery-1.11.0.min.js"></script><script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script><script>(function() {
+  if (location.protocol === 'file:') {
+    document.getElementById('localFile').style.display = 'block';
+  }
+
+}).call(this);
+</script><script>(function() {
+  $('table').addClass('table');
+
+}).call(this);
+</script><script src="//cdnjs.cloudflare.com/ajax/libs/knockout/3.0.0/knockout-min.js"></script><script>(function() {
+  var App;
+
+  App = (function() {
+    function App() {
+      this.page = ko.observable('home');
+    }
+
+    return App;
+
+  })();
+
+  window.app = new App();
+
+  window.onhashchange = function() {
+    var i, len, parts, ref, v, vars;
+    vars = {};
+    ref = location.hash.substr(1).split(',');
+    for (i = 0, len = ref.length; i < len; i++) {
+      v = ref[i];
+      parts = v.split(':');
+      vars[parts[0]] = parts[1];
+    }
+    window.app.page(vars.page || 'home');
+    if (vars.header) {
+      return $("#" + vars.header)[0].scrollIntoView(true);
+    } else {
+      return window.scrollTo(0, 0);
+    }
+  };
+
+  ko.applyBindings(window.app);
+
+  window.onhashchange();
+
+}).call(this);
+</script></html>
