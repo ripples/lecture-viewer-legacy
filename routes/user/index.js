@@ -36,21 +36,20 @@ router.post('/', function(req,res) {
                 resUser.courses = user.courses;
                 resUser.user_id = user_id;
 
-
-                res.sendSuccess(resUser);
-
                 /*---------------------------------------
-
                 Send verification email to req.body.email
-
                 ---------------------------------------*/
+                auth.sendVerificationEmail(resUser.user_id, resUser.email, function(err) {
+                    if(err) return res.sendFail(err);
+                    else return res.sendSuccess(resUser);
+                });
             }
             else
             {
                 //I will need to know why it failed... Logic problem or a legit error
                 res.sendFail(err);
             }
-        });   
+        });
     }
     else {
         res.sendFail("Incorrect parameters");
@@ -58,7 +57,7 @@ router.post('/', function(req,res) {
 });
 
 //Get logged in user info
-router.get('/', auth.verify , function(req,res) {
+router.get('/', auth.verify, function(req,res) {
 
     console.log("Logged in user...");
     console.log(req.user);

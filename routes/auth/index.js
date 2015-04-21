@@ -17,7 +17,7 @@ router.post('/login', function(req,res) {
 		return res.sendFail('Missing email and/or password.');
 	}
 
-	database.user.getUserByEmail(email, function(err, user) 
+	database.user.getUserByEmail(email, function(err, user)
 	{
 		// Error querying database
 		if(err) {
@@ -26,13 +26,11 @@ router.post('/login', function(req,res) {
 		}
 
 		// User couldn't be found in the database
-		if(!user) 
-		{
+		if(!user) {
 			return res.sendFail('User doesn\'t exist in database.');
 		}
 
-		if(hashedPassword != user.password)
-		{
+		if(hashedPassword != user.password) {
 			return res.sendFail('Password does not match');
 		}
 
@@ -53,10 +51,7 @@ router.post('/login', function(req,res) {
 // Logs a user out - assumes token in body
 router.post('/logout', function(req,res) {
 	auth.expireToken(req.body.token, function(err) {
-		res.send(200, {
-			status: 'success',
-			data: {}
-		});
+		res.sendSuccess({});
 	});
 });
 
