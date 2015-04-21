@@ -2,74 +2,142 @@ var React = require('react');
 
 var MediaPlayer = React.createClass({
 
-  // propTypes: {
-  //   media: React.propTypes.object
-  // },
+  propTypes: {
+    media: React.PropTypes.object
+  },
+
+  /*============================== @LIFECYCLE ==============================*/
 
   getInitialState: function() {
     return {
       currentTime: 0.0,
-      paused: true,
-      isSeeking: false,
-      muted: false,
-      volume: 1.0,
       currentWhiteboardIndex: 0,
       currentScreenIndex: 0,
-      shouldRefreshWhiteboardIndices: true,
-      shouldRefreshScreenIndices: true
+      shouldRefreshWhiteboardIndices: false,
+      shouldRefreshScreenIndices: false
     };
   },
 
   componentDidMount: function() {
-    var video = document.getElementById("video");
-    video.ontimeupdate = function() {
-      console.log("Current Time: " + video.currentTime);
+
+    // TODO : This should not use jQuery-like access and handlers. The components
+    // should be broken down and invoke their callbacks passed as props.
+
+    /** 1) Get references to all elements that need event-handlers **/
+    var video             = document.getElementById("video");
+    var playButton        = document.getElementById("play-pause");
+    var muteButton        = document.getElementById("mute");
+    var fullScreenButton  = document.getElementById("full-screen");
+    var seekBar           = document.getElementById("seek-bar");
+    var volumeBar         = document.getElementById("volume-bar");
+
+    /** 2) Initialize default values **/
+    seekBar.defaultValue = 0;
+    volumeBar.defaultValue = 1;
+    wasPausedBeforeSeeking = true;
+
+    /** 3) Attach event-handlers **/
+    // TOGGLE PLAY/PAUSE
+    playButton.addEventListener("click", function() {
+      if (video.paused == true) {
+        wasPausedBeforeSeeking = false;
+        video.play();
+        playButton.innerHTML = "Pause";
+      } else {
+        wasPausedBeforeSeeking = true;
+        video.pause();
+        playButton.innerHTML = "Play";
+      }
+    });
+    // TOGGLE MUTE/UNMUTE
+    muteButton.addEventListener("click", function() {
+      if (video.muted == false) {
+        video.muted = true;
+        muteButton.innerHTML = "Unmute";
+      } else {
+        video.muted = false;
+        muteButton.innerHTML = "Mute";
+      }
+    });
+    // TOGGLE FULLSCREEN
+    fullScreenButton.addEventListener("click", function() {
+      if (video.requestFullscreen) {
+        video.requestFullscreen();
+      } else if (video.mozRequestFullScreen) {
+        video.mozRequestFullScreen();
+      } else if (video.webkitRequestFullscreen) {
+        video.webkitRequestFullscreen();
+      }
+    });
+    // SEEKING
+    seekBar.addEventListener("input", function() {
+      var time = video.duration * (seekBar.value / 100.0);
+      video.currentTime = time;
+      this.setState({currentTime: time, shouldRefreshWhiteboardIndices: true});
+    }.bind(this));
+    // VIDEO TIME CHANGE
+    video.addEventListener("timeupdate", function() {
+      var value = (100.0 / video.duration) * video.currentTime;
+      seekBar.value = value;
       this.setState({currentTime: video.currentTime});
-    }.bind(this);
+    }.bind(this));
+    // SEEK PAUSE : Pause the video when the slider handle is being dragged
+    seekBar.addEventListener("mousedown", function() {
+      if(video.paused) {
+        wasPausedBeforeSeeking = true;
+      } else {
+        video.pause();
+      }
+    });
+    // SEEK PLAY : Play the video when the slider handle is dropped
+    seekBar.addEventListener("mouseup", function() {
+      if(!wasPausedBeforeSeeking) {
+        video.play();
+      }
+    });
+    // VOLUME CHANGE
+    volumeBar.addEventListener("input", function() {
+      video.volume = volumeBar.value;
+    });
+
   },
 
   /*============================== @HANDLING ==============================*/
 
-  // TODO : Clean these up. Initilize the callbacks from the didMount function.
+  // TODO : Pull logic out from above.
 
-  handlePlaybackToggle: function() {
-    this.setState({paused: !this.state.paused});
-    var video = this.getDOMNode(this.refs.video);
-    this.state.paused ? video.pause() : video.play();
-  },
-  handleMuteToggle: function() {
-    this.setState({muted: !this.state.muted});
-    var video = this.getDOMNode(this.refs.video);
-    video.muted = this.state.muted;
-  },
-  handleVolumeChange: function(level) {
-    this.setState({volume: level});
-    var video = this.getDOMNode(this.refs.video);
-    video.volume = level;
-  },
-  // TODO : Other media controler handlers
-
-  /*============================== @RETRIEVING ==============================*/
+  /*============================== @IMAGE-SYNCHRONIZATION ==============================*/
 
   // TODO : Refactor into a getSyncedImage function.
-  // TODO : Load images into the cache using a buffer based on currentTime
-  // Maybe just a few, since images will not need to update frequently
 
   getCurrentWhiteboardImage: function() {
-    // if(this.state.shouldRefreshWhiteboardIndices) {
-    //   var index = this.binaryIndexOf(this.props.media.whiteboard, this.state.currentTime, this.comparator);
-    //   this.cacheWhiteboardImage(index);
-    //   this.state.shouldRefreshWhiteboardIndices = false;
-    //   this.state.currentWhiteboardIndex = index;
-    // } else {
-      var index = this.state.currentWhiteboardIndex;
+    var index;
+    if(this.isPastFinalImage()) {
+
+      index = this.props.media.whiteboard.length-1
+
+    } else if(this.state.shouldRefreshWhiteboardIndices) {
+
+      index = this.binaryIndexOf(this.props.media.whiteboard, this.state.currentTime, this.comparator);
+      this.state.shouldRefreshWhiteboardIndices = false;
+      this.cacheWhiteboardImage(index);
+      this.state.currentWhiteboardIndex = index;
+
+    } else {
+
+      index = this.state.currentWhiteboardIndex;
       if(index < this.props.media.whiteboard.length-1 &&
         this.state.currentTime > this.props.media.whiteboard[index].end) {
-          this.state.currentWhiteboardIndex++;
-          this.cacheWhiteboardImage(this.state.currentWhiteboardIndex);
+          index = ++this.state.currentWhiteboardIndex;
+          this.cacheWhiteboardImage(index);
       }
-    // }
-    return this.props.media.whiteboard[this.state.currentWhiteboardIndex].url;
+
+    }
+    return this.props.media.whiteboard[index].url;
+  },
+
+  isPastFinalImage: function() {
+    return this.state.currentTime > this.props.media.whiteboard[this.props.media.whiteboard.length-1].end;
   },
 
   getCurrentScreenImage: function() {
@@ -77,54 +145,45 @@ var MediaPlayer = React.createClass({
     return null;
   },
 
-  /*============================== @HELPING ==============================*/
+  /*============================== @IMAGE-BUFFERING ==============================*/
 
   // TODO : Make sure screen + whiteboard are sorted by startTime
   // See FIXME below...
 
   bufferImages: function(startIndex, images, bufferSize) {
-      if (!this.buffer) {
-        this.buffer = [];
+    if (!this.buffer) {
+      this.buffer = [];
+    }
+    var buffer = this.buffer;
+    for (var i = startIndex; i < images.length; i++) {
+      var image = new Image();
+      image.onload = function() {
+        var index = buffer.indexOf(this);
+        if (index !== -1) {
+          buffer.splice(index, 1); // remove image from the array once it's loaded
+        }
       }
-      var buffer = this.buffer;
-      for (var i = startIndex; i < images.length; i++) {
-          var image = new Image();
-          image.onload = function() {
-              var index = buffer.indexOf(this);
-              if (index !== -1) {
-                  // remove image from the array once it's loaded
-                  // for memory consumption reasons
-                  buffer.splice(index, 1);
-              }
-          }
-          buffer.push(image);
-          image.src = images[i].url;
-      }
+      buffer.push(image);
+      image.src = images[i].url;  // BUG : Cannot read property URL of undefined.
+    }
   },
-
-  // FIXME : The 'state.images' array is irrelevant. The images will be cached behind
-  // the scenes and still referenced by URL.
 
   // Preload image if it does not exist
   cacheWhiteboardImage: function(index) {
-    console.log("Caching Image at index... " + index);
     this.bufferImages(index, this.props.media.whiteboard, 1);
-    // if(!this.state.images.whiteboard[index]) {
-    //   var image = new Image();
-    //   image.src = this.props.media.whiteboard[index].url;
-    //   this.state.images.whiteboard[index] = image;
-    // }
   },
 
-  // TODO : Could refactor. This is specific to the image objects
+  /*============================== @IMAGE-FINDING ==============================*/
+
   comparator: function(element, valueToCompare) {
     if(element.start < valueToCompare) {
       if(element.end > valueToCompare) {
         return 0; // EQUAL TO VALUE
       }
       return -1;  // LESS THAN VALUE
-    } else if(element.start === valueToCompare) {
-      return 0;
+    }
+    else if(element.start === valueToCompare) {
+      return 0;   // EQUAL TO VALUE
     }
     return 1;     // GREATER THAN VALUE
   },
@@ -140,7 +199,7 @@ var MediaPlayer = React.createClass({
       if(compare(currentElement, value) < 0) {
         minIndex = currentIndex + 1;
       } else if(compare(currentElement, value) > 0) {
-        minIndex = currentIndex - 1;
+        maxIndex = currentIndex - 1;
       } else {
         return currentIndex;
       }
@@ -152,20 +211,12 @@ var MediaPlayer = React.createClass({
 
   render: function() {
 
-    // var controllerEventHandlers = {
-    //   onTogglePlayback: this.handlePlaybackToggle,
-    //   onToggleMute:     this.handleMuteToggle,
-    //   onVolumeChange:   this.handleVolumeChange,
-    //   onTimeChange:     this.handleTimeChange
-    // };
-
     return (
       <div className='media-player'>
-        MEDIA HERE
           {this.renderVideo()}
           {this.renderWhiteboards()}
           {this.renderScreen()}
-          {/*<MediaController {controllerEventHandlers}/>*/}
+          {this.renderControler()}
       </div>
     );
   },
@@ -174,7 +225,7 @@ var MediaPlayer = React.createClass({
     var videoFormats = this.props.media.video.formats.map(function(format, i) {
       return <source key={i} src={this.props.media.video.base_url + '.' + format}/>
     }.bind(this));
-    return <video id="video" width="50%" height="50%" controls>{videoFormats}</video>;
+    return <video id="video" ref="video" width="50%" height="50%">{videoFormats}</video>;
   },
 
   renderWhiteboards: function() {
@@ -184,6 +235,18 @@ var MediaPlayer = React.createClass({
   renderScreen: function() {
     return <img id='lecture-media--screen-image' src={this.getCurrentScreenImage()}/>;
   },
+
+  renderControler: function() {
+    return (
+      <div id="video-controls">
+        <button type="button" id="play-pause">Play</button>
+        <input  type="range"  id="seek-bar"/>
+        <button type="button" id="mute">Mute</button>
+        <input  type="range"  id="volume-bar" min="0" max="1" step="0.1"/>
+        <button type="button" id="full-screen">Full-Screen</button>
+      </div>
+    );
+  }
 
 });
 
