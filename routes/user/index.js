@@ -29,11 +29,12 @@ router.post('/', function(req,res) {
             {
 
                 var resUser = {}
-                resUser.email = user.email;
-                resUser.user_id = user._id;
                 resUser.first_name = user.name.first;
                 resUser.last_name = user.name.last;
+                resUser.email = user.email;
                 resUser.role = user.role;
+                resUser.courses = user.courses;
+                resUser.user_id = user_id;
 
 
                 res.sendSuccess(resUser);
@@ -97,7 +98,16 @@ router.delete('/', auth.verify, function(req,res) {
         }
         else
         {
-            res.sendSuccess(user);
+            var resUser = {};
+
+            resUser.first_name = user.name.first;
+            resUser.last_name = user.name.last;
+            resUser.email = user.email;
+            resUser.role = user.role;
+            resUser.courses = user.courses;
+            resUser.user_id = user_id;
+
+            res.sendSuccess(resUser);
         }
     });
 });
@@ -138,6 +148,7 @@ router.delete('/:user_id', auth.verify, function(req,res) {
                 resUser.last_name = user.name.last;
                 resUser.email = user.email;
                 resUser.role = user.role;
+                resUser.courses = user.courses;
                 resUser.user_id = user_id;
 
                 res.sendSuccess(resUser);
@@ -215,7 +226,9 @@ router.put('/', auth.verify, function(req,res) {
                 resUser.first_name = user.name.first;
                 resUser.last_name = user.name.last;
                 resUser.email = user.email;
-                resUser.user_id = user._id;
+                resUser.role = user.role;
+                resUser.courses = user.courses;
+                resUser.user_id = user_id;
 
                 res.sendSuccess(resUser);
             }

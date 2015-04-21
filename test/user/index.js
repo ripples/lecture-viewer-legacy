@@ -32,7 +32,6 @@ describe('User', function() {
     var login_student_auth = "";
 
 
-
     before(function(done) 
     {
         database.user.dropUserDatabase(function()
