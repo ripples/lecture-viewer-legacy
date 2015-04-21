@@ -62,7 +62,7 @@ var Login = React.createClass({
   render: function() {
     return(
       <div className="login">
-        <link href='http://fonts.googleapis.com/css?family=Slabo+27px|Cuprum' rel='stylesheet' type='text/css'/>
+        <link href='http://fonts.googleapis.com/css?family=Slabo+27px|Cuprum|Arvo' rel='stylesheet' type='text/css'/>
         <button id="create-button" onClick={this.handleCreate}>Create Account</button>
         <div id="box">
           <h1>Lecture Viewer</h1>

@@ -13,7 +13,6 @@
   background-size: 100%;
   * {
     margin: 5px;
-    font-family: 'Slabo 27px', serif;
     color: $dark-gray-text;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -28,6 +27,7 @@
     box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
   }
   h1 {
+    font-family: 'Slabo 27px', serif;
     font-size: $huge;
     margin-top: 0;
     padding: 15px;
@@ -46,7 +46,7 @@
     border: solid 1px $gray3;
     background-color: rgba(256, 256, 256, 0.75);
     color: black;
-    font-family: 'Cuprum', serif;
+    font-family: 'Cuprum', sans-serif;
     &:hover, &:focus {
       border-color: $gray4;
     }
@@ -57,6 +57,7 @@
   button {
     font-size: 1.25em;
     cursor: pointer;
+    font-family: 'Slabo 27px', sans-serif;
   }
   #login-button {
     background-color: rgba(256, 256, 256, 0);
