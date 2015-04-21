@@ -209,19 +209,23 @@ describe('Testing Courses collection:', function() {
             count._id.should.eql(newCourse._id);
             done();
         });
+ 	});
 
-
-   it('updates a course', function(done) {
-       db_api.course.updateCourse(testCourse._id, 'Mathematics', 'Math101','Intro to Algebra','Spring','2013', function(err, count) {
+    /*
+     *
+     */
+   it('Updates a course by ID: ID', function(done) {
+   	          
+       db_api.course.updateCourse(testCourse._id, 'Mathematics', 'Math101','Intro to Algebra','Spring','2013','Eliot', function(err, course) {
            assert.equal(err, null);
-           assert.notEqual(count, null);
-           count.semester.should.eql('Spring');
-           count.department.should.eql('Mathematics');
-           count.courseNumber.should.eql('Math101');
-           count.courseTitle.should.eql('Intro to Algebra');
-           count.year.should.eql('2013');
+           assert.notEqual(course, null);
+           course.semester.should.eql('Spring');
+           course.department.should.eql('Mathematics');
+           course.courseNumber.should.eql('Math101');
+           course.courseTitle.should.eql('Intro to Algebra');
+           course.year.should.eql(2013);
            done();
        });
    });
-    });
+   
 });

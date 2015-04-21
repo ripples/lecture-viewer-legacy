@@ -274,11 +274,18 @@ exports.getRegisteredUsersById = function(id, callback) {
 /*
  * Method to update course using id.
  */
-exports.updateCourse = function(id, semester, department, courseNumber, callback) {
-  Course.findByIdAndUpdate(id,
-    { $set: {
-    semester: semester,
-    department: department,
-    courseNumber: courseNumber
-  }});
+exports.updateCourse = function(id, newDepartment, newCourseNumber, newCourseTitle, newSemester, newYear, newInstructor, callback) {
+    Course.findByIdAndUpdate(
+        id, {
+            $set: {
+                semester: newSemester,
+                department: newDepartment,
+                courseNumber: newCourseNumber,
+                courseTitle: newCourseTitle,
+                year: newYear,
+                instructor: newInstructor
+            }
+        },
+        callback
+    );
 };
