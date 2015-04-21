@@ -62,10 +62,10 @@ var Login = React.createClass({
   render: function() {
     return(
       <div className="login">
-        <link href='http://fonts.googleapis.com/css?family=Slabo+27px' rel='stylesheet' type='text/css'/>
+        <link href='http://fonts.googleapis.com/css?family=Slabo+27px|Cuprum' rel='stylesheet' type='text/css'/>
         <button id="create-button" onClick={this.handleCreate}>Create Account</button>
         <div id="box">
-          <h1>Hannibal Lecture</h1>
+          <h1>Lecture Viewer</h1>
           {this.renderLoggedOutText()}
           <input ref="email" placeholder="Email" value={this.state.email} onChange={this.handleEmailChange}/><br/>
           <input type="password" ref="pass" placeholder="Password" value={this.state.password} onChange={this.handlePasswordChange}/><br/>
