@@ -73,3 +73,7 @@ exports.getLectureVisibilityById = function(lectureId, callback){
 //         callback
 //     );
 // };
+
+// exports.createLecture = function (courseId, dateCaptured, whiteboardImages, screenImages, videoURL, visible);
+ // - update a specific lecture by lecture id
+ // - delete a user from course's roster
