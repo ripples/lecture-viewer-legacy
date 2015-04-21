@@ -58,8 +58,6 @@ describe('User', function() {
         });
     });
 
-
-
     describe('Valid calls', function()
     {
         var updateUser = {
@@ -93,7 +91,7 @@ describe('User', function() {
                 });
         });
 
-        it('Retrieving user', function(done) {
+        it('Getting current user', function(done) {
             request(url)
                 .get('/user')
                 .set('Authorization', login_student_auth)
@@ -112,7 +110,7 @@ describe('User', function() {
                 });
         });
 
-        it('Updating user', function(done)
+        it('Updating current user', function(done)
         {
             request(url)
                 .put('/user')
@@ -136,7 +134,7 @@ describe('User', function() {
                 });
         });
 
-        it('Deleting user', function(done) {
+        it('Deleting current user', function(done) {
         request(url)
             .delete('/user')
             .set('Authorization', login_student_auth)
@@ -146,16 +144,93 @@ describe('User', function() {
                 done();
             });
         });
+
+        describe('Admin calls', function()
+        {
+            before(function(done) {
+                request(url)
+                    .post('/user')
+                    .send(login_student)
+                    .end(function(err, res) {
+
+                        login_student_id = res.body.data.user_id;
+
+                        res.body.status.should.equal('success');
+                        done();
+                    });
+                });
+
+            it('Getting other user', function(done)
+            {
+                request(url)
+                .get('/user/' + login_student_id)
+                .set('Authorization', login_admin_auth)
+                .end(function(err, res) {
+                    if(err) return done(err);
+                    res.body.status.should.equal('success');
+
+                    var user = res.body.data;
+
+                    user.should.have.properties('first_name', 'last_name', 'user_id');
+                    user.first_name.should.equal(login_student.first_name);
+                    user.last_name.should.equal(login_student.last_name);
+                    user.user_id.should.equal(login_student_id);
+
+                    done();
+                });
+            });
+
+            it('Delete other user', function(done)
+            {
+                request(url)
+                .delete('/user/' + login_student_id)
+                .set('Authorization', login_admin_auth)
+                .end(function(err, res) {
+                    if(err) return done(err);
+                    
+                    res.body.status.should.equal('success');
+
+                    var user = res.body.data;
+
+                    user.should.have.properties('first_name', 'last_name', 'user_id');
+                    user.first_name.should.equal(login_student.first_name);
+                    user.last_name.should.equal(login_student.last_name);
+                    user.user_id.should.equal(login_student_id);
+
+                    done();
+                });
+            });
+
+
+        });
     });
-
-
-
-
-
 
 
     describe('Invalid calls', function()
     {
+        before(function(done)
+        {
+            request(url)
+                .post('/user')
+                .send(login_student)
+                .end(function(err, res) {
+
+                    login_student_id = res.body.data.user_id;
+                    res.body.status.should.equal('success');
+
+                    request(url)
+                        .post('/auth/login')
+                        .send(login_student)
+                        .end(function(err, res) {
+
+                            login_student_auth = res.body.data.token;
+                            res.body.status.should.equal('success');
+
+                            done();
+                        });
+                });
+        });
+
         describe('Create', function()
         {
             var test_user = {email: 'good@email.com', 
@@ -235,9 +310,6 @@ describe('User', function() {
         });
 
 
-
-
-    
         describe('Delete', function()
         {
             it('Delete user invalid id', function(done) {
@@ -250,6 +322,17 @@ describe('User', function() {
                     res.body.data.message.should.equal('User ID is not a valid MongoID');
                     done();
                 });
+            });
+
+            it('Delete other user not admin', function(done) {
+                request(url)
+                    .delete('/user/' + login_admin_id)
+                    .set('Authorization', login_student_auth)
+                    .end(function(err, res) {
+                        res.body.status.should.equal('fail');
+                        res.body.data.message.should.equal('Not an admin');
+                        done();
+                    });
             });
         });
 

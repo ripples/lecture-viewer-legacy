@@ -76,7 +76,7 @@ router.get('/', auth.verify , function(req,res) {
             resUser.last_name = user.name.last;
             resUser.email = user.email;
             resUser.role = user.role;
-            resUser.bookmarks = user.bookmarks;
+            resUser.courses = user.courses;
             resUser.user_id = user_id;
 
             res.sendSuccess(resUser);
@@ -130,9 +130,17 @@ router.delete('/:user_id', auth.verify, function(req,res) {
         {
             if(err)
                 res.sendFail(err);
-            else{
-                //Todo get user by id and send back here
-                res.sendSuccess(user);
+            else
+            {
+                var resUser = {};
+
+                resUser.first_name = user.name.first;
+                resUser.last_name = user.name.last;
+                resUser.email = user.email;
+                resUser.role = user.role;
+                resUser.user_id = user_id;
+
+                res.sendSuccess(resUser);
             }
         });
     }
