@@ -50,7 +50,7 @@ exports.createUser = function(email, password, firstName, lastName, role, callba
         },
         role: role
       }, function(err, newUser) {
-	      callback(undefined, newUser._id);
+	      callback(undefined, newUser);
       });
     }
   });
@@ -185,4 +185,42 @@ exports.setUsernameById = function(id, newUsername, callback) {
       {$set: {username : newUsername}},
       callback
   );
+};
+
+/*
+ * Updates user's role by id
+ */
+exports.setUserRoleById = function(id, newUserRole, callback) {
+  User.findByIdAndUpdate(
+      id,
+      {$set: {role : newUserRole}},
+      callback
+  );
+};
+
+/*
+ * Updates user's role by Email
+ */
+exports.setUserRoleByEmail = function(email, newUserRole, callback) {
+  User.findOneAndUpdate(
+      {email: email},
+      {$set: {role : newUserRole}},
+      callback
+  );
+};
+
+/*
+ * Method to get the user by email
+ */
+ exports.getUserByEmail = function(email, callback) {
+    User.findOne({
+        email: email
+    }, function(err, user) {
+        if (err)
+            callback(err);
+        else if (!user)
+            callback("user does not exist");
+        else
+            callback(undefined, user);
+    });
 };

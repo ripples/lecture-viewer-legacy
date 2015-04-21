@@ -53,6 +53,8 @@ router.get('/', auth.verify , function(req,res) {
 
     console.log(req.user);
 
+    user_id = req.user_id;
+
     database.user.getUserById(user_id, function(err, user)
     {
         if(err)

@@ -21,8 +21,9 @@ var CommentsContainer = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    this.setState(this.getStateFromStores(nextProps));
-    this.contextDidChange(nextProps);
+    if(this.props != nextProps) {
+      this.setState(this.getStateFromStores(nextProps));
+    }
   },
 
   getStateFromStores: function(props) {

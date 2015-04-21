@@ -21,7 +21,7 @@ var Main = React.createClass({
     return (
       <div>
         <NavigationSidebar/>
-        <LectureContext course_id={1} lecture_id={1}/>
+          <LectureContext/>
       </div>
     );
   }
