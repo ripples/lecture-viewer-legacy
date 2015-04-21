@@ -61,19 +61,23 @@ var Login = React.createClass({
 
   render: function() {
     return(
-      <div>
-        {this.renderLoggedOutText()}
-      	<input ref="email" placeholder="Email" value={this.state.email} onChange={this.handleEmailChange}/>
-        <input type="password" ref="pass" placeholder="Password" value={this.state.password} onChange={this.handlePasswordChange}/>
-        <button onClick={this.handleLogin}>Login</button>
-        <button onClick={this.handleCreate}>Create Account</button>
+      <div className="login">
+        <link href='http://fonts.googleapis.com/css?family=Slabo+27px|Cuprum|Arvo' rel='stylesheet' type='text/css'/>
+        <button id="create-button" onClick={this.handleCreate}>Create Account</button>
+        <div id="box">
+          <h1>Lecture Viewer</h1>
+          {this.renderLoggedOutText()}
+          <input ref="email" placeholder="Email" value={this.state.email} onChange={this.handleEmailChange}/><br/>
+          <input type="password" ref="pass" placeholder="Password" value={this.state.password} onChange={this.handlePasswordChange}/><br/>
+          <button id="login-button" onClick={this.handleLogin}>Login</button>
+        </div>
       </div>
     );
   },
 
   renderLoggedOutText: function() {
     return this.getQuery().loggedOut ?
-      <p>You are now logged out</p> : '';
+      <p>You are now logged out</p> : <p></p>;
   }
 });
 

@@ -1,7 +1,13 @@
-@import './scrolling';
 @import './colors';
 @import './fonts';
 
 .manage-course {
-  
+  * {
+    font-family: $font-stack;
+    color: $dark-gray-text;
+  }
+  h1 {
+    font-size: $header-text-size;
+    padding: 5px;
+  }
 }

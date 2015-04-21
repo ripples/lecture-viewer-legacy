@@ -9,34 +9,31 @@ router.post('/login', function(req,res) {
 	var email = req.body.email;
 	var password = req.body.password;
 
-	if(!req.body || !password)
-		return res.send(403, {
-			status: 'failed',
-			data: {
-				message: 'Missing email and/or password.'
-			}
-		});
+	//Todo... hash password;
+	var hashedPassword = password;
 
-	database.user.getUserByCredentials(email, password, function(err, user) {
+	if(!req.body || !password)
+	{
+		return res.sendFail('Missing email and/or password.');
+	}
+
+	database.user.getUserByEmail(email, function(err, user) 
+	{
 		// Error querying database
 		if(err) {
 			console.log(err);
-			return res.send(403, {
-				status: 'failed',
-				data: {
-					message: 'Error querying database for user data.' // or use err
-				}
-			});
+			return res.sendFail(err) // or use err
 		}
 
 		// User couldn't be found in the database
-		if(!user) {
-			return res.send(403, {
-				status: 'failed',
-				data: {
-					message: 'User doesn\'t exist in database.'
-				}
-			});
+		if(!user) 
+		{
+			return res.sendFail('User doesn\'t exist in database.');
+		}
+
+		if(hashedPassword != user.password)
+		{
+			return res.sendFail('Password does not match');
 		}
 
 		// We create the token, then send it to the client
@@ -44,21 +41,11 @@ router.post('/login', function(req,res) {
 			// Error encountered while creating the token and/or adding to Redis
 			if(err) {
 				console.log(err);
-				return res.send(403, {
-					status: 'failed',
-					data: {
-						message: 'Error creating access token.'
-					}
-				});
+				return res.sendFail('Error creating access token.');
 			}
 
 			// Sending access token to client
-			res.send(200, {
-				status: 'success',
-				data: {
-					token: token
-				}
-			});
+			res.sendSuccess({ token: token });
 		});
 	});
 });
