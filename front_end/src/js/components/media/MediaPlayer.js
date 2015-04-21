@@ -13,8 +13,11 @@ var MediaPlayer = React.createClass({
       currentTime: 0.0,
       currentWhiteboardIndex: 0,
       currentScreenIndex: 0,
+      paused: true,
+      muted: false,
       shouldRefreshWhiteboardIndices: false,
-      shouldRefreshScreenIndices: false
+      shouldRefreshScreenIndices: false,
+      wasPausedBeforeSeeking: true
     };
   },
 
@@ -34,77 +37,75 @@ var MediaPlayer = React.createClass({
     /** 2) Initialize default values **/
     seekBar.defaultValue = 0;
     volumeBar.defaultValue = 1;
-    wasPausedBeforeSeeking = true;
 
     /** 3) Attach event-handlers **/
-    // TOGGLE PLAY/PAUSE
-    playButton.addEventListener("click", function() {
-      if (video.paused == true) {
-        wasPausedBeforeSeeking = false;
-        video.play();
-        playButton.innerHTML = "Pause";
-      } else {
-        wasPausedBeforeSeeking = true;
-        video.pause();
-        playButton.innerHTML = "Play";
-      }
-    });
-    // TOGGLE MUTE/UNMUTE
-    muteButton.addEventListener("click", function() {
-      if (video.muted == false) {
-        video.muted = true;
-        muteButton.innerHTML = "Unmute";
-      } else {
-        video.muted = false;
-        muteButton.innerHTML = "Mute";
-      }
-    });
-    // TOGGLE FULLSCREEN
-    fullScreenButton.addEventListener("click", function() {
-      if (video.requestFullscreen) {
-        video.requestFullscreen();
-      } else if (video.mozRequestFullScreen) {
-        video.mozRequestFullScreen();
-      } else if (video.webkitRequestFullscreen) {
-        video.webkitRequestFullscreen();
-      }
-    });
-    // SEEKING
-    seekBar.addEventListener("input", function() {
-      var time = video.duration * (seekBar.value / 100.0);
-      video.currentTime = time;
-      this.setState({currentTime: time, shouldRefreshWhiteboardIndices: true});
-    }.bind(this));
-    // VIDEO TIME CHANGE
-    video.addEventListener("timeupdate", function() {
-      var value = (100.0 / video.duration) * video.currentTime;
-      seekBar.value = value;
-      this.setState({currentTime: video.currentTime});
-    }.bind(this));
-    // SEEK PAUSE : Pause the video when the slider handle is being dragged
-    seekBar.addEventListener("mousedown", function() {
-      if(video.paused) {
-        wasPausedBeforeSeeking = true;
-      } else {
-        video.pause();
-      }
-    });
-    // SEEK PLAY : Play the video when the slider handle is dropped
-    seekBar.addEventListener("mouseup", function() {
-      if(!wasPausedBeforeSeeking) {
-        video.play();
-      }
-    });
-    // VOLUME CHANGE
-    volumeBar.addEventListener("input", function() {
-      video.volume = volumeBar.value;
-    });
-
+    playButton.onclick        = this.handlePlayToggle.bind(null, video);
+    muteButton.onclick        = this.handleMuteToggle.bind(null, video);
+    fullScreenButton.onclick  = this.handleFullscreenToggle.bind(null, video);
+    video.ontimeupdate        = this.handleTimeChange.bind(null, video, seekBar);
+    seekBar.oninput           = this.handleSeek.bind(null, video, seekBar);
+    seekBar.onmousedown       = this.handleSeekBegin.bind(null, video);
+    seekBar.onmouseup         = this.handleSeekEnd.bind(null, video);
+    volumeBar.oninput         = this.handleVolumeChange.bind(null, video, volumeBar);
   },
 
   /*============================== @HANDLING ==============================*/
 
-  // TODO : Pull logic out from above.
+
+  handlePlayToggle: function(video) {
+    if (video.paused) {
+      video.play();
+    } else {
+      video.pause();
+    }
+    this.setState({paused: video.paused, wasPausedBeforeSeeking: !video.paused});
+  },
+
+  handleMuteToggle: function(video) {
+    video.muted = !video.muted;
+    this.setState({muted: video.muted});
+  },
+
+  handleFullscreenToggle: function(video) {
+    if (video.requestFullscreen) {
+      video.requestFullscreen();
+    } else if (video.mozRequestFullScreen) {
+      video.mozRequestFullScreen();
+    } else if (video.webkitRequestFullscreen) {
+      video.webkitRequestFullscreen();
+    }
+  },
+
+  handleSeek: function(video, seekBar) {
+    var time = video.duration * (seekBar.value / 100.0);
+    video.currentTime = time;
+    this.setState({currentTime: time, shouldRefreshWhiteboardIndices: true});
+  },
+
+  handleTimeChange: function(video, seekBar) {
+    var value = (100.0 / video.duration) * video.currentTime;
+    seekBar.value = value;
+    this.setState({currentTime: video.currentTime});
+  },
+
+  handleSeekBegin: function(video) {
+    if(video.paused) {
+      this.setState({wasPausedBeforeSeeking: true});
+    } else {
+      video.pause();
+      this.setState({wasPausedBeforeSeeking: false});
+    }
+  },
+
+  handleSeekEnd: function(video) {
+    if(!this.state.wasPausedBeforeSeeking) {
+      video.play();
+    }
+  },
+
+  handleVolumeChange: function(video, volumeBar) {
+    video.volume = volumeBar.value;
+  },
 
   /*============================== @IMAGE-SYNCHRONIZATION ==============================*/
 
@@ -147,9 +148,6 @@ var MediaPlayer = React.createClass({
 
   /*============================== @IMAGE-BUFFERING ==============================*/
 
-  // TODO : Make sure screen + whiteboard are sorted by startTime
-  // See FIXME below...
-
   bufferImages: function(startIndex, images, bufferSize) {
     if (!this.buffer) {
       this.buffer = [];
@@ -164,7 +162,7 @@ var MediaPlayer = React.createClass({
         }
       }
       buffer.push(image);
-      image.src = images[i].url;  // BUG : Cannot read property URL of undefined.
+      image.src = images[i].url;
     }
   },
 
@@ -225,7 +223,9 @@ var MediaPlayer = React.createClass({
     var videoFormats = this.props.media.video.formats.map(function(format, i) {
       return <source key={i} src={this.props.media.video.base_url + '.' + format}/>
     }.bind(this));
-    return <video id="video" ref="video" width="50%" height="50%">{videoFormats}</video>;
+    return (
+      <video id="video" width="50%" height="50%">{videoFormats}</video>
+    );
   },
 
   renderWhiteboards: function() {
@@ -239,9 +239,9 @@ var MediaPlayer = React.createClass({
   renderControler: function() {
     return (
       <div id="video-controls">
-        <button type="button" id="play-pause">Play</button>
+        <button type="button" id="play-pause">{this.state.paused ? 'Play' : 'Pause'}</button>
         <input  type="range"  id="seek-bar"/>
-        <button type="button" id="mute">Mute</button>
+        <button type="button" id="mute">{this.state.muted ? 'Unmute' : 'Mute'}</button>
         <input  type="range"  id="volume-bar" min="0" max="1" step="0.1"/>
         <button type="button" id="full-screen">Full-Screen</button>
       </div>
