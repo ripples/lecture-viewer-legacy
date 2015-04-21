@@ -5,7 +5,7 @@ var redis = require('../database/redis');
 var database = require('../database');
 
 // Will load in all necessary constant variables
-var config = require('./config');
+var config = require('../config');
 
 var ttl = config.TOKEN_TTL;
 var secret = config.TOKEN_SECRET;
@@ -39,14 +39,13 @@ function createAndStoreToken(user, cb) {
     ex: router.get('/example', auth.verify, function(req, res) { ... });
 */
 function verify(req, res, next) {
-
     var token = req.headers.authorization || req.body.token;
-    if(!token) return res.send(403);
+    if(!token) return res.sendFail("No authorization supplied");
 
     var tokenUUID = jwt.decode(token, secret);
 
     redis.get(tokenUUID, function(err, data) {
-        if(err || !data) return res.send(403);
+        if(err || !data) return res.sendFail(err);
         else {
             req.user = JSON.parse(data);
             next();
@@ -76,10 +75,14 @@ function refreshToken(token, cb) {
     });
 }
 
+function createVerificationID(userID, cb) {
+
+    cb(undefined, 'testing');
+}
+
 exports.createAndStoreToken = createAndStoreToken
 exports.verify = verify;
 exports.expireToken = expireToken;
 exports.refreshToken = refreshToken;
+exports.createVerificationID = createVerificationID;
 exports.secret = secret;
-
-// need to add functionality to refresh and expire tokens

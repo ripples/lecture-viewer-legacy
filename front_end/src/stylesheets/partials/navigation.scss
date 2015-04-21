@@ -18,6 +18,10 @@
     .notifications-button {
       color: $dark-button-text;
       background: $dark-button;
+      cursor: pointer;
+      &:hover {
+        background-color: $gray7;
+      }
     }
   }
   &__footer {
@@ -29,10 +33,18 @@
       margin-right: 10px;
       color: $dark-button-text;
       background: $dark-button;
+      cursor: pointer;
+      &:hover {
+        background-color: $gray7;
+      }
     }
     .settings-button {
       color: $dark-button-text;
       background: $dark-button;
+      cursor: pointer;
+      &:hover {
+        background-color: $gray7;
+      }
     }
   }
   &__content {
