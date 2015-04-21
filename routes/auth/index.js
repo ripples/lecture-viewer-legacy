@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
+var bcrypt = require('bcrypt-nodejs');
+
 var database = require("../../database");
 var auth = require('../../authentication');
 
@@ -9,16 +11,11 @@ router.post('/login', function(req,res) {
 	var email = req.body.email;
 	var password = req.body.password;
 
-	//Todo... hash password;
-	var hashedPassword = password;
-
-	if(!req.body || !password)
-	{
+	if(!req.body || !password) {
 		return res.sendFail('Missing email and/or password.');
 	}
 
-	database.user.getUserByEmail(email, function(err, user)
-	{
+	database.user.getUserByEmail(email, function(err, user) {
 		// Error querying database
 		if(err) {
 			console.log(err);
@@ -30,20 +27,24 @@ router.post('/login', function(req,res) {
 			return res.sendFail('User doesn\'t exist in database.');
 		}
 
-		if(hashedPassword != user.password) {
-			return res.sendFail('Password does not match');
-		}
+		// Compare the plaintext password with the hashed password held in db
+		bcrypt.compare(password, user.password, function(err, res) {
+			// Passwords don't match
+			if(!res) {
+				return res.sendFail('Password does not match');
+			} else {
+				// Passwords match; we create the token, then send it to the client
+				auth.createAndStoreToken(user, function(err, token) {
+					// Error encountered while creating the token and/or adding to Redis
+					if(err) {
+						console.log(err);
+						return res.sendFail('Error creating access token.');
+					}
 
-		// We create the token, then send it to the client
-		auth.createAndStoreToken(user, function(err, token) {
-			// Error encountered while creating the token and/or adding to Redis
-			if(err) {
-				console.log(err);
-				return res.sendFail('Error creating access token.');
+					// Sending access token to client
+					res.sendSuccess({ token: token });
+				});
 			}
-
-			// Sending access token to client
-			res.sendSuccess({ token: token });
 		});
 	});
 });

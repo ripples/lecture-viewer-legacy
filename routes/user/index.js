@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
+
 var validator = require('validator');
+var bcrypt = require('bcrypt-nodejs');
 
 var database = require("../../database/index.js");
 var auth = require("../../authentication");
@@ -13,45 +15,44 @@ require('./notification').setup(router);
 router.post('/', function(req,res) {
     //Check if all required parameters are present
     if(req.body.email && req.body.password && req.body.first_name && req.body.last_name) {
-
         //Verifies email is legit
-        if(!validator.isEmail(req.body.email))
-        {
-            res.sendFail("Not a valid email address");
-            return;
+        if(!validator.isEmail(req.body.email)) {
+            return res.sendFail("Not a valid email address");
         }
 
-        //Attempts to create new user using database methods
-        database.user.createUser(req.body.email,req.body.password,req.body.first_name, req.body.last_name,"student", function(err, user)
-        {
-            //If no error, send back user data
-            if(err == undefined)
-            {
+        // Hash the password before storing user information in database
+        bcrypt.hash(req.body.password, null, null, function(err, hashedPassword) {
+            if(err) {
+                res.sendFail(err);
+            } else {
+                // Attempts to create user record in database
+                database.user.createUser(req.body.email, hashedPassword, req.body.first_name, req.body.last_name, "student", function(err, user) {
+                    //If no error, send back user data
+                    if(!err) {
+                        var resUser = {}
 
-                var resUser = {}
-                resUser.first_name = user.name.first;
-                resUser.last_name = user.name.last;
-                resUser.email = user.email;
-                resUser.role = user.role;
-                resUser.courses = user.courses;
-                resUser.user_id = user_id;
+                        resUser.first_name = user.name.first;
+                        resUser.last_name = user.name.last;
+                        resUser.email = user.email;
+                        resUser.role = user.role;
+                        resUser.courses = user.courses;
+                        resUser.user_id = user_id;
 
-                /*---------------------------------------
-                Send verification email to req.body.email
-                ---------------------------------------*/
-                auth.sendVerificationEmail(resUser.user_id, resUser.email, function(err) {
-                    if(err) return res.sendFail(err);
-                    else return res.sendSuccess(resUser);
+                        /*---------------------------------------
+                        Send verification email to req.body.email
+                        ---------------------------------------*/
+                        auth.sendVerificationEmail(resUser.user_id, resUser.email, function(err) {
+                            if(err) return res.sendFail(err);
+                            else return res.sendSuccess(resUser);
+                        });
+                    } else {
+                        //I will need to know why it failed... Logic problem or a legit error
+                        res.sendFail(err);
+                    }
                 });
             }
-            else
-            {
-                //I will need to know why it failed... Logic problem or a legit error
-                res.sendFail(err);
-            }
         });
-    }
-    else {
+    } else {
         res.sendFail("Incorrect parameters");
     }
 });

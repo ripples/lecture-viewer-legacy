@@ -1,6 +1,5 @@
 var jwt = require('jwt-simple');
 var uuid = require('node-uuid');
-var bcrypt = require('bcrypt-nodejs');
 
 var redis = require('../database/redis');
 var database = require('../database');
@@ -40,7 +39,6 @@ function createAndStoreToken(user, cb) {
     ex: router.get('/example', auth.verify, function(req, res) { ... });
 */
 function verify(req, res, next) {
-
     var token = req.headers.authorization || req.body.token;
     if(!token) return res.sendFail("No authorization supplied");
 
