@@ -77,7 +77,7 @@ var Login = React.createClass({
 
   renderLoggedOutText: function() {
     return this.getQuery().loggedOut ?
-      <p id="login-form__logged-out">You are now logged out</p> : <p></p>;
+      <p id="login-form__logged-out">You are now logged out</p> : <p><br/></p>;
   }
 });
 

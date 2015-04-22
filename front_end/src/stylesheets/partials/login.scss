@@ -36,7 +36,8 @@
       color: #338090;
     }
     input {
-      margin: 5px 0px;
+      margin-top: -1px;
+      margin-bottom: 11px;
       display: inline-block;
       width: 270px;
       padding: 10px;
@@ -64,7 +65,7 @@
     }
     &__login {
       position: relative;
-      bottom: -25px;
+      bottom: -4px;
       background: none;
       font-weight: bold;
       background-color: rgba(256, 256, 256, 0);
