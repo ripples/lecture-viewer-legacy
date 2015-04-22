@@ -43,4 +43,4 @@ If this doesn't work, make sure you have the most up to date libraries by runnin
 
 API Documentation
 =================
-http://umass-cs-497.github.io/back-end-lecture-viewer/apiV1.html
+http://umass-cs-497.github.io/lecture-viewer/apiV1.html
