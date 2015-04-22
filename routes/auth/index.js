@@ -28,9 +28,9 @@ router.post('/login', function(req,res) {
 		}
 
 		// Compare the plaintext password with the hashed password held in db
-		bcrypt.compare(password, user.password, function(err, res) {
+		bcrypt.compare(password, user.password, function(err, result) {
 			// Passwords don't match
-			if(!res) {
+			if(!result) {
 				return res.sendFail('Password does not match');
 			} else {
 				// Passwords match; we create the token, then send it to the client

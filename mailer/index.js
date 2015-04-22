@@ -32,9 +32,9 @@ function sendVerificationEmail(emailAddress, userID, cb) {
             html: '<h2>Thanks for signing up! </h2>\nTo confirm your email address with the CS497 Lecture Viewer, click on the link below: \n<a href="' + verificationURL + '">Verify Email</a>' // HTML body
         }
 
-        send(mailOptions, function(err, res) {
-            cb(err, res);
-        });
+        //send(mailOptions, function(err, res) {
+            cb(err, verificationID);
+        //});
     });
 }
 

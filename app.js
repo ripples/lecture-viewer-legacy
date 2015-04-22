@@ -24,9 +24,9 @@ var redisClient = redis.createClient();
 // to specify specific port and ip where redis server lives
 
 var auth = require('./authentication');
-// require('./mailer').sendVerificationEmail('jyanyuk@umass.edu', 'testid', function(err, res) {
-//     if(!err) console.log('sent successfully');
-// });
+require('./mailer').sendVerificationEmail('jyanyuk@umass.edu', 's', function(err, res) {
+    if(!err) console.log(res);
+});
 
 // Tell node to interpret post data as JSON
 app.use(bodyParser.json());
