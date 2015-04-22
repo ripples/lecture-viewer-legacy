@@ -61,7 +61,9 @@ var LectureContext = React.createClass({
     if(this.state.media) {
       return (
         <div className='lecture-context'>
-          <MediaPlayer media={this.state.media}/>
+          <div className='lecture-context-content'>
+            <MediaPlayer media={this.state.media}/>
+          </div>
           <LectureContextSidebar {...this.props}/>
         </div>
       );

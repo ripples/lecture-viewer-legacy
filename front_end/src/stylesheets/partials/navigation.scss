@@ -4,8 +4,7 @@
 
 .navigation-sidebar {
   @include fixed-header-and-footer--scrollable-content--wrapper();
-  position: absolute;
-  left: 0;
+  flex: 0 0 275px;
   height: 100%; width: 275px;
   box-sizing: border-box;
   padding: 20px;
@@ -52,15 +51,23 @@
   }
 }
 
+.app-container {
+  height: 100vh;
+  display: flex;
+}
+
 .lecture-context {
-  position: absolute;
-  right: 0;
+  flex: 1;
+  display: flex;
   height: 100%;
   background: $light-gray;
 
+  &-content {
+    flex: 1;
+  }
+
   &-sidebar {
-    position:absolute;
-    right: 0;
+    flex: 0 0 300px;
     height: 100%; width: 300px;
     background: white;
     &-header {
