@@ -26,7 +26,7 @@ var MediaPlayer = React.createClass({
     // TODO : Put this in a better spot... Perhaps create a video component
     var video = document.getElementById("video");
     video.ontimeupdate = this.handleTimeChange.bind(null, video);
-    video.onended = function() {this.setState({paused: true});}.bind(this);
+    video.onended = function() {this.setState({paused: true, currentWhiteboardIndex: 0});}.bind(this);
   },
 
   /*============================== @CONTROLLER-HANDLING ==============================*/
@@ -100,7 +100,6 @@ var MediaPlayer = React.createClass({
           index = ++this.state.currentWhiteboardIndex;
           this.cacheWhiteboardImage(index);
       }
-
     }
     return this.props.media.whiteboard[index].url;
   },
@@ -191,17 +190,17 @@ var MediaPlayer = React.createClass({
       return <source key={i} src={this.props.media.video.base_url + '.' + format}/>
     }.bind(this));
     return (
-      <video id="video" width="50%" height="50%">{videoFormats}</video>
+      <video id="video" className='lecture-media__video'>{videoFormats}</video>
     );
   },
 
   renderWhiteboards: function() {
     // TODO : Handle multiple whiteboards
-    return <img id='lecture-media--whiteboard-image' src={this.getCurrentWhiteboardImage()}/>
+    return <img className='lecture-media__whiteboard-image' src={this.getCurrentWhiteboardImage()}/>
   },
 
   renderScreen: function() {
-    return <img id='lecture-media--screen-image' src={this.getCurrentScreenImage()}/>;
+    return <img className='lecture-media__screen-image' src={this.getCurrentScreenImage()}/>
   },
 
   renderControler: function() {

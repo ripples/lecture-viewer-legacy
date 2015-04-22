@@ -19,9 +19,9 @@ var App = React.createClass({
 var Main = React.createClass({
   render: function () {
     return (
-      <div>
+      <div className='app-container'>
         <NavigationSidebar/>
-          <LectureContext/>
+        <LectureContext/>
       </div>
     );
   }

@@ -1,0 +1,30 @@
+@import './scrolling';
+@import './colors';
+@import './glyphs';
+
+.media-player {
+  display: inline;
+}
+
+.lecture-media {
+  &__video {
+    height: 250px;
+  }
+  &__whiteboard-image {
+    height: 250px;
+  }
+  &__screen-image {
+    height: 250px;
+  }
+}
+
+.media-controller {
+  height: 250px;
+  &__seek-bar {
+    display: inline;
+  }
+}
+
+img {
+  height: 100%;
+}

@@ -100,8 +100,12 @@ var MediaController = React.createClass({
   },
 
   renderSeekBar: function() {
+
+    // TODO : Set input track background to transparent in CSS
+    // TODO : Place the progress element directly behind the input element in CSS
+
     return (
-      <div>
+      <div className='media-controller__seek-bar'>
         <span className='current-time'>
           {this.getFormattedTime(this.props.currentTime)}
         </span>
@@ -110,6 +114,7 @@ var MediaController = React.createClass({
         <span className='remaining-time'>
           {this.getFormattedTime(this.props.duration - this.props.currentTime)}
         </span>
+        <progress value={this.getSeekValue()} max="100"></progress>
       </div>
     );
   }
