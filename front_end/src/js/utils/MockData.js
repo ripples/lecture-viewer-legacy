@@ -45,7 +45,8 @@ var lectures = {
         media: {
           video: {
             base_url: "http://www.quirksmode.org/html5/videos/big_buck_bunny",
-            formats: ["mp4", "webm"]
+            formats: ["mp4", "webm"],
+            duration: 60
           },
           screen: [
             {

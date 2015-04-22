@@ -1,4 +1,5 @@
-var React = require('react');
+var React           = require('react');
+var MediaController = require('./MediaController');
 
 var MediaPlayer = React.createClass({
 
@@ -11,100 +12,67 @@ var MediaPlayer = React.createClass({
   getInitialState: function() {
     return {
       currentTime: 0.0,
-      currentWhiteboardIndex: 0,
-      currentScreenIndex: 0,
       paused: true,
       muted: false,
+      volume: 1.0,
+      currentWhiteboardIndex: 0,
+      currentScreenIndex: 0,
       shouldRefreshWhiteboardIndices: false,
       shouldRefreshScreenIndices: false,
-      wasPausedBeforeSeeking: true
     };
   },
 
   componentDidMount: function() {
-
-    // TODO : This should not use jQuery-like access and handlers. The components
-    // should be broken down and invoke their callbacks passed as props.
-
-    /** 1) Get references to all elements that need event-handlers **/
-    var video             = document.getElementById("video");
-    var playButton        = document.getElementById("play-pause");
-    var muteButton        = document.getElementById("mute");
-    var fullScreenButton  = document.getElementById("full-screen");
-    var seekBar           = document.getElementById("seek-bar");
-    var volumeBar         = document.getElementById("volume-bar");
-
-    /** 2) Initialize default values **/
-    seekBar.defaultValue = 0;
-    volumeBar.defaultValue = 1;
-
-    /** 3) Attach event-handlers **/
-    playButton.onclick        = this.handlePlayToggle.bind(null, video);
-    muteButton.onclick        = this.handleMuteToggle.bind(null, video);
-    fullScreenButton.onclick  = this.handleFullscreenToggle.bind(null, video);
-    video.ontimeupdate        = this.handleTimeChange.bind(null, video, seekBar);
-    seekBar.oninput           = this.handleSeek.bind(null, video, seekBar);
-    seekBar.onmousedown       = this.handleSeekBegin.bind(null, video);
-    seekBar.onmouseup         = this.handleSeekEnd.bind(null, video);
-    volumeBar.oninput         = this.handleVolumeChange.bind(null, video, volumeBar);
+    // TODO : Put this in a better spot... Perhaps create a video component
+    var video = document.getElementById("video");
+    video.ontimeupdate = this.handleTimeChange.bind(null, video);
+    video.onended = function() {this.setState({paused: true});}.bind(this);
   },
 
-  /*============================== @HANDLING ==============================*/
+  /*============================== @CONTROLLER-HANDLING ==============================*/
 
-
-  handlePlayToggle: function(video) {
-    if (video.paused) {
-      video.play();
-    } else {
-      video.pause();
-    }
-    this.setState({paused: video.paused, wasPausedBeforeSeeking: !video.paused});
+  handlePlayToggle: function(shouldPlay) {
+    var video = document.getElementById("video");
+    shouldPlay ? video.play() : video.pause();
+    this.setState({paused: video.paused});
   },
 
-  handleMuteToggle: function(video) {
-    video.muted = !video.muted;
+  handleMuteToggle: function(shouldMute) {
+    var video = document.getElementById("video");
+    video.muted = shouldMute;
     this.setState({muted: video.muted});
   },
 
-  handleFullscreenToggle: function(video) {
-    if (video.requestFullscreen) {
+  handleFullscreenToggle: function() {
+    var video = document.getElementById("video");
+    if(video.requestFullscreen) {
       video.requestFullscreen();
-    } else if (video.mozRequestFullScreen) {
+    } else if(video.mozRequestFullScreen) {
       video.mozRequestFullScreen();
-    } else if (video.webkitRequestFullscreen) {
+    } else if(video.webkitRequestFullscreen) {
       video.webkitRequestFullscreen();
     }
   },
 
-  handleSeek: function(video, seekBar) {
-    var time = video.duration * (seekBar.value / 100.0);
+  handleSeek: function(value) {
+    var video = document.getElementById("video");
+    var time = this.props.media.video.duration * (value / 100.0);
     video.currentTime = time;
     this.setState({currentTime: time, shouldRefreshWhiteboardIndices: true});
   },
 
-  handleTimeChange: function(video, seekBar) {
-    var value = (100.0 / video.duration) * video.currentTime;
-    seekBar.value = value;
+  handleVolumeChange: function(value) {
+    var video = document.getElementById("video");
+    video.volume = value;
+    this.setState({volume: value});
+  },
+
+  /*============================== @VIDEO-HANDLING ==============================*/
+
+  handleTimeChange: function(time) {
+    // TODO : Use time parameter
+    var video = document.getElementById("video");
     this.setState({currentTime: video.currentTime});
-  },
-
-  handleSeekBegin: function(video) {
-    if(video.paused) {
-      this.setState({wasPausedBeforeSeeking: true});
-    } else {
-      video.pause();
-      this.setState({wasPausedBeforeSeeking: false});
-    }
-  },
-
-  handleSeekEnd: function(video) {
-    if(!this.state.wasPausedBeforeSeeking) {
-      video.play();
-    }
-  },
-
-  handleVolumeChange: function(video, volumeBar) {
-    video.volume = volumeBar.value;
   },
 
   /*============================== @IMAGE-SYNCHRONIZATION ==============================*/
@@ -208,7 +176,6 @@ var MediaPlayer = React.createClass({
   /*============================== @RENDERING ==============================*/
 
   render: function() {
-
     return (
       <div className='media-player'>
           {this.renderVideo()}
@@ -229,6 +196,7 @@ var MediaPlayer = React.createClass({
   },
 
   renderWhiteboards: function() {
+    // TODO : Handle multiple whiteboards
     return <img id='lecture-media--whiteboard-image' src={this.getCurrentWhiteboardImage()}/>
   },
 
@@ -237,15 +205,21 @@ var MediaPlayer = React.createClass({
   },
 
   renderControler: function() {
-    return (
-      <div id="video-controls">
-        <button type="button" id="play-pause">{this.state.paused ? 'Play' : 'Pause'}</button>
-        <input  type="range"  id="seek-bar"/>
-        <button type="button" id="mute">{this.state.muted ? 'Unmute' : 'Mute'}</button>
-        <input  type="range"  id="volume-bar" min="0" max="1" step="0.1"/>
-        <button type="button" id="full-screen">Full-Screen</button>
-      </div>
-    );
+    return <MediaController
+
+      duration={this.props.media.video.duration}
+      currentTime={this.state.currentTime}
+      paused={this.state.paused}
+      muted={this.state.muted}
+      volume={this.state.volume}
+
+      onPlay={this.handlePlayToggle.bind(null, true)}
+      onPause={this.handlePlayToggle.bind(null, false)}
+      onMute={this.handleMuteToggle.bind(null, true)}
+      onUnmute={this.handleMuteToggle.bind(null, false)}
+      onFullscreen={this.handleFullscreenToggle}
+      onSeek={this.handleSeek}
+      onVolumeChange={this.handleVolumeChange}/>
   }
 
 });
