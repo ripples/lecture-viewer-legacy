@@ -7,4 +7,10 @@ exports.TOKEN_SECRET = 'awesomesauce';
 // Email address and password of email verification ID sender
 // Must be a Google or Google Apps account (UMass Apps will work)
 exports.VERIFIER_EMAIL_ADDR = 'jyanyuk@umass.edu';
-exports.VERIFIER_EMAIL_PASS = '<censored>';
+exports.VERIFIER_EMAIL_PASS = '<>';
+
+// Crypto encryption/decryption algorithm
+exports.CRYPTO_ALGORITHM = 'aes-256-ctr';
+
+// Crypto Secret (used for encryption and decryption of various elements)
+exports.CRYPTO_SECRET = 'awesomesauce';

@@ -1,0 +1,29 @@
+// Keeps boxes the same size regardless of
+// of the padding, border, margin
+@mixin nice-boxes() {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+// Disables selection of object
+@mixin no-selection() {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+// Set the color of input placeholder text
+@mixin placeholder-color($c) {
+  ::-webkit-input-placeholder {
+     color: $c;
+  }
+  :-moz-placeholder {
+     color: $c;  
+  }
+  ::-moz-placeholder {
+     color: $c;  
+  }
+  :-ms-input-placeholder {  
+     color: $c;  
+  }
+}

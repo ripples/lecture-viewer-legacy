@@ -25,6 +25,10 @@ var redisClient = redis.createClient();
 
 var auth = require('./authentication');
 
+// require('./mailer').sendVerificationEmail('jyanyuk@umass.edu', 'jyanyuk', function(err, res) {
+//     if(!err) console.log(res);
+// });
+
 // Tell node to interpret post data as JSON
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -70,7 +74,7 @@ app.use('*', function( req, res, next )
     }
 
     next();
-} );
+});
 
 
 // Route to user and course

@@ -45,7 +45,8 @@ var lectures = {
         media: {
           video: {
             base_url: "http://www.quirksmode.org/html5/videos/big_buck_bunny",
-            formats: ["mp4", "webm"]
+            formats: ["mp4", "webm"],
+            duration: 60
           },
           screen: [
             {
@@ -56,40 +57,150 @@ var lectures = {
             {
               url: "https://scontent-iad.xx.fbcdn.net/hphotos-xpa1/v/t1.0-9/10653643_941128312587819_6618157849953172249_n.jpg?oh=2cfcbb81b5851b737e6bb52aca277b67&oe=55D6257A",
               start: 4,
-              end: 7
-            },
-            {
-              url: "https://scontent-iad.xx.fbcdn.net/hphotos-xat1/v/t1.0-9/11150407_939986632701987_4326895521829241253_n.jpg?oh=0270d3729ec5623ed5f25568649622db&oe=55A1BA70",
-              start: 7,
               end: 8
             },
             {
-              url: "https://scontent-iad.xx.fbcdn.net/hphotos-xap1/v/t1.0-9/11070752_935634323137218_5062687498452874427_n.jpg?oh=89c028dcdc4b901b77b72f191df73b45&oe=55A704BE",
+              url: "https://scontent-lga.xx.fbcdn.net/hphotos-xpf1/v/t1.0-9/10906104_891552634212054_3363869605886777672_n.jpg?oh=1eec972f2f8e7b5078d2f46a6dd2f482&oe=55A4E560",
               start: 8,
-              end: 15
+              end: 12
+            },
+            {
+              url: "https://scontent-iad.xx.fbcdn.net/hphotos-xat1/v/t1.0-9/11150407_939986632701987_4326895521829241253_n.jpg?oh=0270d3729ec5623ed5f25568649622db&oe=55A1BA70",
+              start: 12,
+              end: 16
+            },
+            {
+              url: "https://scontent-iad.xx.fbcdn.net/hphotos-xap1/v/t1.0-9/11070752_935634323137218_5062687498452874427_n.jpg?oh=89c028dcdc4b901b77b72f191df73b45&oe=55A704BE",
+              start: 16,
+              end: 20
+            },
+            {
+              url: "https://scontent-lga.xx.fbcdn.net/hphotos-xap1/v/t1.0-9/11070752_935634323137218_5062687498452874427_n.jpg?oh=89c028dcdc4b901b77b72f191df73b45&oe=55A704BE",
+              start: 20,
+              end: 24
+            },
+            {
+              url: "https://scontent-lga.xx.fbcdn.net/hphotos-xfp1/v/t1.0-9/11054401_922113144489336_6230320848835604858_n.jpg?oh=297a273a7fe49b5512e03e51da98f80d&oe=55DE566D",
+              start: 24,
+              end: 28
+            },
+            {
+              url: "https://fbcdn-sphotos-h-a.akamaihd.net/hphotos-ak-xpf1/v/t1.0-9/10359155_913673241999993_7778440913652276994_n.jpg?oh=398cfcfe5b891e069b89cfd37cb2e1f0&oe=55A3DB2E&__gda__=1436782148_fa08822c8bc1f23526b719cdce8e6dfb",
+              start: 28,
+              end: 32
+            },
+            {
+              url: "https://fbcdn-sphotos-b-a.akamaihd.net/hphotos-ak-xtf1/v/t1.0-9/1622725_912285245472126_246670563767572061_n.jpg?oh=01794f80c1fd07ced91e3d34c3694de3&oe=55A21C48&__gda__=1440563225_8981c5c2415089c479fba0130cacb21f",
+              start: 32,
+              end: 36
+            },
+            {
+              url: "https://fbcdn-sphotos-f-a.akamaihd.net/hphotos-ak-xfp1/v/t1.0-9/10480950_905187182848599_2152117105843294897_n.jpg?oh=c72853ef530ef6008b30f74749205aa7&oe=559E5B26&__gda__=1440723631_aba52c0134d1a1dce886d59684db0d57",
+              start: 36,
+              end: 40
+            },
+            {
+              url: "https://fbcdn-sphotos-h-a.akamaihd.net/hphotos-ak-xpf1/v/t1.0-9/10359155_913673241999993_7778440913652276994_n.jpg?oh=398cfcfe5b891e069b89cfd37cb2e1f0&oe=55A3DB2E&__gda__=1436782148_fa08822c8bc1f23526b719cdce8e6dfb",
+              start: 40,
+              end: 44
+            },
+            {
+              url: "https://scontent-lga.xx.fbcdn.net/hphotos-xaf1/v/t1.0-9/10426210_899995513367766_3406270261218322962_n.jpg?oh=f3ef080954241a370005f48e85903d0c&oe=55D2E906",
+              start: 44,
+              end: 48
+            },
+            {
+              url: "https://scontent-lga.xx.fbcdn.net/hphotos-xap1/v/t1.0-9/10931483_898732193494098_7935669168798455789_n.jpg?oh=74d8e34b36b754230b7afe50befa0068&oe=55A1EB3F",
+              start: 48,
+              end: 52
+            },
+            {
+              url: "https://fbcdn-sphotos-a-a.akamaihd.net/hphotos-ak-xpa1/v/t1.0-9/10308184_897617066938944_5934104284019456588_n.jpg?oh=fa1255822048d4ffe6a7ace91cf52123&oe=55D0A90D&__gda__=1436705461_ce17092d6069fa51ee13c384e6eb8330",
+              start: 52,
+              end: 56
+            },
+            {
+              url: "https://scontent-lga.xx.fbcdn.net/hphotos-xap1/v/t1.0-9/10933874_893878517312799_4587864731958786213_n.jpg?oh=2377ab5969d31e46b6777a7a8ca529a2&oe=55A7D91B",
+              start: 56,
+              end: 58
             }
           ],
           whiteboard: [
             {
-              url: "https://fbcdn-sphotos-f-a.akamaihd.net/hphotos-ak-xfp1/v/t1.0-9/11071125_930846836949300_5582287845287168253_n.jpg?oh=de46e81ba35292354541294618fb997a&oe=55D194E6&__gda__=1440004207_485dce7d75b4d263e747f71d488b8688",
+              url: "https://scontent-iad.xx.fbcdn.net/hphotos-xta1/v/t1.0-9/11150410_943285072372143_9220849240201776569_n.jpg?oh=5374097ca9ce7ce5d8eed02cd8c8a57b&oe=55A63DEE",
               start: 0,
-              end: 2
+              end: 4
             },
             {
-              url: "https://scontent-iad.xx.fbcdn.net/hphotos-xfp1/v/t1.0-9/11002627_916105365090114_6599599830018967340_n.jpg?oh=d1877e95a2a4c9c1cae4c37a836ab57e&oe=55DDCB2C",
-              start: 2,
-              end: 9
+              url: "https://scontent-iad.xx.fbcdn.net/hphotos-xpa1/v/t1.0-9/10653643_941128312587819_6618157849953172249_n.jpg?oh=2cfcbb81b5851b737e6bb52aca277b67&oe=55D6257A",
+              start: 4,
+              end: 8
             },
             {
-              url: "https://fbcdn-sphotos-c-a.akamaihd.net/hphotos-ak-xpa1/v/t1.0-9/10968358_908167752550542_7700181038088746539_n.jpg?oh=bbb78b57fe17147d5632b77391af5e1e&oe=55D7AB60&__gda__=1440533464_36284a17e9a4ade70f16c2767ae9cae4",
-              start: 9,
-              end: 13
+              url: "https://scontent-lga.xx.fbcdn.net/hphotos-xpf1/v/t1.0-9/10906104_891552634212054_3363869605886777672_n.jpg?oh=1eec972f2f8e7b5078d2f46a6dd2f482&oe=55A4E560",
+              start: 8,
+              end: 12
             },
             {
-              url: "https://scontent-iad.xx.fbcdn.net/hphotos-xpf1/v/t1.0-9/10978699_906387589395225_5341510052769738691_n.jpg?oh=56908eaee1b9f43703e6064fe6affea7&oe=55D30E14",
-              start: 13,
-              end: 15
+              url: "https://scontent-iad.xx.fbcdn.net/hphotos-xat1/v/t1.0-9/11150407_939986632701987_4326895521829241253_n.jpg?oh=0270d3729ec5623ed5f25568649622db&oe=55A1BA70",
+              start: 12,
+              end: 16
             },
+            {
+              url: "https://scontent-iad.xx.fbcdn.net/hphotos-xap1/v/t1.0-9/11070752_935634323137218_5062687498452874427_n.jpg?oh=89c028dcdc4b901b77b72f191df73b45&oe=55A704BE",
+              start: 16,
+              end: 20
+            },
+            {
+              url: "https://scontent-lga.xx.fbcdn.net/hphotos-xap1/v/t1.0-9/11070752_935634323137218_5062687498452874427_n.jpg?oh=89c028dcdc4b901b77b72f191df73b45&oe=55A704BE",
+              start: 20,
+              end: 24
+            },
+            {
+              url: "https://scontent-lga.xx.fbcdn.net/hphotos-xfp1/v/t1.0-9/11054401_922113144489336_6230320848835604858_n.jpg?oh=297a273a7fe49b5512e03e51da98f80d&oe=55DE566D",
+              start: 24,
+              end: 28
+            },
+            {
+              url: "https://fbcdn-sphotos-h-a.akamaihd.net/hphotos-ak-xpf1/v/t1.0-9/10359155_913673241999993_7778440913652276994_n.jpg?oh=398cfcfe5b891e069b89cfd37cb2e1f0&oe=55A3DB2E&__gda__=1436782148_fa08822c8bc1f23526b719cdce8e6dfb",
+              start: 28,
+              end: 32
+            },
+            {
+              url: "https://fbcdn-sphotos-b-a.akamaihd.net/hphotos-ak-xtf1/v/t1.0-9/1622725_912285245472126_246670563767572061_n.jpg?oh=01794f80c1fd07ced91e3d34c3694de3&oe=55A21C48&__gda__=1440563225_8981c5c2415089c479fba0130cacb21f",
+              start: 32,
+              end: 36
+            },
+            {
+              url: "https://fbcdn-sphotos-f-a.akamaihd.net/hphotos-ak-xfp1/v/t1.0-9/10480950_905187182848599_2152117105843294897_n.jpg?oh=c72853ef530ef6008b30f74749205aa7&oe=559E5B26&__gda__=1440723631_aba52c0134d1a1dce886d59684db0d57",
+              start: 36,
+              end: 40
+            },
+            {
+              url: "https://fbcdn-sphotos-h-a.akamaihd.net/hphotos-ak-xpf1/v/t1.0-9/10359155_913673241999993_7778440913652276994_n.jpg?oh=398cfcfe5b891e069b89cfd37cb2e1f0&oe=55A3DB2E&__gda__=1436782148_fa08822c8bc1f23526b719cdce8e6dfb",
+              start: 40,
+              end: 44
+            },
+            {
+              url: "https://scontent-lga.xx.fbcdn.net/hphotos-xaf1/v/t1.0-9/10426210_899995513367766_3406270261218322962_n.jpg?oh=f3ef080954241a370005f48e85903d0c&oe=55D2E906",
+              start: 44,
+              end: 48
+            },
+            {
+              url: "https://scontent-lga.xx.fbcdn.net/hphotos-xap1/v/t1.0-9/10931483_898732193494098_7935669168798455789_n.jpg?oh=74d8e34b36b754230b7afe50befa0068&oe=55A1EB3F",
+              start: 48,
+              end: 52
+            },
+            {
+              url: "https://fbcdn-sphotos-a-a.akamaihd.net/hphotos-ak-xpa1/v/t1.0-9/10308184_897617066938944_5934104284019456588_n.jpg?oh=fa1255822048d4ffe6a7ace91cf52123&oe=55D0A90D&__gda__=1436705461_ce17092d6069fa51ee13c384e6eb8330",
+              start: 52,
+              end: 56
+            },
+            {
+              url: "https://scontent-lga.xx.fbcdn.net/hphotos-xap1/v/t1.0-9/10933874_893878517312799_4587864731958786213_n.jpg?oh=2377ab5969d31e46b6777a7a8ca529a2&oe=55A7D91B",
+              start: 56,
+              end: 58
+            }
           ]
         }
     },

@@ -1,73 +1,84 @@
 @import './colors';
 @import './fonts';
+@import './fixes';
 
 .login {
   position: absolute;
   height: 100%;
   width: 100%;
-  display: block;
   text-align: center;
-  margin-left: auto;
-  // background-image: url("http://people.umass.edu/ndh/Photos/Pond.JPG");
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/a/ac/UMass_Amherst_W.E.B._Dubois_Library_night_2.jpg");
-  background-size: 100%;
+  background-image: 
+    url("http://everystockphoto.s3.amazonaws.com/Oxford_business_school_1930_o.jpg");
   * {
     margin: 5px;
     color: $dark-gray-text;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
+    @include nice-boxes();
+    @include no-selection();
   }
-  #box{
+  #login-form{
+    position: relative;
     margin-top: 10%;
     display: inline-block;
-    background-color: rgba(256, 256, 256, 0.8);
-    width: auto;
+    width: 600px;
+    height: 330px;
     padding: 15px;
-    box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
-  }
-  h1 {
-    font-family: 'Slabo 27px', serif;
-    font-size: $huge;
-    margin-top: 0;
-    padding: 15px;
-    display: block;
-    text-align: center;
-  }
-  p {
-    color: #338090;
-  }
-  input {
-    margin: 5px 0;
-    display: inline-block;
-    width: 360px;
-    padding: 5px;
-    font-size: 1em;
-    border: solid 1px $gray3;
     background-color: rgba(256, 256, 256, 0.75);
-    color: black;
-    font-family: 'Cuprum', sans-serif;
-    &:hover, &:focus {
-      border-color: $gray4;
+    box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.25);
+    &__title {
+      font-family: 'Slabo 27px';
+      font-size: $huge;
+      margin-top: 0;
+      padding: 15px;
+      display: block;
+      text-align: center;
     }
-    &:focus {
-      box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.125);
+    &__logged-out {
+      color: #338090;
     }
-  }
-  button {
-    font-size: 1.25em;
-    cursor: pointer;
-    font-family: 'Slabo 27px', sans-serif;
-  }
-  #login-button {
-    background-color: rgba(256, 256, 256, 0);
-    font-weight: bold;
-  }
-  #create-button {
-    position: absolute;
-    right: 0;
-    top: 0;
-    background-color: rgba(256, 256, 256, 0.75);
-    margin: 0px;
+    input {
+      margin-top: -1px;
+      margin-bottom: 11px;
+      display: inline-block;
+      width: 270px;
+      padding: 10px;
+      font-size: 0.75em;
+      outline: none;
+      background-color: rgba(256, 256, 256, 0.75);
+      font-family: 'Roboto', sans-serif;
+      color: black;
+      border: solid 1px $gray4;
+      &:hover {
+        border-color: $gray5;
+      }
+      &:focus {
+        border-color: $gray5;
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.125);
+      }
+    }
+    &__login, &__create {
+      font-size: 1.25em;
+      cursor: pointer;
+      font-family: 'Slabo 27px', sans-serif;
+      &:hover, &:focus {
+        color: $gray9;
+      }
+    }
+    &__login {
+      position: relative;
+      bottom: -4px;
+      background: none;
+      font-weight: bold;
+      background-color: rgba(256, 256, 256, 0);
+    }
+    &__create {
+      position: fixed;
+      right: 0;
+      top: 0;
+      background-color: rgba(256, 256, 256, 0.75);
+      margin: 0px;
+      &:hover {
+        background-color: rgba(256, 256, 256, 0.85);
+      }
+    }
   }
 }

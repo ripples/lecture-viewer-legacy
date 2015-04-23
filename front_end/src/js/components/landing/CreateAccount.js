@@ -46,14 +46,18 @@ var CreateAccount = React.createClass({
 
 	render: function() {
     return(
-      <div>
-        <input ref="first_name" placeholder="First name" />
-        <input ref="last_name" placeholder="Last name" /><br />
-      	<input ref="email" placeholder="Email" value={this.state.email} onChange={this.handleEmailChange}/>
-        <input type="password" ref="pass1" placeholder="Password" value={this.state.password}  onChange={this.handlePasswordChange}/>
-        <input type="password" ref="pass2" placeholder="Retype password"  /><br />
-        <button onClick={this.handleCreateAccount}>Create</button>
-        <span>Have an account?</span><button onClick={this.handleLogin}>Login</button>
+      <div className="create-account">
+        <link href='http://fonts.googleapis.com/css?family=Slabo+27px|Roboto|Arvo' rel='stylesheet' type='text/css'/>
+        <div id="create-form">
+          <button id="create-form__login" onClick={this.handleLogin}>Login</button>
+          <h1 id="create-form__title">Create your account:</h1><br/>
+          <input id="create-form__first" ref="first_name" placeholder="First name" />
+          <input id="create-form__last" placeholder="Last name" /><br />
+          <input id="create-form__email" ref="email" placeholder="Email" value={this.state.email} onChange={this.handleEmailChange}/>
+          <input id="create-form__password1" type="password" ref="pass1" placeholder="Password" value={this.state.password}  onChange={this.handlePasswordChange}/>
+          <input id="create-form__password2" type="password" ref="pass2" placeholder="Retype password"  /><br />
+          <button id="create-form__create" onClick={this.handleCreateAccount}>Create</button>
+        </div>
       </div>
     );
   }
