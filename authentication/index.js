@@ -79,23 +79,35 @@ function refreshToken(token, cb) {
     });
 }
 
-function encrypt(text){
-    var cipher = crypto.createCipher(cryptoAlgorithm, cryptoSecret)
-    var crypted = cipher.update(text,'utf8','hex')
-    crypted += cipher.final('hex');
-    return crypted;
+function encryptToVerificationID(text, cb) {
+    var extReq = text.length < 15;
+
+    crypto.randomBytes(extReq ? Math.floor((15 - text.length) / 2) : 1, function(ex, buf) {
+        var toEncrypt = (extReq ? text + "%" + buf.toString('hex') : text);
+
+        var cipher = crypto.createCipher(cryptoAlgorithm, cryptoSecret);
+        var encrypted = cipher.update(toEncrypt, 'utf8', 'hex');
+        encrypted += cipher.final('hex');
+
+        return cb(undefined, encrypted);
+    });
 }
 
-function decrypt(text){
-    var decipher = crypto.createDecipher(cryptoAlgorithm, cryptoSecret)
-    var dec = decipher.update(text,'hex','utf8')
-    dec += decipher.final('utf8');
-    return dec;
+function decryptVerificationID(text) {
+    var decipher = crypto.createDecipher(cryptoAlgorithm, cryptoSecret);
+    var decrypted = decipher.update(text, 'hex', 'utf8');
+    decrypted += decipher.final('utf8');
+
+    decrypted = decrypted.split('%')[0];
+
+    return decrypted;
 }
 
 function createVerificationID(userID, cb) {
-    var verificationID = encrypt(userID);
-    cb(undefined, verificationID);
+    encryptToVerificationID(userID, function(err, verificationID) {
+        if(err) cb(err);
+        else cb(undefined, verificationID);
+    });
 }
 
 exports.createAndStoreToken = createAndStoreToken
@@ -103,3 +115,4 @@ exports.verify = verify;
 exports.expireToken = expireToken;
 exports.refreshToken = refreshToken;
 exports.createVerificationID = createVerificationID;
+exports.decryptVerificationID = decryptVerificationID;

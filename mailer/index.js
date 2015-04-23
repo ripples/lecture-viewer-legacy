@@ -3,6 +3,7 @@ var nodemailer = require('nodemailer');
 var auth = require('../authentication');
 var config = require('../config');
 
+// Gmail service transporter allows for both Google Mail and Google Apps accounts
 var transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
@@ -22,6 +23,7 @@ function sendVerificationEmail(emailAddress, userID, cb) {
     auth.createVerificationID(userID, function(err, verificationID) {
         if(err) return cb(err);
 
+        // TODO: Make this more general
         var verificationURL = 'http://localhost:3000/auth/verify/' + verificationID;
 
         var mailOptions = {
@@ -32,9 +34,9 @@ function sendVerificationEmail(emailAddress, userID, cb) {
             html: '<h2>Thanks for signing up! </h2>\nTo confirm your email address with the CS497 Lecture Viewer, click on the link below: \n<a href="' + verificationURL + '">Verify Email</a>' // HTML body
         }
 
-        //send(mailOptions, function(err, res) {
+        send(mailOptions, function(err, res) {
             cb(err, verificationID);
-        //});
+        });
     });
 }
 
