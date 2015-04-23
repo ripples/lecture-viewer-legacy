@@ -37,7 +37,7 @@ router.post('/', function(req,res) {
                         resUser.email = user.email;
                         resUser.role = user.role;
                         resUser.courses = user.courses;
-                        resUser.user_id = user_id;
+                        resUser.user_id = user._id;
 
                         /*---------------------------------------
                         Send verification email to req.body.email
