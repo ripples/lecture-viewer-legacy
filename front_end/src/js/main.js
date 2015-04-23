@@ -32,7 +32,6 @@ var routes = (
     <Route name="main" handler={Main}/>
     <Route name="login" handler={Login}/>
     <Route name="CreateAccount" handler={CreateAccount}/>
-    <Route name="ManageCourse" handler={ManageCourse} />
     <Route name="ManageLecture" handler={ManageLecture}/>
     <Route name="SettingsContainer" handler={SettingsContainer}/>
     <DefaultRoute handler={Login}/>
