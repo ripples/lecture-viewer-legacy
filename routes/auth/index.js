@@ -100,6 +100,9 @@ router.get('/verify/:verify_id', function(req,res) {
 	});
 });
 
+/*--------------------------------------
+ | Need to talk this over with Ryan
+ *-------------------------------------*/
 // Reset email sent email with link
 router.post('/password/forgot', function(req,res) {
 	var email = req.body.email;
