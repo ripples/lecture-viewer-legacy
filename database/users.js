@@ -200,10 +200,13 @@ exports.setUserRoleByEmail = function(email, newUserRole, callback) {
 /*
  * Method that changes the verification of the student.
  */
- exports.setVerification= function(id, verification, callback){
-   User.findByIdAndUpdate(
-      id,
-      {$set: {verified : verification}},
-      callback
-  );
+ exports.setVerification = function(id, verification, callback) {
+     User.findByIdAndUpdate(
+         id, {
+             $set: {
+                 verified: verification
+             }
+         },
+         callback
+     );
  };

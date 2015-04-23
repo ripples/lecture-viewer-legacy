@@ -190,9 +190,19 @@ describe('Testing User collection:', function() {
             user.email.should.eql(testUser.email);
             done();
         });
-         });
+    });
 
-
+    /*
+     * Test set user verification
+     */
+     it('setVerification: true',function(done){
+        db_api.user.setVerification(testUser._id, true, function(err, usr){
+            assert.equal(err,null);
+            assert.notEqual(usr, null);
+            assert.equal(usr.verified, true);
+            done();
+        });
+     });
    
 
 });
