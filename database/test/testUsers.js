@@ -190,6 +190,9 @@ describe('Testing User collection:', function() {
             user.email.should.eql(testUser.email);
             done();
         });
-    });
+         });
+
+
+   
 
 });

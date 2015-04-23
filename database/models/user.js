@@ -17,6 +17,7 @@ var userSchema = new Schema({
     ref: 'Course'
   }],
   notifications: [],
+  verified: Boolean,
   bookmarks: [{
     title: String,
     url: String
