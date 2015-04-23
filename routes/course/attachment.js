@@ -6,10 +6,10 @@ var uuid = require('node-uuid');
 module.exports = {
     setup: function(router) {
         //Add an attachment to a lecture
-        router.post('/:course_id/lecture/:lecture_id/attachment', function(req,res) 
+        router.post('/:course_id/lecture/:lecture_id/attachment', function(req,res)
         {
         	responseObject = {data:{}};
-                    
+
         	//Creates form that can read in file
             var form = new formidable.IncomingForm();
             //Starts parsing of the file
@@ -33,7 +33,7 @@ module.exports = {
 
 
 					fs.move(tempPath, newPath, {clobber :true}, function (err) {
-						if (err) 
+						if (err)
 						{
 							responseObject.status = "error";
                     		responseObject.data.message = "Failed to save the file correctly";
@@ -53,20 +53,20 @@ module.exports = {
 
 						res.send(responseObject);
 					});
-	           
+
 	            }else{
 	            	console.log("File is missing");
-                    
+
                     responseObject.status = "fail";
                     responseObject.data.message = "No file was provided when uploading";
 
                     res.send(responseObject);
 	            }
-            });    
+            });
         });
 
         //Delete an attachment from a lecture
-        router.delete('/:course_id/lecture/:lecture_id/attachment/:attachment_id', function(req,res) 
+        router.delete('/:course_id/lecture/:lecture_id/attachment/:attachment_id', function(req,res)
         {
             //TODO no delete specific attachment db call?
         });

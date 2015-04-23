@@ -4,8 +4,9 @@ var router = express.Router();
 var validator = require('validator');
 var bcrypt = require('bcrypt-nodejs');
 
-var database = require("../../database/index.js");
-var auth = require("../../authentication");
+var database = require('../../database/index.js');
+var auth = require('../../authentication');
+var mailer = require('../../mailer');
 
 //Add module routes
 require('./bookmark').setup(router);
@@ -41,7 +42,7 @@ router.post('/', function(req,res) {
                         /*---------------------------------------
                         Send verification email to req.body.email
                         ---------------------------------------*/
-                        auth.sendVerificationEmail(resUser.user_id, resUser.email, function(err) {
+                        mailer.sendVerificationEmail(resUser.user_id, resUser.email, function(err) {
                             if(err) return res.sendFail(err);
                             else return res.sendSuccess(resUser);
                         });
