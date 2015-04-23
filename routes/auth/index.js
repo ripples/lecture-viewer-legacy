@@ -90,13 +90,17 @@ router.get('/verify/:verify_id', function(req,res) {
 
 		// User couldn't be found in the database; verification url is invalid
 		if(!user) {
-			// Front end should have a page for invalid verification url
+			// Temp - Front end should have a page for invalid verification url
 			return res.send('Invalid verification url!');
 		}
 
-		// TODO: User's role should be set to verified at this point
-		// Then, front end should return page specifying successful verification of email
-		return res.send('Successfully verified your email address, ' + user.username + '!');
+		database.user.setVerification(decryptedUserID, true, function(err, res) {
+			// Temp
+			if(err) return res.send('Database error with setting verification status!');
+
+			// Temp - Front end should return page specifying successful verification of email
+			return res.send('Successfully verified your email address, ' + user.username + '!');
+		});
 	});
 });
 
