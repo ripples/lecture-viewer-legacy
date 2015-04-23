@@ -35,3 +35,4 @@ node_modules
 # Cache
 .sass-cache
 *.css.map
+config/index.js

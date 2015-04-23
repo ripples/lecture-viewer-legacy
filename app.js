@@ -74,7 +74,7 @@ app.use('*', function( req, res, next )
     }
 
     next();
-} );
+});
 
 
 // Route to user and course
