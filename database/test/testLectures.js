@@ -21,12 +21,13 @@ describe('Testing Lectures collection:', function() {
         });
     });
 
-    it('add List of lectures',function(done){
-    	db_api.course.addListOfLecturesById(testCourse._id,['Intro to Computation','web programming'], function(err, course){
-    		assert.equal(err,null);
-    		done();
-    	});
+    // it('add List of lectures',function(done){
+    // 	db_api.course.addListOfLecturesById(testCourse._id,['Intro to Computation','web programming'], function(err, course){
+    // 		assert.equal(err,null);
+    //         assert.notEqual()
+    // 		done();
+    // 	});
 
-    });
+    // });
 	
 });

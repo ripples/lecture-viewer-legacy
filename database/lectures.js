@@ -65,14 +65,26 @@ exports.getLectureVisibilityById = function(lectureId, callback){
 /*
  * Adds a comment to a lecture
  */
-// exports.addCommentToLecture = function(lectureId, comment, callback) {
-//     Lecture.findByIdAndUpdate(
-//         lectureId, {
-//             comments.push(comment)
-//         },
-//         callback
-//     );
-// };
+exports.addCommentToLecture = function(lectureId, comment, callback) {
+    Lecture.findById(
+        lectureId,
+        function(err, lecture) {
+            if (err)
+                callback(err);
+            else if (!lecture)
+                callback("no lecture found");
+            else {
+                lecture.comments.push(comment);
+                lecture.save(function(err) {
+                    if (err)
+                        callback(err);
+                    else
+                        callback(undefined, lecture);
+                });
+            }
+        }
+    );
+};
 
 // exports.createLecture = function (courseId, dateCaptured, whiteboardImages, screenImages, videoURL, visible);
  // - update a specific lecture by lecture id
