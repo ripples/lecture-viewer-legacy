@@ -79,10 +79,25 @@ router.get('/example2', auth.verify, function(req, res) {
 
 // Verify email with link
 router.get('/verify/:verify_id', function(req,res) {
-	res.send("Verify! " + req.params.verify_id);
+	var decryptedUserID = decryptVerificationID(req.params.verify_id);
 
-	// User is sent an email
-	// In the email is a link with verification code tied to email
+	database.user.getUserByID(decryptedUserID, function(err, user) {
+		// Error querying database
+		if(err) {
+			console.log(err);
+			return res.sendFail(err) // or use err
+		}
+
+		// User couldn't be found in the database; verification url is invalid
+		if(!user) {
+			// Front end should have a page for invalid verification url
+			return res.send('Invalid verification url!');
+		}
+
+		// TODO: User's role should be set to verified at this point
+		// Then, front end should return page specifying successful verification of email
+		return res.send('Successfully verified your email address, ' + user.username + '!');
+	});
 });
 
 // Reset email sent email with link
