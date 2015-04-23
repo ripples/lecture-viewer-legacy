@@ -1,6 +1,7 @@
 var React                 = require('react');
 var CourseActionCreator   = require('../../actions/CourseActionCreator');
 var moment                = require('moment');
+var CourseEdit            = require('./CourseEdit');
 
 var Course = React.createClass({
 
@@ -59,6 +60,7 @@ var Course = React.createClass({
         <p  className='course__description'>{this.props.course.description}</p>
         <h3 className='course__section'>{this.getFormattedSection()}</h3>
         <h3 className='course__instructor'>{this.getFormattedInstructor()}</h3>
+        <CourseEdit course_id={this.props.course.id}/>
       </div>
     );
   }

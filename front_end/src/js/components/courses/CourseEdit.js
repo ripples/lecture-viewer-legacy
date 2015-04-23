@@ -1,112 +1,161 @@
 var React                 = require('react');
 var CourseActionCreator   = require('../../actions/CourseActionCreator');
-var Course = require('./Course');
+var CourseStore           = require('../../stores/CourseStore');
+
+var Modal                 = require('react-bootstrap').Modal;
+var ModalTrigger          = require('react-bootstrap').ModalTrigger;
+var Button                = require('react-bootstrap').Button;
+var Input                 = require('react-bootstrap').Input;
+var Col                   = require('react-bootstrap').Col;
+var Row                   = require('react-bootstrap').Row;
+var OverlayMixin          = require('react-bootstrap').OverlayMixin;
 
 var CourseEdit = React.createClass({
 
   displayName: 'CourseEdit',
 
-  propTypes: {
-    course:      React.PropTypes.shape({
-      id:                   React.PropTypes.number.isRequired,
-      department:           React.PropTypes.string.isRequired,
-      department_shorthand: React.PropTypes.string.isRequired,
-      course_name:          React.PropTypes.string.isRequired,
-      course_number:        React.PropTypes.string.isRequired,
-      description:          React.PropTypes.string.isRequired,
-      section:              React.PropTypes.string.isRequired,
-      term:                 React.PropTypes.string.isRequired,
-      year:                 React.PropTypes.number.isRequired,
-      instructor_id:        React.PropTypes.string.isRequired
-    }).isRequired
+  mixins: [OverlayMixin],
+
+  propTypes : {
+    course_id:  React.PropTypes.number.isRequired
+  },
+
+  getDefaultProps : function() {
+    return {
+      course_id: 1
+    };
   },
 
   getInitialState: function() {
   	return {
+      isModalOpen: false,
   		isEditingInfo: false,
   		isEditingRoster: false,
       isUploadingCsv: false
   	};
   },
 
+  /*============================== @LIFECYCLE ==============================*/
+
+  componentDidMount : function() {
+    this.contextDidChange(this.props);
+  },
+
+  componentWillReceiveProps : function(nextProps) {
+    this.setState(this.getStateFromStores(nextProps));
+    this.contextDidChange(nextProps);
+  },
+
+  getStateFromStores : function(props) {
+    var course = CourseStore.getCourse(props.course_id);
+    if(!course || course == null) {
+      lecture = {
+        id: null,
+        department: null,
+        course_name: null,
+        course_number: null,
+        section: null,
+        term: null,
+        year: null,
+        description: null,
+        instructor_id: null
+      }
+    }
+    return { course: course };
+  },
+
+  contextDidChange : function(props) {
+    CourseActionCreator.requestCourse(props.course_id);
+  },
+
   /*============================== @HANDLING ==============================*/
-
-  handleEditInformationClick: function() {
-		this.setState({isEditingInfo: true});
-	},
-
-	handleEditRosterClick: function() {
-		this.setState({isEditingRoster: true});
-	},
-
-	handleSaveInformationClick: function() {
-		this.setState({isEditingInfo: false});
-	},
-
-	handleSaveRosterClick: function() {
-		this.setState({isEditingRoster: false});
-	},
+  handleToggle: function() {
+    this.setState({
+      isModalOpen: !this.state.isModalOpen
+    });
+  },
 
   handleUploadCsvClick: function() {
     this.setState({isUploadingCsv: !this.state.isUploadingCsv});
+  },
+
+  handleChange: function(attribute, event) {
+    event.preventDefault();
+    var course = this.state.course;
+    course[attribute] = event.target.value;
+    this.setState({course: course});
+  },
+
+  handleSaveInformation: function() {
+    CourseActionCreator.saveCourse(this.props.course_id, this.state.course);
   },
 
   /*============================== @RENDERING ==============================*/
 
   render: function() {
     return (
-      <div class='course_edit'>
-        {this.renderCourseInfo()}
-        {this.renderInfoEditButton()}
-        {this.renderRosterEditButton()} <br/><br/>
-      </div>
+      <a onClick={this.handleToggle}>Edit</a>
     )
   },
 
-  renderCourseInfo : function(){
-    var course = this.props.course;
-    if (this.state.isEditingInfo){
-      return <form>
-              <p>Department</p> <input type="text" name="course__deparment" value={course.department}/> <br/>
-              <div>Number</div> <input type="text" name="course__number" value={course.course_number}/>
-              <div>Section</div> <input type="text" name="course__section" value={course.section}/> <br/>
-              <div>Term</div> <input type="text" name="course__term" value={course.term}/>
-              <div>Year</div> <input type="text" name="course__year" value={course.year}/> <br/>
-              <p>Description</p> <br/> <textarea type="text" name="course__description" value={course.description}/> <br/>
-            </form>;
-    } else {
-      return <Course course={course}/>;
+  renderOverlay: function() {
+    if (!this.state.isModalOpen) {
+      return <span/>;
     }
-  },
 
-  renderInfoEditButton: function(){
-    if (this.state.isEditingInfo){
-      return <button onClick={this.handleSaveInformationClick}> Save Information </button>;
-    } else {
-      return <button onClick={this.handleEditInformationClick}> Edit Information </button>;
-    }
-  },
+    var course = this.state.course;
 
-  renderRosterEditButton: function() {
-    if (this.state.isEditingRoster){
-      return 	<div>
-                {this.renderUploadCsvButton()} <br/>
-                <button> Paste Email </button> <br/>
-                <button onClick={this.handleSaveRosterClick}> Save Roster </button>
-              </div>;
-    } else {
-      return <button onClick={this.handleEditRosterClick}> Edit Roster </button>;
-    }
+    return (
+      <Modal title='Course Edit' onRequestHide={this.handleToggle}>
+        <div className='modal-body'>
+          <form>
+            <Row>
+              <Col md={6}>
+                <Input type='text' label='Department' name="course__department" value={course.department} onChange={this.handleChange.bind(this, 'department')}/>
+              </Col>
+              <Col md={3}>
+                <Input type='text' label='Number' name="course__number" value={course.course_number} onChange={this.handleChange.bind(this, 'course_number')} />
+              </Col>
+              <Col md={3}>
+                <Input type='text' label='Section' name="course__section" value={course.section} onChange={this.handleChange.bind(this, 'section')} />
+              </Col>
+            </Row>
+            <Row>
+              <Col md={6}>
+                <Input type='text' label='Course Name' name="course__name" value={course.course_name} onChange={this.handleChange.bind(this, 'course_name')} />
+              </Col>
+              <Col md={3}>
+                <Input type='text' label='Term' name="course__term" value={course.term} onChange={this.handleChange.bind(this, 'term')} />
+              </Col>
+              <Col md={3}>
+                <Input type='text' label='Year' name="course__year" value={course.year} onChange={this.handleChange.bind(this, 'year')} />
+              </Col>
+            </Row>
+            <Row>
+              <Col md={6}>
+                <Input type='text' label='Instructor' name="course__instructor" value={course.instructor_id} onChange={this.handleChange.bind(this, 'instructor_id')} />
+              </Col>
+            </Row>
+            <Input type='textarea' label='Description' name="course__description" value={course.description} onChange={this.handleChange.bind(this, 'description')} />
+          </form>
+          {this.renderUploadCsvButton()} <br/>
+        </div>
+        <div className='modal-footer'>
+          <Button bsStyle='primary' onClick={this.handleSaveInformation}>Save changes</Button>
+          <Button onClick={this.handleToggle}>Close</Button>
+        </div>
+      </Modal>
+    );
   },
 
   renderUploadCsvButton: function() {
     if (this.state.isUploadingCsv){
       return <span>
-                <input type='file'/>
-                <button onClick={this.handleUploadCsvClick}> Upload </button>
+                <Input type='file' label='File'/>
+                <Button onClick={this.handleUploadCsvClick}> Upload </Button>
              </span>;
     } else {
-      return <button onClick={this.handleUploadCsvClick}> Upload CSV File </button>;
+      return <Button onClick={this.handleUploadCsvClick}> Upload Roster by CSV File </Button>;
     }
   }
 });
