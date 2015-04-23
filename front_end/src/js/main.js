@@ -3,7 +3,6 @@ var Login               = require('./components/landing/Login')
 var CreateAccount       = require('./components/landing/CreateAccount');
 var NavigationSidebar   = require('./components/structure/NavigationSidebar');
 var LectureContext      = require('./components/structure/LectureContext');
-var ManageCourse        = require('./components/courses/ManageCourse');
 var ManageLecture       = require('./components/lectures/ManageLecture');
 var SettingsContainer   = require('./components/settings/SettingsContainer');
 
