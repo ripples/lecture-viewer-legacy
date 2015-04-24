@@ -4,11 +4,11 @@ exports.comment = require('./comments');
 /*
  * Method that creates a comment
  */
-exports.createComment = function(lecture_id, user_id, content, post_date) {
+exports.createComment = function(lecture_id, user_id, content, post_date, callback) {
     Comment.find({
-        lecture: lecture_id,
-        autho: user_id,
-        content,
+        lecture_id: lecture_id,
+        author_id: user_id,
+        content: content,
         date: post_date
     }, function(err, comment) {
         if (err) {
@@ -19,6 +19,8 @@ exports.createComment = function(lecture_id, user_id, content, post_date) {
                 author: user_id,
                 date: post_date,
                 content: content
+            }, function(err, lecture){
+            	callback(err, lecture);
             });
         }
     });
