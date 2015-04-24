@@ -1,81 +1,118 @@
+var validator = require('validator');
+
+var database = require('../../database/index.js');
+var auth = require('../../authentication');
+
 //Bookmark API
 module.exports = {
     setup: function(router) {
-
-        /*-----MOCK DATA-----*/
-        var mock_bid = 456342;
-        var mock_bookmark = {
-            'bookmark_id': '2452345uw90fvsdf09',
-            'label': 'This is a bookmark',
-            'time': '12:43:56',
-            'lecture_id': 'in34523jnkj453kb'
-        };
-        /*-----MOCK DATA-----*/
 
         //Create bookmark for current user
         router.post('/bookmark', function(req,res) {
             //Check that all required parameters are present
             if(req.body.course_id && req.body.lecture_id && req.body.label && req.body.time) {
 
-                //Create the bookmark
+                if(!validator.isNumeric(req.body.time))
+                {
+                    res.sendFail("time parameter is not a number");
+                }
+                if(!validator.isMongoId(req.body.course_id))
+                {
+                    res.sendFail("course_id parameter is not a valid MongoId");
+                }
+                if(!validator.isMongoId(req.body.lecture_id))
+                {
+                    res.sendFail("lecture_id parameter is not a valid MongoId");
+                }
 
-                res.send({'status': 'success',
-                    'data': {
-                        'bookmark_id': mock_bid
-                    }
-                });
+                //Todo Set limit on label length
+
+                //Create the bookmark
+                var bookmark = {};
+                bookmark.bookmark_id = "dfaa1e1f3c23000000007855";
+                bookmark.course_id = req.body.course_id;
+                bookmark.lecture_id = req.body.lecture_id;
+                bookmark.label = req.body.label;
+                bookmark.time = req.body.time;
+
+
+                res.sendSuccess(bookmark);
             }
             else {
-                res.send({'status': 'fail',
-                    'data': {
-                        'title': 'Incorrect parameters'
-                    }
-                });
+                res.sendFail("Incorrect parameters");
             }
         });
 
         //Get user's bookmarks for specific course
         router.get('/bookmark/course/:course_id', function(req,res) {
 
+            if(!validator.isMongoId(req.params.course_id))
+            {
+                res.sendFail("course_id parameter is not a valid MongoId");
+            }
+
             //Get bookmarks from the db
 
-            res.send({'status': 'success',
-                'data': {
-                    'bookmarks': [
-                        mock_bookmark
-                    ]
-                }
-            });
+            res.sendSuccess({});
         });
 
         //Get user's bookmarks for specific lecture of a course
-        router.get('/bookmark/:course_id/lecture/:lecture_id', function(req,res) {
+        router.get('/bookmark/course/:course_id/lecture/:lecture_id', function(req,res) {
+
+            if(!validator.isMongoId(req.params.course_id))
+            {
+                res.sendFail("course_id parameter is not a valid MongoId");
+            }
+            if(!validator.isMongoId(req.params.lecture_id))
+            {
+                res.sendFail("lecture_id parameter is not a valid MongoId");
+            }
 
             //Get bookmarks from the db
 
-            res.send({'status': 'success',
-                'data': {
-                    'bookmarks': [
-                        mock_bookmark
-                    ]
-                }
-            });
+            res.sendSuccess({});
         });
 
         //Delete specific bookmark
         router.delete('/bookmark/:bookmark_id', function(req,res) {
 
+            if(!validator.isMongoId(req.params.bookmark_id))
+            {
+                res.sendFail("bookmark_id parameter is not a valid MongoId");
+            }
             //Delete the bookmark
 
-            res.send({'status': 'success'});
+            res.sendSuccess({});
         });
 
         //Edit specific bookmark
         router.put('/bookmark/:bookmark_id', function(req,res) {
 
-            //Send the edit object onto the database
+            if(req.body.label) {
 
-            res.send({'status': 'success'});
+                if(!validator.isMongoId(req.params.bookmark_id))
+                {
+                    res.sendFail("bookmark_id parameter is not a valid MongoId");
+                }
+
+                //Todo Set limit on label length
+
+                //Create the bookmark
+                var bookmark = {
+                    "course_id" : "dfb11e1f3c23000000007855",
+                    "lecture_id" : "4cdfb11e1f3c000000007822",
+                    "label" : "New Bookmark! :D",
+                    "time" : "140"
+                }
+
+                bookmark.bookmark_id = req.params.bookmark_id;
+                bookmark.label = req.body.label;
+
+                res.sendSuccess(bookmark);
+            }
+            else {
+                res.sendFail("Incorrect parameters");
+            }
         });
     }
 };
