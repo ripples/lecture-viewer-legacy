@@ -5,4 +5,9 @@ var assert = require('assert');
 /*
  * 
  */
-describe('Test Comment Collection',function(){});
+describe('Test Comment Collection',function(){
+	before(function(done){
+		
+	});
+
+});

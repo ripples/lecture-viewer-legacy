@@ -1,9 +1,8 @@
 var Comment = require('./models/comment');
 exports.lecture = require('./lectures');
 exports.comment = require('./comments');
-
 /*
- * Methd that creates a comment
+ * Method that creates a comment
  */
 exports.createComment = function(lecture_id, user_id, content, post_date) {
     Comment.find({
@@ -22,5 +21,18 @@ exports.createComment = function(lecture_id, user_id, content, post_date) {
                 content: content
             });
         }
+    });
+};
+/*
+ * Method that delectes the whole database for comments
+ */
+exports.dropCommentsDatabase = function(callback) {
+    Comment.remove({}, function(err) {
+        if (err) {
+            console.log(err);
+        } else {
+        	console.log("Comment Database Droped");
+        }
+        callback;
     });
 };
