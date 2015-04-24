@@ -191,7 +191,7 @@ describe('Testing Courses collection:', function() {
         });
     });
     /*
-     *
+     * tests that a course is updated properly
      */
     it('Updates a course by ID: ID', function(done) {
         db_api.course.updateCourse(testCourse._id, 'Mathematics', 'Math101', 'Intro to Algebra', 'Spring', '2013', 'Eliot', function(err, course) {
@@ -202,6 +202,22 @@ describe('Testing Courses collection:', function() {
             course.courseNumber.should.eql('Math101');
             course.courseTitle.should.eql('Intro to Algebra');
             course.year.should.eql(2013);
+            done();
+        });
+    });
+    /*
+     * tests that a courses get retreived by semester
+     */
+    it('retreives courses by semester',function(done){
+        db_api.course.getAllCoursesBySemester("Spring", function(err, course){
+            assert.equal(err, null);
+            assert.notEqual(course, null);
+            course[0].semester.should.eql('Spring');
+            course[0].semester.should.eql('Spring');
+            course[0].department.should.eql('Mathematics');
+            course[0].courseNumber.should.eql('Math101');
+            course[0].courseTitle.should.eql('Intro to Algebra');
+            course[0].year.should.eql(2013);
             done();
         });
     });

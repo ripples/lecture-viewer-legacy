@@ -235,3 +235,19 @@ exports.updateCourse = function(id, newDepartment, newCourseNumber, newCourseTit
         }
     }, callback);
 };
+/*
+ * This method gets all courses by semester
+ */
+exports.getAllCoursesBySemester = function(semester, callback) {
+    Course.find({
+        semester: semester
+    }, function(err, course) {
+        if (err) {
+            callback(err);
+        } else if (!course) {
+            callback("No courses in that semester");
+        } else {
+            callback(undefined, course);
+        }
+    });
+};

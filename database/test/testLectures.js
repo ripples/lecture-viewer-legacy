@@ -2,7 +2,7 @@ var db_api = require('../../database');
 var should = require('chai').should();
 var assert = require('assert');
 describe('Testing Lectures collection:', function() {
-    this.timeout(1000000);
+    this.timeout(10000);
     var testCourse = null;
     before(function(done) {
         db_api.course.dropCoursesDatabase(function() {
@@ -20,11 +20,12 @@ describe('Testing Lectures collection:', function() {
     var testLecture = null;
     before(function(done) {
         db_api.lecture.dropLecturesDatabase(function() {
-              console.log("esto");
             db_api.lecture.createLecture(testCourse, new Date().getDate(), "thisvideo", true, function(err, lecture) {
                 testLecture = lecture;
                 assert.equal(err, null);
                 assert.notEqual(lecture, null);
+                assert.equal(lecture.video, "thisvideo");
+                assert.equal(lecture.visible, true);
                 done();
             });
         });
@@ -40,4 +41,5 @@ describe('Testing Lectures collection:', function() {
     // it('add comment to lecture: lectureID', function(done) {
     //     db_api.lecture.addCommentToLecture();
     // });
+    
 });
