@@ -62,7 +62,6 @@ exports.addCommentToLecture = function(lectureId, comment, callback) {
         }
     });
 };
-
 /*
  * This method creates a lecture linked to a course
  */
@@ -88,9 +87,8 @@ exports.createLecture = function(course, date, video, visible, callback) {
         }
     });
 };
-
 /*
- * Deletes Lecture database 
+ * Deletes Lecture database
  */
 exports.dropLecturesDatabase = function(callback) {
     Lecture.remove({}, function(err) {

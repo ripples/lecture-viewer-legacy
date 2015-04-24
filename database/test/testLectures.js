@@ -41,35 +41,3 @@ describe('Testing Lectures collection:', function() {
     //     db_api.lecture.addCommentToLecture();
     // });
 });
-/*var lectureSchema = new Schema({
-  // reference to the course that this lecture belongs to, should be an ObjectIds in Course collection.
-  course: {
-    
-  },
-  date: {type: Date, unique: true},
-  // link to lecture video
-  video: String,
-  // visibility of the courses
-  visible: Boolean,
-  // links to lecture whiteboard images,
-  whiteboardImages: [String],
-  // links to lecture computer screen images,
-  screenImages: [String],
-  comments: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Comment'
-  }]
-});
-
-{
-course: course
-date: date
-video: string
-whiteboardImages: arraystrings
-screenImages array strings.
-}
-
-
-
-
-*/
