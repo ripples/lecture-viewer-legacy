@@ -70,4 +70,4 @@
 
 |Number|Method|return|
 |---------|-------------------|-----------|
-|createComment(lecture_id, user_id, content, post_date, callback)| return lecture|
+|1|createComment(lecture_id, user_id, content, post_date, callback)| return lecture|
