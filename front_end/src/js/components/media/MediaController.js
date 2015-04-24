@@ -69,8 +69,9 @@ var MediaController = React.createClass({
 
   renderPlayToggleButton: function() {
     return (
-      <button type="button" id="play-pause" onClick={this.handleTogglePlayClick}>
-        {this.props.paused ? 'Play' : 'Pause'}
+      <button type="button" id="play-pause"
+        className={this.props.paused ? 'play' : 'pause'}
+        onClick={this.handleTogglePlayClick}>
       </button>
     );
   },
@@ -109,12 +110,14 @@ var MediaController = React.createClass({
         <span className='current-time'>
           {this.getFormattedTime(this.props.currentTime)}
         </span>
-        <input type="range" id="seek-bar" value={this.getSeekValue()} onChange={function() {}}
-          onInput={this.handleSeekChange}/>
-        <span className='remaining-time'>
-          {this.getFormattedTime(this.props.duration - this.props.currentTime)}
-        </span>
-        <progress value={this.getSeekValue()} max="100"></progress>
+        <div className='seek-bar__range-progress'>
+          <input type="range" id="seek-bar" className='range-progress__input' value={this.getSeekValue()} onChange={function() {}}
+            onInput={this.handleSeekChange}/>
+          <progress className='range-progress__progress' value={this.getSeekValue()} max="100"></progress>
+          <span className='remaining-time'>
+            {this.getFormattedTime(this.props.duration - this.props.currentTime)}
+          </span>
+        </div>
       </div>
     );
   }
