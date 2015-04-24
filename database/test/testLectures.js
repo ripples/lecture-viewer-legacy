@@ -105,6 +105,9 @@ describe('Testing Lectures collection:', function() {
             done();
         });
     });
+    /*
+     * test that a comment is being deleted properly
+     */
     it('deltes a comment using id', function(done){
         db_api.comment.deleteComment(testComment._id, function(err, comment){
             assert.equal(err,null);
