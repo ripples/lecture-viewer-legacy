@@ -1,12 +1,9 @@
 var db_api = require('../../database');
 var should = require('chai').should();
 var assert = require('assert');
-
 describe('Testing Lectures collection:', function() {
-
-
+    this.timeout(1000000);
     var testCourse = null;
-    var testUser = null;
     before(function(done) {
         db_api.course.dropCoursesDatabase(function() {
             db_api.course.createCourse('CS', 'CS121', 'Intro to CS', 'Fall', '2015', 'Tim', function(err, course) {
@@ -20,14 +17,59 @@ describe('Testing Lectures collection:', function() {
             });
         });
     });
-
-    // it('add List of lectures',function(done){
-    // 	db_api.course.addListOfLecturesById(testCourse._id,['Intro to Computation','web programming'], function(err, course){
-    // 		assert.equal(err,null);
-    //         assert.notEqual()
-    // 		done();
-    // 	});
-
+    var testLecture = null;
+    before(function(done) {
+        db_api.lecture.dropLecturesDatabase(function() {
+              console.log("esto");
+            db_api.lecture.createLecture(testCourse, new Date().getDate(), "thisvideo", true, function(err, lecture) {
+                testLecture = lecture;
+                assert.equal(err, null);
+                assert.notEqual(lecture, null);
+                done();
+            });
+        });
+    });
+    it('add List of lectures', function(done) {
+        db_api.course.addListOfLecturesById(testCourse._id, {}, function(err, lecture) {
+            console.log(lecture);
+            assert.equal(err, null);
+            assert.notEqual(lecture, null);
+            done();
+        });
+    });
+    // it('add comment to lecture: lectureID', function(done) {
+    //     db_api.lecture.addCommentToLecture();
     // });
-	
 });
+/*var lectureSchema = new Schema({
+  // reference to the course that this lecture belongs to, should be an ObjectIds in Course collection.
+  course: {
+    
+  },
+  date: {type: Date, unique: true},
+  // link to lecture video
+  video: String,
+  // visibility of the courses
+  visible: Boolean,
+  // links to lecture whiteboard images,
+  whiteboardImages: [String],
+  // links to lecture computer screen images,
+  screenImages: [String],
+  comments: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Comment'
+  }]
+});
+
+{
+course: course
+date: date
+video: string
+whiteboardImages: arraystrings
+screenImages array strings.
+}
+
+
+
+
+*/
