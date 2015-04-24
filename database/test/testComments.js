@@ -49,15 +49,33 @@ describe('Test Comment Collection', function() {
             });
         });
     });
+    /*
+     * Test that a comment gets added to a lecture
+     */
+     var testComment = null;
     it('test that creates a comment', function(done) {
         db_api.comment.createComment(testLecture._id, testUser._id, "comment", new Date().getDate(), function(err, comment) {
+            testComment = comment;
             assert.equal(err, null);
             assert.notEqual(comment, null);
-            console.log(comment);
             assert.equal(comment.content, "comment");
             assert.equal(comment.author, testUser._id);
             assert.equal(comment.lecture, testLecture._id);
             done();
         });
     });
+    /*
+     * Test that a comment gets retreived properly
+     */
+     it('retreives a comment by id: commentId', function(done){
+     	db_api.lecture.getCommentsById(testLecture._id, function(err, comment){
+     		assert.equal(err,null);
+     		assert.notEqual(comment, null);
+     		console.log(comment);
+     		done();
+     	});
+     });
+     
+
+
 });

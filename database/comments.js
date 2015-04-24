@@ -19,8 +19,8 @@ exports.createComment = function(lecture_id, user_id, content, post_date, callba
                 author: user_id,
                 date: post_date,
                 content: content
-            }, function(err, lecture){
-            	callback(err, lecture);
+            }, function(err, lecture) {
+                callback(err, lecture);
             });
         }
     });
@@ -33,7 +33,7 @@ exports.dropCommentsDatabase = function(callback) {
         if (err) {
             console.log(err);
         } else {
-        	console.log("Comment Database Droped");
+            console.log("Comment Database Droped");
         }
         callback;
     });

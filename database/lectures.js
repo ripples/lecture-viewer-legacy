@@ -6,15 +6,15 @@ var Lecture = require('./models/lecture');
   Methods to work with Lecture database.
   For getter methods, callback should be in the form function(err, data).
  */
-exports.getCommentsById = function(id, callback) {
-    Lecture.findById(id).populate('comments').exec(function(err, lecture) {
+exports.getCommentsById = function(lectureID, callback) {
+    Lecture.findById(lectureID).populate('comments').exec(function(err, lecture) {
         if (err) callback(err);
         else if (!lecture) callback("lectureID does not exist.");
         else callback(undefined, lecture.comments);
     });
 };
 exports.getLectureById = function(lectureId, callback) {
-    Lecture.findById(id, function(err, lecture) {
+    Lecture.findById(lectureId, function(err, lecture) {
         if (err) {
             callback(err);
         } else if (!lecture) {
