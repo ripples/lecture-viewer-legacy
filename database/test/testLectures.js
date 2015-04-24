@@ -105,4 +105,12 @@ describe('Testing Lectures collection:', function() {
             done();
         });
     });
+    it('deltes a comment using id', function(done){
+        db_api.comment.deleteComment(testComment._id, function(err, comment){
+            assert.equal(err,null);
+            assert.notEqual(comment,null);
+            comment._id.should.eql(testComment._id);
+            done();
+        });
+    });
 });

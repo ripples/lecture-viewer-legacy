@@ -71,3 +71,4 @@
 |Number|Method|return|
 |---------|-------------------|-----------|
 |1|createComment(lecture_id, user_id, content, post_date, callback)| return lecture|
+|2|deleteComment(comment_id)| return deleted comment(if any)|

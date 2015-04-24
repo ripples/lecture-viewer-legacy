@@ -38,3 +38,15 @@ exports.dropCommentsDatabase = function(callback) {
         callback;
     });
 };
+/*
+ * delete a comment using id
+ */
+ exports.deleteComment = function(comment_id, callback){
+    Comment.findByIdAndRemove(comment_id,function(err, comment){
+        if(err){
+            callback(err);
+        }else{
+            callback(undefined, comment);
+        }
+    });
+ };
