@@ -53,6 +53,7 @@ describe('Test Comment Collection', function() {
         db_api.comment.createComment(testLecture._id, testUser._id, "comment", new Date().getDate(), function(err, comment) {
             assert.equal(err, null);
             assert.notEqual(comment, null);
+            console.log(comment);
             assert.equal(comment.content, "comment");
             assert.equal(comment.author, testUser._id);
             assert.equal(comment.lecture, testLecture._id);
