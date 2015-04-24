@@ -14,15 +14,15 @@ module.exports = {
 
                 if(!validator.isNumeric(req.body.time))
                 {
-                    res.sendFail("time parameter is not a number");
+                    return res.sendFail("time parameter is not a number");
                 }
                 if(!validator.isMongoId(req.body.course_id))
                 {
-                    res.sendFail("course_id parameter is not a valid MongoId");
+                    return res.sendFail("course_id parameter is not a valid MongoId");
                 }
                 if(!validator.isMongoId(req.body.lecture_id))
                 {
-                    res.sendFail("lecture_id parameter is not a valid MongoId");
+                    return res.sendFail("lecture_id parameter is not a valid MongoId");
                 }
 
                 //Todo Set limit on label length
@@ -35,11 +35,10 @@ module.exports = {
                 bookmark.label = req.body.label;
                 bookmark.time = req.body.time;
 
-
-                res.sendSuccess(bookmark);
+                return res.sendSuccess(bookmark);
             }
             else {
-                res.sendFail("Incorrect parameters");
+                return res.sendFail("Incorrect parameters");
             }
         });
 
@@ -48,12 +47,12 @@ module.exports = {
 
             if(!validator.isMongoId(req.params.course_id))
             {
-                res.sendFail("course_id parameter is not a valid MongoId");
+                return res.sendFail("course_id parameter is not a valid MongoId");
             }
 
             //Get bookmarks from the db
 
-            res.sendSuccess({});
+            return res.sendSuccess({});
         });
 
         //Get user's bookmarks for specific lecture of a course
@@ -61,16 +60,16 @@ module.exports = {
 
             if(!validator.isMongoId(req.params.course_id))
             {
-                res.sendFail("course_id parameter is not a valid MongoId");
+                return res.sendFail("course_id parameter is not a valid MongoId");
             }
             if(!validator.isMongoId(req.params.lecture_id))
             {
-                res.sendFail("lecture_id parameter is not a valid MongoId");
+                return res.sendFail("lecture_id parameter is not a valid MongoId");
             }
 
             //Get bookmarks from the db
 
-            res.sendSuccess({});
+            return res.sendSuccess({});
         });
 
         //Delete specific bookmark
@@ -78,11 +77,11 @@ module.exports = {
 
             if(!validator.isMongoId(req.params.bookmark_id))
             {
-                res.sendFail("bookmark_id parameter is not a valid MongoId");
+                return res.sendFail("bookmark_id parameter is not a valid MongoId");
             }
             //Delete the bookmark
 
-            res.sendSuccess({});
+            return res.sendSuccess({});
         });
 
         //Edit specific bookmark
@@ -92,7 +91,7 @@ module.exports = {
 
                 if(!validator.isMongoId(req.params.bookmark_id))
                 {
-                    res.sendFail("bookmark_id parameter is not a valid MongoId");
+                    return res.sendFail("bookmark_id parameter is not a valid MongoId");
                 }
 
                 //Todo Set limit on label length
@@ -108,10 +107,10 @@ module.exports = {
                 bookmark.bookmark_id = req.params.bookmark_id;
                 bookmark.label = req.body.label;
 
-                res.sendSuccess(bookmark);
+                return res.sendSuccess(bookmark);
             }
             else {
-                res.sendFail("Incorrect parameters");
+                return res.sendFail("Incorrect parameters");
             }
         });
     }
