@@ -32,8 +32,8 @@
 ## Courses API
 ---
 
-|	Method										|  return              |
-|------------------------------------------------|-----------------------------------|
+| |	Method										|  return              |
+|----------------|--------------------------------|-----------------------------------|
 |1|addListOfEmailsById(courseId, emailList, callback) | return course document with new email list |
 |2|addListOfLecturesById(courseId, lectureIdList, callback) | return course document with new lecture list |
 |3|addListOfUsersById(courseId, userIdList, callback) | return course document with new users list |
