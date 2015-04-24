@@ -87,7 +87,6 @@ exports.createLecture = function(course, date, video, visible, callback) {
         }
     });
 };
-
 /*
 
 
@@ -95,7 +94,6 @@ whiteboardImages
 screenImages
 comments
 */
-
 /*
  * Deletes Lecture database
  */
@@ -109,11 +107,9 @@ exports.dropLecturesDatabase = function(callback) {
         callback();
     });
 };
-
 /*
- * 
+ *
  */
- exports.updateLecture = function(){};
-
- // updateLecture
- // deleteComment
+exports.updateLecture = function() {};
+// updateLecture
+// deleteComment

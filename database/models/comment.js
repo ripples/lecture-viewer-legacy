@@ -17,6 +17,7 @@ var commentSchema = new Schema({
     ref: 'User'
   },
   content: String,
+  time: Number,
   date: Date
 });
 

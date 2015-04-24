@@ -73,7 +73,7 @@ describe('Testing Lectures collection:', function() {
      */
     var testComment = null;
     it('test that creates a comment', function(done) {
-        db_api.comment.createComment(testLecture._id, testUser._id, "Lorem Ipsum dolor sit amet, consectetur adipiscing", new Date().getDate(), function(err, comment) {
+        db_api.comment.createComment(testLecture._id, testUser._id , "Lorem Ipsum dolor sit amet, consectetur adipiscing", new Date().getDate(), function(err, comment) {
             testComment = comment;
             assert.equal(err, null);
             assert.notEqual(comment, null);
