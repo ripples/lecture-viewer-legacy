@@ -32,7 +32,7 @@
 ## Courses API
 ---
 
-| |	Method										|  return              |
+| Number|	Method										|  return              |
 |----------------|--------------------------------|-----------------------------------|
 |1|addListOfEmailsById(courseId, emailList, callback) | return course document with new email list |
 |2|addListOfLecturesById(courseId, lectureIdList, callback) | return course document with new lecture list |
@@ -46,10 +46,28 @@
 |10|getEligibleEmailsById(id, callback) | return eligible emails to view the course material|
 |11|getRegisteredUsersById(id, callback) | return course's registered users |
 |12|dropCoursesDatabase(callback)| return 1 if the db has been droped successfully|
-|13|updateCourse(course_ID, newDepartment, newCourseNumber, newCourseTitle, newSemester, newYear, newInstructor, callback)| returns the new course(uf any to modify)|
+|13|updateCourse(course_ID, newDepartment, newCourseNumber, newCourseTitle, newSemester, newYear, newInstructor, callback)| returns the new course(if any to modify)|
 |14|getAllCoursesBySemester(semester, callback)| return array of courses for a given semester|
 
 
+## Lectures API
+---
 
 
+|Number|Method|return|
+|---------|-------------------|-----------|
+|1|getCommentsById(courseId, emailList, callback)| return an array of comments|
+|2|getLectureById(lectureID, callback)|return |
+|3|setLectureVisibilityById(lectureId, visibility, callback)| return lecture(if any)|
+|4|getLectureVisibilityById(lectureId, callback)| return lecture.visible(if any)|
+|5|addCommentToLecture(lectureId, comment, callback)|return lecture|
+|6|createLecture(course, date, video, visible, callback)| return lecture|
+|7|dropLecturesDatabase(callback)| return 1 if the db has been droped successfully|
 
+
+## Comment API
+---
+
+|Number|Method|return|
+|---------|-------------------|-----------|
+|createComment(lecture_id, user_id, content, post_date, callback)| return lecture|
