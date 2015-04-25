@@ -20,14 +20,14 @@ describe('Testing Lectures collection:', function() {
     var testUser = null;
     before(function(done) {
         db_api.user.dropUserDatabase(function() {
-            db_api.user.createUser('test@test.com', 'password', 'first', 'last', 'role', function(err, doc) {
+            db_api.user.createUser('test@test.com', 'password', 'John', 'Doe', 'role', function(err, doc) {
                 testUser = doc;
                 assert.equal(err, null);
                 assert.notEqual(testUser, null);
                 assert.equal(testUser.email, 'test@test.com');
                 assert.equal(testUser.password, 'password');
-                assert.equal(testUser.name.first, 'first');
-                assert.equal(testUser.name.last, 'last');
+                assert.equal(testUser.name.first, 'John');
+                assert.equal(testUser.name.last, 'Doe');
                 assert.equal(testUser.role, 'role');
                 done();
             });
@@ -73,11 +73,13 @@ describe('Testing Lectures collection:', function() {
      */
     var testComment = null;
     it('test that creates a comment', function(done) {
-        db_api.comment.createComment(testLecture._id, testUser._id , "Lorem Ipsum dolor sit amet, consectetur adipiscing", new Date().getDate(), function(err, comment) {
+    var firstandlast = testUser.name.first +" "+testUser.name.last;
+        db_api.comment.createComment(testLecture._id, testUser._id, firstandlast,188, "Lorem Ipsum dolor sit amet, consectetur adipiscing", new Date().getDate(), function(err, comment) {
             testComment = comment;
             assert.equal(err, null);
             assert.notEqual(comment, null);
             assert.equal(comment.content, "Lorem Ipsum dolor sit amet, consectetur adipiscing");
+            console.log(comment);
             assert.equal(comment.author, testUser._id);
             assert.equal(comment.lecture, testLecture._id);
             done();

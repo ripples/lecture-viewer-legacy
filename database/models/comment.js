@@ -16,6 +16,7 @@ var commentSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User'
   },
+  poster_name: String,
   content: String,
   time: Number,
   date: Date

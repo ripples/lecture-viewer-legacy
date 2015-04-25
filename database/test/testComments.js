@@ -54,7 +54,7 @@ describe('Test Comment Collection', function() {
      */
      var testComment = null;
     it('test that creates a comment', function(done) {
-        db_api.comment.createComment(testLecture._id, testUser._id, "comment", new Date().getDate(), function(err, comment) {
+        db_api.comment.createComment(testLecture._id, testUser._id, testUser.name.first + " " +testUser.name.last,188,  "comment", new Date().getDate(), function(err, comment) {
             testComment = comment;
             assert.equal(err, null);
             assert.notEqual(comment, null);
