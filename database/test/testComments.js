@@ -71,7 +71,9 @@ describe('Test Comment Collection', function() {
     	db_api.comment.updateComment(testComment._id,testLecture._id, testUser._id, "Ryan Mullens" ,277,  "lorem ipsum", new Date().getDate(), function(err, comment){
     		assert.equal(err, null);
     		assert.notEqual(comment, null);
-    		console.log(comment);
+    		assert.equal(comment.poster_name, "Ryan Mullens");
+    		assert.equal(comment.time, 277);
+
     		done();
     	});
     });
@@ -82,7 +84,7 @@ describe('Test Comment Collection', function() {
      	db_api.lecture.getCommentsById(testLecture._id, function(err, comment){
      		assert.equal(err,null);
      		assert.notEqual(comment, null);
-     		console.log(comment);
+     		// console.log(comment);
      		done();
      	});
      });
