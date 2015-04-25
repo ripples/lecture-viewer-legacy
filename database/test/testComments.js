@@ -65,6 +65,17 @@ describe('Test Comment Collection', function() {
         });
     });
     /*
+     * Tests that a comment is updated properly
+     */
+    it('updates a comment: comment_id', function(done){
+    	db_api.comment.updateComment(testComment._id,testLecture._id, testUser._id, "Ryan Mullens" ,277,  "lorem ipsum", new Date().getDate(), function(err, comment){
+    		assert.equal(err, null);
+    		assert.notEqual(comment, null);
+    		console.log(comment);
+    		done();
+    	});
+    });
+    /*
      * Test that a comment gets retreived properly
      */
      it('retreives a comment by id: commentId', function(done){

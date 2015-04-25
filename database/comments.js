@@ -43,12 +43,27 @@ exports.dropCommentsDatabase = function(callback) {
 /*
  * delete a comment using id
  */
- exports.deleteComment = function(comment_id, callback){
-    Comment.findByIdAndRemove(comment_id,function(err, comment){
-        if(err){
+exports.deleteComment = function(comment_id, callback) {
+    Comment.findByIdAndRemove(comment_id, function(err, comment) {
+        if (err) {
             callback(err);
-        }else{
+        } else {
             callback(undefined, comment);
         }
     });
- };
+};
+/*
+ * Method to update Comment by id
+ */
+exports.updateComment = function(comment_id, lecture_id, user_id, firstandlast, time, content, post_date, callback) {
+    Comment.findByIdAndUpdate(comment, {
+        $set: {
+            lecture: lecture_id,
+            author: user_id,
+            poster_name: firstandlast,
+            time: time,
+            date: post_date,
+            content: content
+        }
+    }, callback);
+}
