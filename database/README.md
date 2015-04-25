@@ -24,7 +24,7 @@
 |12|setUsernameById(user_id, newUsername, callback) | return edited user (if any)|
 |13|getUserByEmail(user_email)|return user info|
 |14|setVerification(user_id, verification(true/false))| return user's info(if any)|
-
+|15|resetPassword(user_id, newPassword)| return user object(if any)|
 
 
 
@@ -48,7 +48,7 @@
 |12|dropCoursesDatabase(callback)| return 1 if the db has been droped successfully|
 |13|updateCourse(course_ID, newDepartment, newCourseNumber, newCourseTitle, newSemester, newYear, newInstructor, callback)| returns the new course(if any to modify)|
 |14|getAllCoursesBySemester(semester, callback)| return array of courses for a given semester|
-|15|resetPassword(user_id, newPassword)| return user object(if any)|
+
 
 ## Lectures API
 ---

@@ -92,7 +92,6 @@ exports.createLecture = function(course, date, video, visible, callback) {
 
 whiteboardImages
 screenImages
-comments
 */
 /*
  * Deletes Lecture database
