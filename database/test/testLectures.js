@@ -36,12 +36,16 @@ describe('Testing Lectures collection:', function() {
     var testLecture = null;
     before(function(done) {
         db_api.lecture.dropLecturesDatabase(function() {
-            db_api.lecture.createLecture(testCourse, new Date().getDate(), "thisvideo", true, function(err, lecture) {
+            db_api.lecture.createLecture(testCourse, new Date().getDate(), "thisvideo", true, ["WhiteBoard1", "WhiteBoad2"], ["screen1", "screen2"], function(err, lecture) {
                 testLecture = lecture;
                 assert.equal(err, null);
                 assert.notEqual(lecture, null);
                 assert.equal(lecture.video, "thisvideo");
                 assert.equal(lecture.visible, true);
+                assert.equal(lecture.whiteboardImages[0], "WhiteBoard1");
+                assert.equal(lecture.whiteboardImages[1], "WhiteBoad2");
+                assert.equal(lecture.screenImages[0], "screen1");
+                assert.equal(lecture.screenImages[1], "screen2");
                 done();
             });
         });
@@ -73,13 +77,12 @@ describe('Testing Lectures collection:', function() {
      */
     var testComment = null;
     it('test that creates a comment', function(done) {
-    var firstandlast = testUser.name.first +" "+testUser.name.last;
-        db_api.comment.createComment(testLecture._id, testUser._id, firstandlast,188, "Lorem Ipsum dolor sit amet, consectetur adipiscing", new Date().getDate(), function(err, comment) {
+        var firstandlast = testUser.name.first + " " + testUser.name.last;
+        db_api.comment.createComment(testLecture._id, testUser._id, firstandlast, 188, "Lorem Ipsum dolor sit amet, consectetur adipiscing", new Date().getDate(), function(err, comment) {
             testComment = comment;
             assert.equal(err, null);
             assert.notEqual(comment, null);
             assert.equal(comment.content, "Lorem Ipsum dolor sit amet, consectetur adipiscing");
-            console.log(comment);
             assert.equal(comment.author, testUser._id);
             assert.equal(comment.lecture, testLecture._id);
             done();
@@ -103,17 +106,17 @@ describe('Testing Lectures collection:', function() {
         db_api.lecture.getCommentsById(testLecture._id, function(err, comments) {
             assert.equal(err, null);
             assert.notEqual(comments, null);
-            comments[0].lecture.should.eql( testLecture._id);
+            comments[0].lecture.should.eql(testLecture._id);
             done();
         });
     });
     /*
      * test that a comment is being deleted properly
      */
-    it('deltes a comment using id', function(done){
-        db_api.comment.deleteComment(testComment._id, function(err, comment){
-            assert.equal(err,null);
-            assert.notEqual(comment,null);
+    it('deltes a comment using id', function(done) {
+        db_api.comment.deleteComment(testComment._id, function(err, comment) {
+            assert.equal(err, null);
+            assert.notEqual(comment, null);
             comment._id.should.eql(testComment._id);
             done();
         });

@@ -65,7 +65,7 @@ exports.addCommentToLecture = function(lectureId, comment, callback) {
 /*
  * This method creates a lecture linked to a course
  */
-exports.createLecture = function(course, date, video, visible, callback) {
+exports.createLecture = function(course, date, video, visible, whiteboardImages, screenImages, callback) {
     Lecture.find({
         course: course,
         date: date,
@@ -80,7 +80,9 @@ exports.createLecture = function(course, date, video, visible, callback) {
                 course: course,
                 date: date,
                 video: video,
-                visible: visible,
+                whiteboardImages: whiteboardImages,
+                screenImages: screenImages,
+                visible: visible
             }, function(err, lecture) {
                 callback(err, lecture);
             });
