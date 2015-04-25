@@ -22,6 +22,33 @@ describe('Testing User collection:', function() {
             });
         });
     });
+    var testCourse = null;
+    before(function(done) {
+        db_api.course.dropCoursesDatabase(function() {
+            db_api.course.createCourse('CS', 'CS121', 'Intro to CS', 'Fall', '2015', 'Tim', function(err, course) {
+                testCourse = course;
+                assert.equal(err, null);
+                assert.notEqual(testCourse, null);
+                assert.equal(testCourse.semester, 'Fall');
+                assert.equal(testCourse.department, 'CS');
+                assert.equal(testCourse.courseNumber, 'CS121');
+                done();
+            });
+        });
+    });
+    var testLecture = null;
+    before(function(done) {
+        db_api.lecture.dropLecturesDatabase(function() {
+            db_api.lecture.createLecture(testCourse, new Date().getDate(), "thisvideo", true, ["WhiteBoard1", "WhiteBoad2"], ["screen1", "screen2"], function(err, lecture) {
+                testLecture = lecture;
+                assert.equal(err, null);
+                assert.notEqual(lecture, null);
+                assert.equal(lecture.video, "thisvideo");
+                assert.equal(lecture.visible, true);
+                done();
+            });
+        });
+    });
     /*
      * post-condition
      */
@@ -102,16 +129,15 @@ describe('Testing User collection:', function() {
     /*
      * Tests whether a bookmark is properly added by the function.
      */
-    it('Add bookmark by ObjectId: id, title, url', function(done) {
-        db_api.user.bookmark.addBookmarkById(testUser._id, {
-            title: "title",
-            url: "url"
-        }, function(err, user) {
+    it('Add bookmark by ObjectId:', function(done) {
+        db_api.user.bookmark.addBookmarkById(testUser._id, testLecture._id, testCourse._id, "thisLable", 255, function(err, user) {
             assert.equal(err, null);
             assert.notEqual(user, null);
             user.bookmarks.length.should.eql(1);
-            user.bookmarks[0].title.should.eql('title');
-            user.bookmarks[0].url.should.eql('url');
+            user.bookmarks[0].lecture_id.should.eql(testLecture._id);
+            user.bookmarks[0].course_id.should.eql(testCourse._id);
+            assert.equal(user.bookmarks[0].label,"thisLable");
+            assert.equal(user.bookmarks[0].time,255);
             done();
         });
     });
@@ -123,8 +149,8 @@ describe('Testing User collection:', function() {
             assert.equal(err, null);
             assert.notEqual(bookmarks, null);
             assert.equal(bookmarks.length, 1);
-            bookmarks[0].title.should.eql('title');
-            bookmarks[0].url.should.eql('url');
+            assert.equal(bookmarks[0].label,"thisLable");
+            assert.equal(bookmarks[0].time,255);
             done();
         });
     });
@@ -187,10 +213,10 @@ describe('Testing User collection:', function() {
     /*
      * Test that resetPassword changes the password from the user.
      */
-    it('resets the password of a given user', function(done){
-        db_api.user.resetPassword(testUser._id, "beakingSoda", function(err, user){
+    it('resets the password of a given user', function(done) {
+        db_api.user.resetPassword(testUser._id, "beakingSoda", function(err, user) {
             assert.equal(err, null);
-            assert.notEqual(user,null);
+            assert.notEqual(user, null);
             assert.equal(user.password, "beakingSoda");
             done();
         });

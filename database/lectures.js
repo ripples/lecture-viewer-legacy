@@ -118,7 +118,7 @@ exports.updateLectureByID = function(lecture_id, course, date, video, visible, w
         }else if(!lecture){
             callback("lecture does not exist");
         }else{
-            callback();
+            callback(err, lecture);
         }
     });
 };

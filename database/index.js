@@ -9,3 +9,4 @@ exports.user = require('./users');
 exports.course = require('./courses');
 exports.lecture = require('./lectures');
 exports.comment = require('./comments');
+exports.bookmark = require('./bookmarks');

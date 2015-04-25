@@ -115,7 +115,6 @@ describe('Testing Lectures collection:', function() {
      */
     it('updates a lecture: lectureID', function(done) {
         db_api.lecture.updateLectureByID(testLecture._id, testCourse, new Date().getDate(), "thatVideo", true, ["WhiteBoard10", "WhiteBoad20"], ["screen1", "screen2"], function(err, lecture) {
-            console.log(lecture);
             assert.equal(err, null);
             assert.notEqual(lecture, null);
             assert.equal(lecture.video, "thatVideo");
