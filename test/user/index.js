@@ -7,7 +7,6 @@ var bcrypt = require('bcrypt-nodejs');
 var database = require("../../database/index.js");
 
 var url = 'http://localhost:3000';
-var uidreq = 2359;
 
 describe('User', function() {
 

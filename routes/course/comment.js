@@ -22,6 +22,17 @@ module.exports = {
                 return res.sendFail("lecture_id parameter is not a valid MongoId");
             }
 
+
+            /*database.lecture.getCommentsById(req.params.lecture_id, function(err, comments)
+            {
+                if(err)
+                    return res.sendFail(err.message); 
+                if(!comments)
+                    return res.sendFail("Lecture was not found");
+
+                //TODO send success back with comments
+            });*/
+
             var comments = [];
 
             for(var i = 0;i<5;i++)
@@ -68,17 +79,30 @@ module.exports = {
 
             //Check content length?
 
-            //database.course.getCommentsById
+            //TODO use auth
+            var user_id = "1345c27362abdcd2";
 
-            var comment = {};
-            comment.comment_id = "dfaa1e1f3c23000000007855";
-            comment.course_id = req.params.course_id;
-            comment.lecture_id = req.params.lecture_id;
-            comment.content = req.body.content;
-            comment.time = req.body.time;
-            comment.posted_date = req.body.posted_date;
+          
+            /*database.comments.createComment(req.params.lecture_id, user_id, req.body.content, req.body.posted_date, function(err, comment)
+            {
+                if(err)
+                    return res.sendFail(err.message); 
+                if(!comment)
+                    return res.sendFail("Lecture was not found");
+            */
+                var comment = {};
+                comment.comment_id = "dfaa1e1f3c23000000007855";
+                comment.course_id = req.params.course_id;
+                comment.lecture_id = req.params.lecture_id;
+                comment.content = req.body.content;
+                comment.time = req.body.time;
+                comment.posted_date = req.body.posted_date;
 
-            return res.sendSuccess(comment);
+                return res.sendSuccess(comment);
+            //});
+
+
+            
         });
 
         //Delete a specific comment

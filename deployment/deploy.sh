@@ -19,6 +19,9 @@ sudo apt-get install nodejs-legacy
 echo "Installing NPM(Node Packet Manager)"
 sudo apt-get install npm
 
+echo "Installing Redis"
+sudo apt-get install redis-server
+
 
 FOLDER_NAME="lecture-viewer-deploy"
 

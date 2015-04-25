@@ -28,6 +28,7 @@ router.post('/', function(req,res) {
 	// } else {
 	// 	res.sendFail("Incorrect parameters");	
 	// }
+	res.sendSuccess({course_id : "432e018979f1adf330530338"});
 });
 
 //Get course
