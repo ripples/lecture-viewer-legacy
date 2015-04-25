@@ -61,7 +61,7 @@
 |3|setLectureVisibilityById(lectureId, visibility, callback)| return lecture(if any)|
 |4|getLectureVisibilityById(lectureId, callback)| return lecture.visible(if any)|
 |5|addCommentToLecture(lectureId, comment, callback)|return lecture|
-|6|createLecture(course, date, video, visible, callback)| return lecture|
+|6|createLecture(course, date, video, visible, whiteBoardImages, screenImages, callback)| return lecture|
 |7|dropLecturesDatabase(callback)| return 1 if the db has been droped successfully|
 
 
