@@ -66,4 +66,4 @@ exports.editComment = function(comment_id, lecture_id, user_id, firstandlast, ti
             content: content
         }
     }, callback);
-}
+};

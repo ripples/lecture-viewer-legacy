@@ -111,9 +111,23 @@ describe('Testing Lectures collection:', function() {
         });
     });
     /*
+     * Tests that a lecture is updated
+     */
+    it('updates a lecture: lectureID', function(done) {
+        db_api.lecture.updateLectureByID(testLecture._id, testCourse, new Date().getDate(), "thatVideo", true, ["WhiteBoard10", "WhiteBoad20"], ["screen1", "screen2"], function(err, lecture) {
+            console.log(lecture);
+            assert.equal(err, null);
+            assert.notEqual(lecture, null);
+            assert.equal(lecture.video, "thatVideo");
+            assert.equal(lecture.whiteboardImages[0], "WhiteBoard10");
+            assert.equal(lecture.whiteboardImages[1], "WhiteBoad20");
+            done();
+        });
+    });
+    /*
      * test that a comment is being deleted properly
      */
-    it('deltes a comment using id', function(done) {
+    it('deletes a comment using id', function(done) {
         db_api.comment.deleteComment(testComment._id, function(err, comment) {
             assert.equal(err, null);
             assert.notEqual(comment, null);

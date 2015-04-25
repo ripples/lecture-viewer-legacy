@@ -100,8 +100,25 @@ exports.dropLecturesDatabase = function(callback) {
     });
 };
 /*
- *
+ * updates a given lecture
  */
-exports.updateLecture = function() {};
-// updateLecture
-// deleteComment
+exports.updateLectureByID = function(lecture_id, course, date, video, visible, whiteboardImages, screenImages, callback) {
+    Lecture.findByIdAndUpdate(lecture_id, {
+        $set: {
+            course: course,
+            date: date,
+            video: video,
+            whiteboardImages: whiteboardImages,
+            screenImages: screenImages,
+            visible: visible
+        }
+    }, function(err, lecture){
+        if (err){
+            callback(err);
+        }else if(!lecture){
+            callback("lecture does not exist");
+        }else{
+            callback();
+        }
+    });
+};
