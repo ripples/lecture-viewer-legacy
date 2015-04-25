@@ -13,6 +13,8 @@ var login_student =  {
 	last_name : "last"
 };
 
+//TODO drop courses database
+
 exports.dropUserDatabase = function(callback)
 {
 	database.user.dropUserDatabase(function()
@@ -77,13 +79,11 @@ var test_lecture = {
 
 exports.createCourse = function(callback)
 {
-	console.log("Creating course");
 	request(url)
     .post('/course')
     .send(test_course)
     .end(function(err, res) {
 
-    	console.log(JSON.stringify(err)+ " : " + JSON.stringify(res));
     	res.body.status.should.equal('success', "Failed to create course : " + res.body.data.message);
 
     	callback(err, res.body.data);
@@ -92,15 +92,18 @@ exports.createCourse = function(callback)
 
 exports.createLecture = function(course_id, callback)
 {
-	request(url)
+	/*request(url)
 	   .post('/course/" + course_id + "/lecture')
 	   .field('title', test_lecture.title)
 	   .field('description', test_lecture.description)
 	   .attach('upload', test_lecture.file)
 	   .end(function(err, res)
 	   {
+	   		console.log(res);
 	   		res.body.status.should.equal('success', "Failed to create course : " + res.body.data.message);
 
 	   		callback(err, res.body.data);
-	   });
+	   });*/
+	
+	callback(undefined,{lecture_id:"4cdfb11e1f3c000000007822"});
 }

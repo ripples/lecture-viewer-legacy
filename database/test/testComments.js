@@ -23,7 +23,7 @@ describe('Test Comment Collection', function() {
     var testLecture = null;
     before(function(done) {
         db_api.lecture.dropLecturesDatabase(function() {
-            db_api.lecture.createLecture(testCourse, new Date().getDate(), "thisvideo", true, function(err, lecture) {
+            db_api.lecture.createLecture(testCourse, new Date().getDate(), "thisvideo", true, ["WhiteBoard1", "WhiteBoad2"], ["screen1", "screen2"], function(err, lecture) {
                 testLecture = lecture;
                 assert.equal(err, null);
                 assert.notEqual(lecture, null);

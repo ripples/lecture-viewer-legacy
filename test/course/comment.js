@@ -10,7 +10,7 @@ var helper = require('../helper.js');
 
 describe('Comments', function() {
 
-    this.timeout(30000);
+    this.timeout(20000);
 
 
     var user_id = "";
@@ -21,10 +21,10 @@ describe('Comments', function() {
 
     before(function(done) 
     {
+        //TODO drop courses database
+
     	helper.dropUserDatabase(function()
     	{
-    		console.log("Create User, login");
-
     		helper.createUserAndLogin(function(err, user)
 			{
 				should.equal(err, undefined, JSON.stringify(err));
@@ -32,25 +32,16 @@ describe('Comments', function() {
 				user_id = user.user_id;
 				user_token = user.token;
 
-				//Create Course
-		    	//Create Lecture in Course
-
-		    	console.log("Create Course");
-
 				helper.createCourse(function(err,course)
 				{
 					course_id = course.course_id;
 
-					console.log("Create Lecture");
 					helper.createLecture(course_id, function(err,lecture)
 					{
 						lecture_id = lecture.lecture_id;
 						done();
 					});
-				});
-
-
-				
+				});	
 			});
     	});
     });
@@ -58,8 +49,6 @@ describe('Comments', function() {
     it("Test", function(done)
     {
     	helper.createLecture("1",function(err, res){
-    		console.log(err);
-    		console.log(res.body);
     		done();   
     	}); 	
     });
