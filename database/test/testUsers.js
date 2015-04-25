@@ -188,10 +188,10 @@ describe('Testing User collection:', function() {
      * Test that resetPassword changes the password from the user.
      */
     it('resets the password of a given user', function(done){
-        db_api.user.resetPassword(testUser._id, "anotherpassword", function(err, user){
+        db_api.user.resetPassword(testUser._id, "beakingSoda", function(err, user){
             assert.equal(err, null);
             assert.notEqual(user,null);
-            assert.equal(user.password, "anotherpassword");
+            assert.equal(user.password, "beakingSoda");
             done();
         });
     });
