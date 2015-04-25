@@ -1,6 +1,3 @@
-/**
- * Created by freddy on 3/16/15.
- */
 var Lecture = require('./models/lecture');
 /*
   Methods to work with Lecture database.
@@ -89,12 +86,6 @@ exports.createLecture = function(course, date, video, visible, whiteboardImages,
         }
     });
 };
-/*
-
-
-whiteboardImages
-screenImages
-*/
 /*
  * Deletes Lecture database
  */
