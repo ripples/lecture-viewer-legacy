@@ -1,16 +1,12 @@
 var db_api = require('../../database');
 var should = require('chai').should();
 var assert = require('assert');
-
 describe('Testing User collection:', function() {
-
     this.timeout(10000);
-
     /*
      *  precondition
      */
     var testUser = null;
-
     before(function(done) {
         db_api.user.dropUserDatabase(function() {
             db_api.user.createUser('test@test.com', 'password', 'first', 'last', 'role', function(err, doc) {
@@ -26,7 +22,6 @@ describe('Testing User collection:', function() {
             });
         });
     });
-
     /*
      * post-condition
      */
@@ -38,7 +33,6 @@ describe('Testing User collection:', function() {
             done();
         })
     });
-
     /*
      * Tests whether user role is return properly.
      */
@@ -50,7 +44,6 @@ describe('Testing User collection:', function() {
             done();
         });
     });
-
     /*
      * Tests whether username is properly set.
      */
@@ -62,7 +55,6 @@ describe('Testing User collection:', function() {
             done();
         });
     });
-
     /*
      * Test whether the function sets the name of the user properly.
      */
@@ -75,28 +67,24 @@ describe('Testing User collection:', function() {
             done();
         });
     });
-
     /*
      * Tests whether a notification is properly added by the function.
      */
     it('Add notifications by ObjectId: id, type, title, url, date', function(done) {
-        db_api.user.notification.addNotificationById(
-            testUser._id, {
-                type_id: 1,
-                title: 'title',
-                url: 'url',
-                date: new Date()
-            },
-            function(err, doc) {
-                assert.equal(err, null);
-                assert.notEqual(doc, null);
-                doc.notifications[0].title.should.eql('title');
-                doc.notifications[0].url.should.eql('url');
-                doc.notifications.length.should.eql(1);
-                done();
-            });
+        db_api.user.notification.addNotificationById(testUser._id, {
+            type_id: 1,
+            title: 'title',
+            url: 'url',
+            date: new Date()
+        }, function(err, doc) {
+            assert.equal(err, null);
+            assert.notEqual(doc, null);
+            doc.notifications[0].title.should.eql('title');
+            doc.notifications[0].url.should.eql('url');
+            doc.notifications.length.should.eql(1);
+            done();
+        });
     });
-
     /*
      * Tests whether notifications are properly retrieved.
      */
@@ -111,7 +99,6 @@ describe('Testing User collection:', function() {
             done();
         });
     });
-
     /*
      * Tests whether a bookmark is properly added by the function.
      */
@@ -128,7 +115,6 @@ describe('Testing User collection:', function() {
             done();
         });
     });
-
     /*
      * Tests whether a a bookmark is properly retrieved.
      */
@@ -142,7 +128,6 @@ describe('Testing User collection:', function() {
             done();
         });
     });
-
     /*
      * Test whether the user returned is correct.
      * Test ObjectID must be a 12-byte string.
@@ -155,7 +140,6 @@ describe('Testing User collection:', function() {
             done();
         });
     });
-
     /*
      * Test role update by id
      */
@@ -167,7 +151,6 @@ describe('Testing User collection:', function() {
             done();
         });
     });
-
     /*
      * Tests role update by Email
      */
@@ -179,7 +162,6 @@ describe('Testing User collection:', function() {
             done();
         });
     });
-
     /*
      * Tests getuserbyemail
      */
@@ -191,18 +173,26 @@ describe('Testing User collection:', function() {
             done();
         });
     });
-
     /*
      * Test set user verification
      */
-     it('setVerification: true',function(done){
-        db_api.user.setVerification(testUser._id, true, function(err, usr){
-            assert.equal(err,null);
+    it('setVerification: true', function(done) {
+        db_api.user.setVerification(testUser._id, true, function(err, usr) {
+            assert.equal(err, null);
             assert.notEqual(usr, null);
             assert.equal(usr.verified, true);
             done();
         });
-     });
-   
-
+    });
+    /*
+     * Test that resetPassword changes the password from the user.
+     */
+    it('resets the password of a given user', function(done){
+        db_api.user.resetPassword(testUser._id, "anotherpassword", function(err, user){
+            assert.equal(err, null);
+            assert.notEqual(user,null);
+            assert.equal(user.password, "anotherpassword");
+            done();
+        });
+    });
 });

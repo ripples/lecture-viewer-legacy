@@ -48,7 +48,7 @@
 |12|dropCoursesDatabase(callback)| return 1 if the db has been droped successfully|
 |13|updateCourse(course_ID, newDepartment, newCourseNumber, newCourseTitle, newSemester, newYear, newInstructor, callback)| returns the new course(if any to modify)|
 |14|getAllCoursesBySemester(semester, callback)| return array of courses for a given semester|
-
+|15|resetPassword(user_id, newPassword)| return user object(if any)|
 
 ## Lectures API
 ---
@@ -72,3 +72,4 @@
 |---------|-------------------|-----------|
 |1|createComment(lecture_id, user_id, firstandlast, time, content, post_date, callback)| return comment object|
 |2|deleteComment(comment_id)| return deleted comment(if any)|
+|3| editComment(comment_id, lecture_id, user_id, firstandlast, time, content, post_date, callback) | return comment object(if any)|
