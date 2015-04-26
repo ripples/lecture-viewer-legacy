@@ -34,7 +34,7 @@ var database = require("../../database/index.js");
 					resCourse.instructor = course.instructor;
 					resCourse.course_id = course._id;
 
-					console.log(course);
+					console.log(course);		// this is just for testing 
 
 					return res.sendSuccess(resCourse);
 

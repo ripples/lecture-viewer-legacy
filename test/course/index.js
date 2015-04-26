@@ -24,7 +24,7 @@ describe('Course', function() {
 	});
 
 	describe('Valid Call', function() {
-		it('Creating course', function(done) {								
+		it('Creating course', function(done) {					// problem with adding instructor in database call  						
 			request(url)
 				.post('/course')
 				.send(course_info)
