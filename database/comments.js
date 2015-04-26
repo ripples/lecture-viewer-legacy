@@ -1,32 +1,43 @@
 var Comment = require('./models/comment');
-exports.lecture = require('./lectures');
-exports.comment = require('./comments');
+var Lecture = require('./models/lecture');
+
 /*
  * Method that creates a comment
  */
 exports.createComment = function(lecture_id, user_id, firstandlast, time, content, post_date, callback) {
-    Comment.find({
-        lecture_id: lecture_id,
-        author_id: user_id,
-        content: content,
-        date: post_date
-    }, function(err, comment) {
-        if (err) {
-            callback(err);
-        } else {
-            Comment.create({
+    Lecture.findByIdAndUpdate(lecture_id._id, {
+        $push: {
+            comments: {
                 lecture: lecture_id,
                 author: user_id,
                 poster_name: firstandlast,
+                content: content,
                 time: time,
-                date: post_date,
-                content: content
-            }, function(err, lecture) {
-                callback(err, lecture);
-            });
+                date: post_date
+            }
         }
-    });
+    }, callback);
 };
+/*
+var commentSchema = new Schema({
+  semester: String,
+  course: {
+    type: Schema.Types.ObjectId,
+    ref: 'Course'
+  },
+  lecture: {
+    type: Schema.Types.ObjectId,
+    ref: 'Lecture'
+  },
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  poster_name: String,
+  content: String,
+  time: Number,
+  date: Date
+});
 /*
  * Method that delectes the whole database for comments
  */
@@ -67,5 +78,3 @@ exports.editComment = function(comment_id, lecture_id, user_id, firstandlast, ti
         }
     }, callback);
 };
-
-

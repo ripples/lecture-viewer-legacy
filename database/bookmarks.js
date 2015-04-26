@@ -15,6 +15,19 @@ exports.addBookmarkById = function(user_id, lecture_id, course_id, label, time, 
     }, callback);
 };
 /*
+    Lecture.findByIdAndUpdate(lecture_id, {
+        $push: {
+            comments: {
+                lecture: lecture_id,
+                author: user_id,
+                poster_name: firstandlast,
+                content: content,
+                time: time,
+                date: post_date
+            }
+        }
+    }, callback);
+/*
   Method to get a user's bookmarks by user's id.
  */
 exports.getBookmarksById = function(userid, callback) {
