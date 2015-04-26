@@ -16,6 +16,7 @@ describe('Course', function() {
 		instructor : "instructor@umass.edu"
 	};
 
+	var course_id = "";
 
 	before(function(done) {
 		database.course.dropCoursesDatabase(function() {
@@ -29,6 +30,9 @@ describe('Course', function() {
 				.post('/course')
 				.send(course_info)
 				.end(function(err, res) {
+					
+					course_id = res.body.data.course_id;
+					
 					res.body.status.should.equal('success');
 					done();
 				});
