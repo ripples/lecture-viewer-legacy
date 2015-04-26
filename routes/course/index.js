@@ -14,7 +14,7 @@ var database = require("../../database/index.js");
 	router.post('/', function(req,res) {
 		//Check if all required parameters are present
 	
-		if(req.body.department, req.body.course_number, req.body.course_title, req.body.semester, req.body.year, req.body.instructor_email) {
+		if(req.body.department && req.body.course_number && req.body.course_title && req.body.semester && req.body.year && req.body.instructor_email) {
 			
 			// Attempts to create a course record in database
 			
@@ -34,7 +34,7 @@ var database = require("../../database/index.js");
 					resCourse.instructor_email = course.instructor;	
 					resCourse.course_id = course._id;
 
-					return res.sendSuccess(resCourse);
+					res.sendSuccess(resCourse);
 
 				} else {
 					
@@ -56,7 +56,7 @@ router.get('/:course_id', function(req,res) {
 
 	if(req.params.course_id == undefined) { 
 
-		res.sendFail("No valid user_id parameter");
+		res.sendFail("No valid course_id parameter");
 
 	}
 	else if(validator.isMongoId(req.params.course_id) == false) {
@@ -92,18 +92,88 @@ router.get('/:course_id', function(req,res) {
 
 //Edit course
 router.put('/:course_id', function(req,res) {
-	//TODO - no update course method in db?
+	
+	if(req.params.course_id == undefined) {
+
+		res.sendFail("No valid course_id parameter");
+
+	}
+	else if(validator.isMongoId(req.params.course_id) == false) {
+
+		res.sendFail("Course ID is not a valid MongoID");
+
+	}
+	else {
+		
+		if(req.body.department && req.body.course_number && req.body.course_title && req.body.semester && req.body.year && req.body.instructor_email) {
+			
+			database.course.updateCourse(req.params.course_id, req.body.department, req.body.course_number, req.body.course_title, req.body.semester, req.body.year, req.body.instructor_email, function(err, course) {
+				
+				if(err) {
+					// Need to work on this
+					res.sendFail(err);
+
+				} else {
+
+					var resCourse = {};
+
+					resCourse.department = course.department;
+					resCourse.course_number = course.courseNumber;
+					resCourse.course_title = course.courseTitle;
+					resCourse.semester = course.semester;
+					resCourse.year = course.year;
+					resCourse.instructor_email = course.instructor;	
+					resCourse.course_id = course._id;
+
+					res.sendSuccess(resCourse);
+
+				}
+
+			});
+		
+		} else {
+			res.sendFail("Incorrect parameters");
+		}
+	}
+
 });
 
 //Delete course
 router.delete('/:course_id', function(req,res) {
-	// database.course.deleteCourseById(req.params.course_id, function(err, course)) {
-	// 	if(err) {
-	// 		res.sendFail(err);
-	// 	} else {
-	// 		res.sendSuccess("Deleted");	
-	// 	}
-	// }
+	
+	if(req.params.course_id == undefined) {
+
+		res.sendFail("No valid course_id parameter");
+
+	}
+	else if(validator.isMongoId(req.params.course_id) == false) {
+		res.sendFail("Course ID is not a valid MongoID");
+	}
+	else {
+		database.course.deleteCourseById(req.params.course_id, function(err, course) {
+			
+			if(err) {
+
+				res.sendFail(err);
+
+			} else {
+
+				var resCourse = {};
+
+				resCourse.department = course.department;
+				resCourse.course_number = course.courseNumber;
+				resCourse.course_title = course.courseTitle;
+				resCourse.semester = course.semester;
+				resCourse.year = course.year;
+				resCourse.instructor_email = course.instructor;	
+				resCourse.course_id = course._id;
+
+				res.sendSuccess(resCourse);
+
+			}
+
+		});
+	}
 });
 
 module.exports = router;
