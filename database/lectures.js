@@ -47,10 +47,29 @@ exports.getLectureVisibilityById = function(lectureId, callback) {
  * Adds a comment to a lecture
  */
 exports.addCommentToLecture = function(lectureId, comment, callback) {
-   
+   Lecture.findByIdAndUpdate(lectureId, {
+        $push: {
+            comments: {
+                lecture: lecture_id,
+                author: comment.author,
+                poster_name: comment.poster_name,
+                time: comment.time,
+                date: comment.date,
+                content: comment.content
+
+            }
+        }
+    }, callback);
 };
 
-
+/*
+   Comment.create({
+                lecture: lecture_id,
+                author: user_id,
+                poster_name: firstandlast,
+                time: time,
+                date: post_date,
+                content: content
 
 
 /*
