@@ -10,47 +10,47 @@ require('./attachment').setup(router);
 
 var database = require("../../database/index.js");
 
-//Create a course
-router.post('/', function(req,res) {
-	//Check if all required parameters are present
+	//Create a course
+	router.post('/', function(req,res) {
+		//Check if all required parameters are present
 	
-	if(req.body.department, req.body.courseNumber, req.body.courseTitle, req.body.semester, req.body.year, req.body.instructor) {
-		
-		// Attempts to create a course record in database
-		
-		database.course.createCourse(req.body.department, req.body.courseNumber, req.body.courseTitle, req.body.semester, req.body.year, req.body.instructor, function(err, course) {
+		if(req.body.department, req.body.courseNumber, req.body.courseTitle, req.body.semester, req.body.year, req.body.instructor) {
 			
-			// If no error, send back course data
+			// Attempts to create a course record in database
 			
-			if(!err) {
+			database.course.createCourse(req.body.department, req.body.courseNumber, req.body.courseTitle, req.body.semester, req.body.year, req.body.instructor, function(err, course) {
 				
-				var resCourse = {};
-
-				resCourse.department = course.department;
-				resCourse.courseNumber = course.courseNumber;
-				resCourse.courseTitle = course.courseTitle;
-				resCourse.semester = course.semester;
-				resCourse.year = course.year;
-				resCourse.instructor = course.instructor;
-				resCourse.course_id = course._id;
-
-				console.log(course);
-
-				return res.sendSuccess(resCourse);
-
-			} else {
+				// If no error, send back course data
 				
-				res.sendFail(err);
-			}
-		});
-	
-	} else {
+				if(!err) {
+					
+					var resCourse = {};
+
+					resCourse.department = course.department;
+					resCourse.courseNumber = course.courseNumber;
+					resCourse.courseTitle = course.courseTitle;
+					resCourse.semester = course.semester;
+					resCourse.year = course.year;
+					resCourse.instructor = course.instructor;
+					resCourse.course_id = course._id;
+
+					console.log(course);
+
+					return res.sendSuccess(resCourse);
+
+				} else {
+					
+					res.sendFail(err);
+				}
+			});
 		
-		res.sendFail("Incorrect parameters");
-	
-	} 
-	
-	// res.sendSuccess({course_id : "432e018979f1adf330530338"});
+		} else {
+			
+			res.sendFail("Incorrect parameters");
+		
+		} 
+
+		// res.sendSuccess({course_id : "432e018979f1adf330530338"});
 });
 
 //Get course
