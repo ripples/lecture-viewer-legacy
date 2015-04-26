@@ -2,3 +2,4 @@ node_modules/
 .DS_Store
 .idea/
 npm-debug.lognode_modules
+index.js~
