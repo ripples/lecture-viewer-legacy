@@ -34,18 +34,48 @@ describe('Course', function() {
 				});
 		});
 
-		// it('Get course', function(done) {
+		it('Get course', function(done) {
 		// 	request(url)
 		// 		.get('/course/#');
 		// 		.end(function(err, res) {
-		// 			done();
+					done();
 		// 		});
-		// });
+		});
+
+		it('Edit course', function(done) {
+			//TODO
+			done();
+		});
+
+		it('Delete course', function(done) {
+			// TODO 
+			done();
+		});
+
+
 
 	});
 
-	// describe('Invalid calls', function() {
-		
-	// });
+	describe('Invalid calls', function() {
+		it('Creating course', function(done) {					// problem with adding instructor in database call  						
+			//TODO
+			done();
+		});
+
+		it('Get course', function(done) {
+			//TODO
+			done();
+		});
+
+		it('Edit course', function(done) {
+			//TODO
+			done();
+		});
+
+		it('Delete course', function(done) {
+			// TODO 
+			done();
+		});
+	});
 
 });
