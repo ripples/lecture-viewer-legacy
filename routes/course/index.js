@@ -31,7 +31,7 @@ var database = require("../../database/index.js");
 					resCourse.courseTitle = course.courseTitle;
 					resCourse.semester = course.semester;
 					resCourse.year = course.year;
-					resCourse.instructor = course.instructor;
+					resCourse.instructor = course.instructor;	
 					resCourse.course_id = course._id;
 
 					console.log(course);		// this is just for testing 
