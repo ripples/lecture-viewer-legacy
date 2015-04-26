@@ -62,6 +62,7 @@ describe('Bookmarks', function() {
 
     describe('Valid calls', function()
     {
+<<<<<<< HEAD
         it('Create bookmark', function(done) {
         request(url)
             .post('/user/bookmark')
@@ -90,6 +91,79 @@ describe('Bookmarks', function() {
 
                 console.log(res.body);
 
+                res.body.data.bookmarks[0].bookmark_id.should.equal(bookmark_id);
+                res.body.data.bookmarks[0].label.should.equal(test_bookmark.label);
+                res.body.data.bookmarks[0].time.should.equal(test_bookmark.time);
+
+                done();
+            });
+        });
+=======
+    	console.log("testing bookmark");
+
+        it('Create bookmark', function(done) {
+        request(url)
+            .post('/user/bookmark')
+            .set('Authorization', user_token)
+            .send(test_bookmark)
+            .end(function(err, res) {
+
+            	console.log(err);
+
+                res.body.status.should.equal('success', res.body.data.message);
+
+                res.body.data.should.have.property('bookmark_id');
+                res.body.data.course_id.should.equal(test_bookmark.course_id);
+                res.body.data.lecture_id.should.equal(test_bookmark.lecture_id);
+                res.body.data.time.should.equal(test_bookmark.time);
+                res.body.data.label.should.equal(test_bookmark.label);
+
+                bookmark_id = res.body.data.bookmark_id;
+
+                done();
+            });
+        });
+
+        it('Get bookmark from lecture', function(done) {
+        request(url)
+            .get('/user/bookmark/course/' + course_id + "/lecture/" + lecture_id)
+            .end(function(err, res) {
+
+                res.body.status.should.equal('success', res.body.data.message);
+>>>>>>> 0ec096d26880e73feaa0456b392f3a045c334577
+
+                console.log(res.body);
+
+<<<<<<< HEAD
+        it('Get bookmark from course', function(done) {
+            request(url)
+                .get('/user/bookmark/course/' + course_id)
+                .end(function(err, res) {
+
+                    res.body.status.should.equal('success', res.body.data.message);
+
+                    console.log(res.body);
+
+                    res.body.data.bookmarks[0].bookmark_id.should.equal(bookmark_id);
+                    res.body.data.bookmarks[0].lecture_id.should.equal(lecture_id);
+                    res.body.data.bookmarks[0].label.should.equal(test_bookmark.label);
+                    res.body.data.bookmarks[0].time.should.equal(test_bookmark.time);
+
+                    done();
+            });
+        });
+
+        it('Edit bookmark', function(done) {
+        request(url)
+            .put('/user/bookmark/' + bookmark_id)
+            .send(test_update_bookmark)
+            .end(function(err, res) {
+
+                res.body.status.should.equal('success', res.body.data.message);
+
+                console.log(res.body);
+
+=======
                 res.body.data.bookmarks[0].bookmark_id.should.equal(bookmark_id);
                 res.body.data.bookmarks[0].label.should.equal(test_bookmark.label);
                 res.body.data.bookmarks[0].time.should.equal(test_bookmark.time);
@@ -127,6 +201,7 @@ describe('Bookmarks', function() {
 
                 console.log(res.body);
 
+>>>>>>> 0ec096d26880e73feaa0456b392f3a045c334577
                 res.body.data.bookmarks[0].bookmark_id.should.equal(bookmark_id);
                 res.body.data.bookmarks[0].label.should.equal(test_update_bookmark.label);
                 res.body.data.bookmarks[0].time.should.equal(test_bookmark.time);
@@ -179,7 +254,11 @@ describe('Bookmarks', function() {
         });
     });
 
+<<<<<<< HEAD
     it('/user/bookmark/:course_id/lecture/:lecture_id [GET]', function(done) {
+=======
+    /*it('/user/bookmark/:course_id/lecture/:lecture_id [GET]', function(done) {
+>>>>>>> 0ec096d26880e73feaa0456b392f3a045c334577
         request(url)
             .get('/user/bookmark/'+cidreq+'/lecture/'+lidreq)
             .end(function(err, res) {
@@ -219,5 +298,9 @@ describe('Bookmarks', function() {
                 res.body.status.should.equal('success');
                 done();
             });
+<<<<<<< HEAD
     });
+=======
+    });*/
+>>>>>>> 0ec096d26880e73feaa0456b392f3a045c334577
 });

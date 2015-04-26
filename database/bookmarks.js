@@ -21,7 +21,7 @@ exports.addBookmarkById = function(user_id, lecture_id, course_id, label, time, 
             }
         }
     }, function(err, user){
-        callback(err, user.bookmarks);
+        callback(err, user);
     });
 };
 /*
