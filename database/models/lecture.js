@@ -9,6 +9,10 @@ var lectureSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Course'
   },
+
+  title : String,
+  description : String,
+
   date: {type: Date, unique: true},
   // link to lecture video
   video: String,

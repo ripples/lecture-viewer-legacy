@@ -75,7 +75,7 @@ exports.addCommentToLecture = function(lectureId, comment, callback) {
 /*
  * This method creates a lecture linked to a course
  */
-exports.createLecture = function(course, date, video, visible, whiteboardImages, screenImages, callback) {
+exports.createLecture = function(course, title, description, date, video, visible, whiteboardImages, screenImages, callback) {
     Lecture.find({
         course: course,
         date: date,
@@ -92,7 +92,9 @@ exports.createLecture = function(course, date, video, visible, whiteboardImages,
                 video: video,
                 whiteboardImages: whiteboardImages,
                 screenImages: screenImages,
-                visible: visible
+                visible: visible,
+                title : title,
+                description : description
             }, function(err, lecture) {
                 callback(err, lecture);
             });
@@ -115,7 +117,7 @@ exports.dropLecturesDatabase = function(callback) {
 /*
  * updates a given lecture
  */
-exports.updateLectureByID = function(lecture_id, course, date, video, visible, whiteboardImages, screenImages, callback) {
+exports.updateLectureByID = function(lecture_id, course, title, description, date, video, visible, whiteboardImages, screenImages, callback) {
     Lecture.findByIdAndUpdate(lecture_id, {
         $set: {
             course: course,
@@ -123,7 +125,9 @@ exports.updateLectureByID = function(lecture_id, course, date, video, visible, w
             video: video,
             whiteboardImages: whiteboardImages,
             screenImages: screenImages,
-            visible: visible
+            visible: visible,
+            title : title,
+            description : description
         }
     }, function(err, lecture) {
         if (err) {
