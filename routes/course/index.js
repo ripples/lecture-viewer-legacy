@@ -24,6 +24,8 @@ var database = require("../../database/index.js");
 				
 				if(!err) {
 					
+					console.log(course);
+
 					var resCourse = {};
 
 					resCourse.department = course.department;
@@ -33,8 +35,6 @@ var database = require("../../database/index.js");
 					resCourse.year = course.year;
 					resCourse.instructor = course.instructor;	
 					resCourse.course_id = course._id;
-
-					console.log(course);		// this is just for testing 
 
 					return res.sendSuccess(resCourse);
 
@@ -49,27 +49,47 @@ var database = require("../../database/index.js");
 			res.sendFail("Incorrect parameters");
 		
 		} 
-
-		// res.sendSuccess({course_id : "432e018979f1adf330530338"});
 });
 
 //Get course
 router.get('/:course_id', function(req,res) {
+	
 	//Get course info from database
-	// if(req.params.course_id == undefined) {
-	// 	res.sendFail("No valid course_id parameter");
-	// } else if(validator.isMongoId(req.params.course_id) == false) {
-	// 	res.sendFail("Course ID is not a valid MongoID");
-	// } else {
-	// 	database.course.getCourseById(req.params.course_id, function(err, course) {
-	// 		if(err) {
-	// 			res.sendFail(err);	
-	// 		} else {
-	// 			// TODO: send back course
-	// 			res.sendSuccess("Got Course");	
-	// 		}
-	// 	});	
-	// }	
+
+	if(req.params.course_id == undefined) { 
+
+		res.sendFail("No valid user_id parameter");
+
+	}
+	else if(validator.isMongoId(req.params.course_id) == false) {
+		
+		res.sendFail("Course ID is not a valid MongoID");
+	
+	}
+	else {
+		
+		database.course.getCourseById(req.params.course_id, function(err, course) {
+			
+			if(err) {
+
+				res.sendFail(err);
+
+			} else {
+				
+				var resCourse = {};
+
+				resCourse.department = course.department;
+				resCourse.courseNumber = course.courseNumber;
+				resCourse.courseTitle = course.courseTitle;
+				resCourse.semester = course.semester;
+				resCourse.year = course.year;
+				resCourse.instructor = course.instructor;	
+				resCourse.course_id = course._id;
+
+				res.sendSuccess(resCourse);
+			}
+		});
+	}
 });
 
 //Edit course
