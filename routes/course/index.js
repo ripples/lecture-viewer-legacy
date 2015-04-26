@@ -10,25 +10,47 @@ require('./attachment').setup(router);
 
 var database = require("../../database/index.js");
 
-//Create a course
-router.post('/', function(req,res) {
-	// Check if all required parameters are present
-	// if(req.body.department && req.body.courseNumber && req.body.courseTitle && req.body.semester && req.body.year && req.body.instructor) {
-	// 	// Attempts to create new course using database methods
-	// 	database.course.createCourse(req.body.department, req.body.courseNumber, req.body.courseTitle, req.body.semester, req.body.year, req.body.instructor, function(err) {
-	// 		//If no error, send back course data
-	// 		if(err == undefined) {
-	// 			//I will need the user data to be returned to me in a user variable
-	// 			res.sendSuccess("Wooo!! Course Created");
-	// 		} else {
-	// 			// I will need to know why it failed... Logic problem or a legit error
-	// 			res.sendFail(err);
-	// 		}
-	// 	});
-	// } else {
-	// 	res.sendFail("Incorrect parameters");	
-	// }
-	res.sendSuccess({course_id : "432e018979f1adf330530338"});
+	//Create a course
+	router.post('/', function(req,res) {
+		//Check if all required parameters are present
+	
+		if(req.body.department, req.body.courseNumber, req.body.courseTitle, req.body.semester, req.body.year, req.body.instructor) {
+			
+			// Attempts to create a course record in database
+			
+			database.course.createCourse(req.body.department, req.body.courseNumber, req.body.courseTitle, req.body.semester, req.body.year, req.body.instructor, function(err, course) {
+				
+				// If no error, send back course data
+				
+				if(!err) {
+					
+					var resCourse = {};
+
+					resCourse.department = course.department;
+					resCourse.courseNumber = course.courseNumber;
+					resCourse.courseTitle = course.courseTitle;
+					resCourse.semester = course.semester;
+					resCourse.year = course.year;
+					resCourse.instructor = course.instructor;	
+					resCourse.course_id = course._id;
+
+					console.log(course);		// this is just for testing 
+
+					return res.sendSuccess(resCourse);
+
+				} else {
+					
+					res.sendFail(err);
+				}
+			});
+		
+		} else {
+			
+			res.sendFail("Incorrect parameters");
+		
+		} 
+
+		// res.sendSuccess({course_id : "432e018979f1adf330530338"});
 });
 
 //Get course

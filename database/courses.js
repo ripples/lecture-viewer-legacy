@@ -87,7 +87,7 @@ exports.createCourse = function(department, courseNumber, courseTitle, semester,
                 department: department,
                 courseNumber: courseNumber,
                 courseTitle: courseTitle,
-                instructor: instructor,
+                instructor : instructor,
                 semester: semester,
                 year: year
             }, function(err, course) {
