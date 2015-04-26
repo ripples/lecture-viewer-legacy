@@ -5,9 +5,6 @@ var request = require('supertest');
 var helper = require('../helper.js');
 
 var url = 'http://localhost:3000';
-var bidreq = 493025;
-var lidreq = 763562;
-var cidreq = 629459;
 
 describe('Bookmarks', function() {
 
@@ -68,6 +65,7 @@ describe('Bookmarks', function() {
         it('Create bookmark', function(done) {
         request(url)
             .post('/user/bookmark')
+            .set('Authorization', user_token)
             .send(test_bookmark)
             .end(function(err, res) {
                 res.body.status.should.equal('success', res.body.data.message);
@@ -87,6 +85,7 @@ describe('Bookmarks', function() {
         it('Get bookmark from lecture', function(done) {
         request(url)
             .get('/user/bookmark/course/' + course_id + "/lecture/" + lecture_id)
+            .set('Authorization', user_token)
             .end(function(err, res) {
 
                 res.body.status.should.equal('success', res.body.data.message);
@@ -105,6 +104,7 @@ describe('Bookmarks', function() {
         it('Get bookmark from course', function(done) {
             request(url)
                 .get('/user/bookmark/course/' + course_id)
+                .set('Authorization', user_token)
                 .end(function(err, res) {
 
                     res.body.status.should.equal('success', res.body.data.message);
@@ -123,6 +123,7 @@ describe('Bookmarks', function() {
         it('Edit bookmark', function(done) {
         request(url)
             .put('/user/bookmark/' + bookmark_id)
+            .set('Authorization', user_token)
             .send(test_update_bookmark)
             .end(function(err, res) {
 
@@ -155,6 +156,7 @@ describe('Bookmarks', function() {
         it('Delete bookmark', function(done) {
         request(url)
             .delete('/user/bookmark/' + bookmark_id)
+            .set('Authorization', user_token)
             .end(function(err, res) {
 
                 res.body.status.should.equal('success', res.body.data.message);
@@ -180,47 +182,5 @@ describe('Bookmarks', function() {
                     });
             });
         });
-    });
-
-    it('/user/bookmark/:course_id/lecture/:lecture_id [GET]', function(done) {
-        request(url)
-            .get('/user/bookmark/'+cidreq+'/lecture/'+lidreq)
-            .end(function(err, res) {
-                if(err) return done(err);
-                res.body.status.should.equal('success', res.body.data.message);
-                res.body.data.should.have.property('bookmarks');
-                done();
-            });
-    });
-
-    it('/user/bookmark/:bookmark_id [DELETE]', function(done) {
-        request(url)
-            .delete('/user/bookmark/'+bidreq)
-            .end(function(err, res) {
-                if(err) return done(err);
-                res.body.status.should.equal('success');
-                done();
-            });
-    });
-
-    it('/user/bookmark/course/:course_id [GET]', function(done) {
-        request(url)
-            .get('/user/bookmark/course/'+cidreq)
-            .end(function(err, res) {
-                if(err) return done(err);
-                res.body.status.should.equal('success');
-                done();
-            });
-    });
-
-    it('/user/bookmark/:bookmark_id [PUT]', function(done) {
-        request(url)
-            .put('/user/bookmark/'+bidreq)
-            .send({'label': 'edited label'})
-            .end(function(err, res) {
-                if(err) return done(err);
-                res.body.status.should.equal('success');
-                done();
-            });
     });
 });

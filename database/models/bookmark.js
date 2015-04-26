@@ -14,3 +14,5 @@ var bookmarkSchema = new Schema({
         label: String,
         time: Number
     });
+
+module.exports = mongoose.model("Bookmark", bookmarkSchema);

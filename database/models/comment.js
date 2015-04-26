@@ -3,7 +3,6 @@ var Schema = mongoose.Schema;
 
 // Schema definition for comments
 var commentSchema = new Schema({
-  semester: String,
   course: {
     type: Schema.Types.ObjectId,
     ref: 'Course'

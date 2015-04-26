@@ -78,30 +78,29 @@ describe('Testing Lectures collection:', function() {
     var testComment = null;
     it('test that creates a comment', function(done) {
         var firstandlast = testUser.name.first + " " + testUser.name.last;
-        db_api.comment.createComment(testLecture, testUser, firstandlast, 188, "Lorem Ipsum dolor sit amet, consectetur adipiscing", new Date().getDate(), function(err, comment) {
+        db_api.comment.createComment(testLecture._id, testUser._id, firstandlast, 188, "Lorem Ipsum dolor sit amet, consectetur adipiscing", new Date().getDate(), function(err, comment) {
             testComment = comment;
-            console.log(err);
-            // assert.equal(err, null);
-            // assert.notEqual(comment, null);
-            // assert.equal(comment.content, "Lorem Ipsum dolor sit amet, consectetur adipiscing");
-            // assert.equal(comment.author, testUser._id);
-            // assert.equal(comment.lecture, testLecture._id);
+            assert.equal(err, null);
+            assert.notEqual(comment, null);
+            assert.equal(comment.content, "Lorem Ipsum dolor sit amet, consectetur adipiscing");
+            assert.equal(comment.author, testUser._id);
+            assert.equal(comment.lecture, testLecture._id);
             done();
         });
     });
     /*
      * Tests that a comment is added to the lecture properly
      */
-    // it('add comment to lecture: lectureID', function(done) {
-    //     db_api.lecture.addCommentToLecture(testLecture._id, testComment, function(err, lecture) {
-    //         console.log(lecture);
-    //         assert.equal(err, null);
-    //         assert.notEqual(lecture, null);
-    //         // assert.equal(lecture.comments[0], testComment._id);
+    it('add comment to lecture: lectureID', function(done) {
+        db_api.lecture.addCommentToLecture(testLecture._id, testComment, function(err, lecture) {
+            //console.log(lecture);
+            assert.equal(err, null);
+            assert.notEqual(lecture, null);
+            // assert.equal(lecture.comments[0], testComment._id);
 
-    //         done();
-    //     });
-    // });
+            done();
+        });
+    });
     /*
      * Tests that an array of comments is being retreived properly
      */

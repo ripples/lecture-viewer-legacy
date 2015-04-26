@@ -1,4 +1,3 @@
-//var database = require('../../database/index.js');
 var request = require('supertest');
 
 var faker = require('faker');

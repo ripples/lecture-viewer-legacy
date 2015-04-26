@@ -18,7 +18,7 @@ var lectureSchema = new Schema({
   whiteboardImages: [String],
   // links to lecture computer screen images,
   screenImages: [String],
-  comments: [Comment]
+  comments: [Comment.schema]
 });
 
 module.exports = mongoose.model("Lecture", lectureSchema);

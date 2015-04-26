@@ -2,8 +2,9 @@
  * Created by freddy on 3/19/15.
  */
 var User = require('./models/user');
+
 exports.notification = require('./notifications');
-exports.bookmark = require('./bookmarks');
+
 /*
   Useful methods to access the User database.
   For getter methods, callback should in the form function(error, returned_data).

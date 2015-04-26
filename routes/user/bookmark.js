@@ -25,17 +25,28 @@ module.exports = {
                     return res.sendFail("lecture_id parameter is not a valid MongoId");
                 }
 
-                //Todo Set limit on label length
+                //Todo Set limit on label length 100 chars
 
                 //Create the bookmark
                 var bookmark = {};
-                bookmark.bookmark_id = "dfaa1e1f3c23000000007855";
                 bookmark.course_id = req.body.course_id;
                 bookmark.lecture_id = req.body.lecture_id;
                 bookmark.label = req.body.label;
                 bookmark.time = req.body.time;
 
-                return res.sendSuccess(bookmark);
+                var user_id = "11313";
+
+                database.user.bookmark.addBookmarkById(user_id, bookmark.lecture_id, bookmark.course_id, bookmark.label, bookmark.time, function(err, newBookmark){
+
+                    if(err)
+                        return res.sendFail(err.message);
+                    if(!newBookmark)
+                        return res.sendFail("Could not create bookmark");
+
+                    bookmark.bookmark_id = newBookmark._id;
+
+                    return res.sendSuccess(bookmark);
+                });
             }
             else {
                 return res.sendFail("Incorrect parameters");

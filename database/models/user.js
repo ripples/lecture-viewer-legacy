@@ -24,6 +24,7 @@ var userSchema = new Schema({
     notifications: [],
     verified: Boolean,
     //bookmarks
-    bookmarks: [Bookmark]
+    bookmarks: [Bookmark.schema]
 });
+
 module.exports = mongoose.model('User', userSchema);

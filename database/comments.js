@@ -5,18 +5,26 @@ var Lecture = require('./models/lecture');
  * Method that creates a comment
  */
 exports.createComment = function(lecture_id, user_id, firstandlast, time, content, post_date, callback) {
-    Lecture.findByIdAndUpdate(lecture_id._id, {
+    
+    var comment = new Comment();
+    comment.content = content;
+    comment.lecture = lecture_id;
+    comment.author = user_id;
+    comment.poster_name = firstandlast;
+    comment.time = time;
+    comment.post_date = post_date;
+
+
+    console.log(comment);
+
+    Lecture.findByIdAndUpdate(lecture_id, {
         $push: {
-            comments: {
-                lecture: lecture_id,
-                author: user_id,
-                poster_name: firstandlast,
-                content: content,
-                time: time,
-                date: post_date
-            }
+            comments: comment
         }
-    }, callback);
+    }, function(err, lecture)
+    {
+        callback(err,comment);
+    });
 };
 /*
 var commentSchema = new Schema({
