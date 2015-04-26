@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var Comment = require('./comment.js');
 var Schema = mongoose.Schema;
 
 // Schema definition for lectures
@@ -17,10 +18,7 @@ var lectureSchema = new Schema({
   whiteboardImages: [String],
   // links to lecture computer screen images,
   screenImages: [String],
-  comments: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Comment'
-  }]
+  comments: [Comment]
 });
 
 module.exports = mongoose.model("Lecture", lectureSchema);

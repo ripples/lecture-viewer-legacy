@@ -47,18 +47,12 @@ exports.getLectureVisibilityById = function(lectureId, callback) {
  * Adds a comment to a lecture
  */
 exports.addCommentToLecture = function(lectureId, comment, callback) {
-    Lecture.findById(lectureId, function(err, lecture) {
-        if (err) callback(err);
-        else if (!lecture) callback("no lecture found");
-        else {
-            lecture.comments.push(comment);
-            lecture.save(function(err) {
-                if (err) callback(err);
-                else callback(undefined, lecture);
-            });
-        }
-    });
+   
 };
+
+
+
+
 /*
  * This method creates a lecture linked to a course
  */
@@ -112,12 +106,12 @@ exports.updateLectureByID = function(lecture_id, course, date, video, visible, w
             screenImages: screenImages,
             visible: visible
         }
-    }, function(err, lecture){
-        if (err){
+    }, function(err, lecture) {
+        if (err) {
             callback(err);
-        }else if(!lecture){
+        } else if (!lecture) {
             callback("lecture does not exist");
-        }else{
+        } else {
             callback(err, lecture);
         }
     });
