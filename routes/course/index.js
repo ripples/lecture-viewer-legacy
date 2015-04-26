@@ -14,26 +14,24 @@ var database = require("../../database/index.js");
 	router.post('/', function(req,res) {
 		//Check if all required parameters are present
 	
-		if(req.body.department, req.body.courseNumber, req.body.courseTitle, req.body.semester, req.body.year, req.body.instructor) {
+		if(req.body.department, req.body.course_number, req.body.course_title, req.body.semester, req.body.year, req.body.instructor_email) {
 			
 			// Attempts to create a course record in database
 			
-			database.course.createCourse(req.body.department, req.body.courseNumber, req.body.courseTitle, req.body.semester, req.body.year, req.body.instructor, function(err, course) {
+			database.course.createCourse(req.body.department, req.body.course_number, req.body.course_title, req.body.semester, req.body.year, req.body.instructor_email, function(err, course) {
 				
 				// If no error, send back course data
 				
 				if(!err) {
-					
-					console.log(course);
 
 					var resCourse = {};
 
 					resCourse.department = course.department;
-					resCourse.courseNumber = course.courseNumber;
-					resCourse.courseTitle = course.courseTitle;
+					resCourse.course_number = course.courseNumber;
+					resCourse.course_title = course.courseTitle;
 					resCourse.semester = course.semester;
 					resCourse.year = course.year;
-					resCourse.instructor = course.instructor;	
+					resCourse.instructor_email = course.instructor;	
 					resCourse.course_id = course._id;
 
 					return res.sendSuccess(resCourse);
