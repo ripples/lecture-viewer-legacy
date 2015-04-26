@@ -8,8 +8,11 @@ module.exports = {
     setup: function(router) {
 
         //Create bookmark for current user
-        router.post('/bookmark', function(req,res) {
+        router.post('/bookmark', auth.verify ,function(req,res) {
             //Check that all required parameters are present
+
+            console.log(req.body);
+
             if(req.body.course_id && req.body.lecture_id && req.body.label && req.body.time) {
 
                 if(!validator.isNumeric(req.body.time))
@@ -34,16 +37,29 @@ module.exports = {
                 bookmark.label = req.body.label;
                 bookmark.time = req.body.time;
 
-                var user_id = "11313";
+                var user_id = req.user._id;
 
-                database.user.bookmark.addBookmarkById(user_id, bookmark.lecture_id, bookmark.course_id, bookmark.label, bookmark.time, function(err, newBookmark){
+                console.log("BOOKMARK DB");
+                console.log(bookmark);
+
+                database.bookmark.addBookmarkById(user_id, bookmark.lecture_id, bookmark.course_id, bookmark.label, bookmark.time, function(err, user){
 
                     if(err)
                         return res.sendFail(err.message);
-                    if(!newBookmark)
+
+                    if(!user)
+                        return res.sendFail("User does not exist");
+
+                    if(!user.bookmarks)
                         return res.sendFail("Could not create bookmark");
 
+                    var newBookmark = user.bookmarks[user.bookmarks.length-1];
+
+                    console.log(newBookmark);
+
                     bookmark.bookmark_id = newBookmark._id;
+
+                    console.log("Sending Success");
 
                     return res.sendSuccess(bookmark);
                 });
