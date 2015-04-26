@@ -83,7 +83,7 @@ module.exports = {
                             return file.type !== "SymbolicLink";
                         }
                     });
-                }else{
+                } else{
                     console.log("File is missing");
 
                     responseObject = {data:{}};
