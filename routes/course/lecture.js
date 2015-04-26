@@ -56,7 +56,7 @@ createLecture = function(course, date, video, visible, whiteboardImages, screenI
 
                     if(!fields['title'] || !fields['description']) 
                     {
-                        res.sendFail("Invalid parameters");
+                        res.sendFail("Invalid parameters. Missing title and/or description");
                     }
 
                     if(file['type'] != "video/mp4")
@@ -99,6 +99,13 @@ createLecture = function(course, date, video, visible, whiteboardImages, screenI
                 }
                 else{
                     console.log("Auto upload");
+
+                    if(!fields['start_time']) 
+                    {
+                        res.sendFail("Invalid parameters. Missing start_time(seconds)");
+                    }
+
+                    var start_time = fields['start_time'];
 
                     //Create a new random, unique, folder to save all unzipped lecture files
                     var unzipPath = "media/" + req.params.course_id + "/" + uuid.v1() + "/";
@@ -148,7 +155,16 @@ createLecture = function(course, date, video, visible, whiteboardImages, screenI
 
                                 for(var i = 0; i < files.length;i++)
                                 {
-                                    whiteboard_images.push(files[i]);
+                                    var time = files[i].replace("whiteBoard", "");
+                                    time = time.split("-")[0];
+
+                                    time -= start_time;
+
+                                    var fileObj = {};
+                                    fileObj.time = time;
+                                    fileObj.url = files[i];
+
+                                    whiteboard_images.push(fileObj);
                                 }
 
                                 fs.readdir(unzipPath + "/computer/", function(err, files)
@@ -158,12 +174,31 @@ createLecture = function(course, date, video, visible, whiteboardImages, screenI
                                     
                                     for(var i = 0; i < files.length;i++)
                                     {
-                                        screen_images.push(files[i]);
+                                        for(var i = 0; i < files.length;i++)
+                                        {
+                                            var time = files[i].replace("computer", "");
+                                            time = time.split("-")[0];
+
+                                            time -= start_time;
+
+                                            var fileObj = {};
+                                            fileObj.time = time;
+                                            fileObj.url = files[i];
+
+                                            screen_images.push(fileObj);
+                                        }
                                     }
+
+                                    var date = new Date(start_time * 1000);
 
                                     var video = unzipPath + "video.mp4";
 
-                                    database.lecture.createLecture(course_id, "","", date, videoPath, true, [], [], function(err, lecture)
+                                    console.log(whiteboard_images);
+                                    console.log(screen_images);
+                                    console.log(video);
+                                    console.log(date);
+
+                                    database.lecture.createLecture(course_id, "","", date, videoPath, true, whiteboard_images, screen_images, function(err, lecture)
                                     {
                                         if(err)
                                             return res.sendFail(err);
@@ -180,13 +215,6 @@ createLecture = function(course, date, video, visible, whiteboardImages, screenI
 
                                         return res.sendSuccess(resCourse);
                                     });
-
-
-                                    var resObject = {};
-                                    resObject.course_id = req.params.course_id;
-                                    resObject.lecture_id = "TODO";
-
-                                    return res.sendSuccess(resObject);
                                 });
 
                             });

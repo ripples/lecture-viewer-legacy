@@ -2,6 +2,11 @@ var mongoose = require('mongoose');
 var Comment = require('./comment.js');
 var Schema = mongoose.Schema;
 
+var imageSchema = mongoose.Schema({
+    url : String,
+    time : Number
+},{ _id : false });
+
 // Schema definition for lectures
 var lectureSchema = new Schema({
   // reference to the course that this lecture belongs to, should be an ObjectIds in Course collection.
@@ -19,9 +24,9 @@ var lectureSchema = new Schema({
   // visibility of the courses
   visible: Boolean,
   // links to lecture whiteboard images,
-  whiteboardImages: [String],
+  whiteboardImages: [imageSchema],
   // links to lecture computer screen images,
-  screenImages: [String],
+  screenImages: [imageSchema],
   comments: [Comment.schema]
 });
 
