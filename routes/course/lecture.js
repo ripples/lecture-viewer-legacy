@@ -95,13 +95,7 @@ createLecture = function(course, date, video, visible, whiteboardImages, screenI
 
                             return res.sendSuccess(resCourse);
                         });
-                    })
-
-
-                   
-
-
-
+                    });
                 }
                 else{
                     console.log("Auto upload");
@@ -127,24 +121,76 @@ createLecture = function(course, date, video, visible, whiteboardImages, screenI
 
                         console.log("Unzipped files placed in " + unzipPath);      
 
-                        //How to recieve other fields from a multipart POST request
-                        var semester = fields['semester'];
-                        var course = fields['course'];
-                        var date = fields['date'];
+                        fs.readdir(unzipPath, function(err, files)
+                        {
+                            if(files.indexOf("computer") == -1)
+                            {
+                                return res.sendFail("Zip folder does not contain 'computer' directory");
+                            }
 
-                        console.log(semester + " : " + course + " : " + date + " --- " + unzipPath);
+                            if(files.indexOf("whiteboard") == -1)
+                            {
+                                return res.sendFail("Zip folder does not contain 'whiteboard' directory");
+                            }
 
-                        //Test response to prove it works
+                            if(files.indexOf("video.mp4") == -1)
+                            {
+                                return res.sendFail("Zip folder does not contain 'video.mp4' file");
+                            }
 
-                        var resObject = {};
-                        resObject.course_id = req.params.course_id;
-                        resObject.lecture_id = "TODO";
+                            var whiteboard_images = [];
+                            var screen_images = [];
 
-                        res.sendSuccess(resObject);
+                            fs.readdir(unzipPath + "/whiteboard/", function(err, files)
+                            {
+                                if(err)
+                                    return res.sendFail(err);
 
-                        res.write(semester + " : " + course + " : " + date + " --- " + unzipPath + "</br></br>");
+                                for(var i = 0; i < files.length;i++)
+                                {
+                                    whiteboard_images.push(files[i]);
+                                }
 
-                        res.end();
+                                fs.readdir(unzipPath + "/computer/", function(err, files)
+                                {
+                                    if(err)
+                                        return res.sendFail(err);
+                                    
+                                    for(var i = 0; i < files.length;i++)
+                                    {
+                                        screen_images.push(files[i]);
+                                    }
+
+                                    var video = unzipPath + "video.mp4";
+
+                                    database.lecture.createLecture(course_id, "","", date, videoPath, true, [], [], function(err, lecture)
+                                    {
+                                        if(err)
+                                            return res.sendFail(err);
+
+                                        resCourse = {};
+                                        resCourse.lecture_id = lecture._id;
+                                        resCourse.course_id = course_id;
+                                        resCourse.date = lecture.date;
+                                        resCourse.title = lecture.title;
+                                        resCourse.description = lecture.description;
+                                        resCourse.video_url = lecture.video;
+                                        resCourse.screen_image_urls = lecture.screenImages;
+                                        resCourse.whiteboard_image_urls = lecture.whiteboardImages;
+
+                                        return res.sendSuccess(resCourse);
+                                    });
+
+
+                                    var resObject = {};
+                                    resObject.course_id = req.params.course_id;
+                                    resObject.lecture_id = "TODO";
+
+                                    return res.sendSuccess(resObject);
+                                });
+
+                            });
+                        });
                     });
 
                     unzipper.on('progress', function (fileIndex, fileCount) {
