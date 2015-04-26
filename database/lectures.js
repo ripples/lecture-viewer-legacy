@@ -50,7 +50,7 @@ exports.addCommentToLecture = function(lectureId, comment, callback) {
    Lecture.findByIdAndUpdate(lectureId, {
         $push: {
             comments: {
-                lecture: lecture_id,
+                lecture: lectureId,
                 author: comment.author,
                 poster_name: comment.poster_name,
                 time: comment.time,
