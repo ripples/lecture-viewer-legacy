@@ -29,7 +29,6 @@ describe('Course', function() {
 				.post('/course')
 				.send(course_info)
 				.end(function(err, res) {
-					console.log(res.body.data);
 					res.body.status.should.equal('success');
 					done();
 				});
