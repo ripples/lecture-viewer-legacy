@@ -77,11 +77,11 @@ router.get('/:course_id', function(req,res) {
 				var resCourse = {};
 
 				resCourse.department = course.department;
-				resCourse.courseNumber = course.courseNumber;
-				resCourse.courseTitle = course.courseTitle;
+				resCourse.course_number = course.courseNumber;
+				resCourse.course_title = course.courseTitle;
 				resCourse.semester = course.semester;
 				resCourse.year = course.year;
-				resCourse.instructor = course.instructor;	
+				resCourse.instructor_email = course.instructor;	
 				resCourse.course_id = course._id;
 
 				res.sendSuccess(resCourse);
