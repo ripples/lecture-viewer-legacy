@@ -38,3 +38,25 @@ exports.getBookmarksById = function(userid, callback) {
         }
     });
 };
+/*
+ * Get Bookmark by lectureID
+ */
+exports.getBookmarksByLectureId = function(lectureid, callback) {
+    // User.findOne({_id: });
+};
+/*
+ * Deletes a bookmark by userid and bookmarkid
+ */
+exports.deleteBookmark = function(userid, bookmarkid, callback) {
+    User.findByIdAndUpdate({
+        _id: userid
+    }, {
+        $pull: {
+            bookmarks: {
+                _id: bookmarkid
+            }
+        }
+    }, function(err, user) {
+        callback(err, user);
+    });
+};
