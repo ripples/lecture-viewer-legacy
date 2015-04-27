@@ -4,13 +4,11 @@ var Bookmark = require('./models/bookmark.js');
   Method to add a bookmark to the user account with given email.
  */
 exports.addBookmarkById = function(user_id, lecture_id, course_id, label, time, callback) {
-
     var bookmark = new Bookmark();
     bookmark.lecture_id = lecture_id;
     bookmark.course_id = course_id;
     bookmark.label = label;
     bookmark.time = time;
-
     User.findByIdAndUpdate(user_id, {
         $push: {
             bookmarks: {
@@ -20,23 +18,10 @@ exports.addBookmarkById = function(user_id, lecture_id, course_id, label, time, 
                 time: time
             }
         }
-    }, function(err, user){
+    }, function(err, user) {
         callback(err, user);
     });
 };
-/*
-    Lecture.findByIdAndUpdate(lecture_id, {
-        $push: {
-            comments: {
-                lecture: lecture_id,
-                author: user_id,
-                poster_name: firstandlast,
-                content: content,
-                time: time,
-                date: post_date
-            }
-        }
-    }, callback);
 /*
   Method to get a user's bookmarks by user's id.
  */
