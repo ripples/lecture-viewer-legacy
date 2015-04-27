@@ -109,7 +109,7 @@ exports.dropLecturesDatabase = function(callback) {
         if (err) {
             console.log(err);
         } else {
-            console.log("Lecture database dropped");
+            //console.log("Lecture database dropped");
         }
         callback();
     });

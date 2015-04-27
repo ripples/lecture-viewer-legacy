@@ -108,6 +108,8 @@ module.exports = {
             }
             //Delete the bookmark
 
+            //Database call
+
             return res.sendSuccess({});
         });
 
@@ -130,6 +132,8 @@ module.exports = {
                     "label" : "New Bookmark! :D",
                     "time" : "140"
                 }
+
+                //Database call
 
                 bookmark.bookmark_id = req.params.bookmark_id;
                 bookmark.label = req.body.label;

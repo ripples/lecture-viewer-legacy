@@ -177,7 +177,7 @@ exports.dropCoursesDatabase = function(callback) {
         if (err) {
             console.log(err);
         } else {
-            console.log("Course database dropped");
+            //console.log("Course database dropped");
         }
         callback();
     });

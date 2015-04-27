@@ -36,16 +36,18 @@ describe('Testing Lectures collection:', function() {
     var testLecture = null;
     before(function(done) {
         db_api.lecture.dropLecturesDatabase(function() {
-            db_api.lecture.createLecture(testCourse, new Date().getDate(), "thisvideo", true, ["WhiteBoard1", "WhiteBoad2"], ["screen1", "screen2"], function(err, lecture) {
+            db_api.lecture.createLecture(testCourse, "title", "description", new Date().getDate(), "thisvideo", true, [{url:"WhiteBoard1",time:"1"}], [{url:"screen1", time:"2"}], function(err, lecture) {
                 testLecture = lecture;
                 assert.equal(err, null);
                 assert.notEqual(lecture, null);
                 assert.equal(lecture.video, "thisvideo");
+                assert.equal(lecture.title, "title");
+                assert.equal(lecture.description, "description");
                 assert.equal(lecture.visible, true);
-                assert.equal(lecture.whiteboardImages[0], "WhiteBoard1");
-                assert.equal(lecture.whiteboardImages[1], "WhiteBoad2");
-                assert.equal(lecture.screenImages[0], "screen1");
-                assert.equal(lecture.screenImages[1], "screen2");
+                assert.equal(lecture.whiteboardImages[0].url, "WhiteBoard1");
+                assert.equal(lecture.whiteboardImages[0].time, "1");
+                assert.equal(lecture.screenImages[0].url, "screen1");
+                assert.equal(lecture.screenImages[0].time, "2");
                 done();
             });
         });
@@ -116,12 +118,12 @@ describe('Testing Lectures collection:', function() {
      * Tests that a lecture is updated
      */
     it('updates a lecture: lectureID', function(done) {
-        db_api.lecture.updateLectureByID(testLecture._id, testCourse, new Date().getDate(), "thatVideo", true, ["WhiteBoard10", "WhiteBoad20"], ["screen1", "screen2"], function(err, lecture) {
+        db_api.lecture.updateLectureByID(testLecture._id, "new title", "new description", false, function(err, lecture) {
             assert.equal(err, null);
             assert.notEqual(lecture, null);
-            assert.equal(lecture.video, "thatVideo");
-            assert.equal(lecture.whiteboardImages[0], "WhiteBoard10");
-            assert.equal(lecture.whiteboardImages[1], "WhiteBoad20");
+            assert.equal(lecture.video, "thisvideo");
+            assert.equal(lecture.title, "new title");
+            assert.equal(lecture.description, "new description");
             done();
         });
     });

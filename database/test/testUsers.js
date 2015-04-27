@@ -39,7 +39,7 @@ describe('Testing User collection:', function() {
     var testLecture = null;
     before(function(done) {
         db_api.lecture.dropLecturesDatabase(function() {
-            db_api.lecture.createLecture(testCourse, new Date().getDate(), "thisvideo", true, ["WhiteBoard1", "WhiteBoad2"], ["screen1", "screen2"], function(err, lecture) {
+            db_api.lecture.createLecture(testCourse,"title","description", new Date().getDate(), "thisvideo", true, ["WhiteBoard1", "WhiteBoad2"], ["screen1", "screen2"], function(err, lecture) {
                 testLecture = lecture;
                 assert.equal(err, null);
                 assert.notEqual(lecture, null);
@@ -130,17 +130,17 @@ describe('Testing User collection:', function() {
      * Tests whether a bookmark is properly added by the function.
      */
     it('Add bookmark by ObjectId:', function(done) {
-        db_api.bookmark.addBookmarkById(testUser._id, testLecture._id, testCourse._id, "thisLable", 255, function(err, bookmarks) {
+        db_api.bookmark.addBookmarkById(testUser._id, testLecture._id, testCourse._id, "thisLable", 255, function(err, user) {
 
-            console.log(bookmarks);
+            console.log(user.bookmarks);
 
             assert.equal(err, null);
-            assert.notEqual(bookmarks, null);
-            bookmarks.length.should.eql(1);
+            assert.notEqual(user.bookmarks, null);
+            user.bookmarks.length.should.eql(1);
             //bookmarks[0].lecture_id.should.eql(testLecture._id);
             //bookmarks[0].course_id.should.eql(testCourse._id);
-            assert.equal(bookmarks[0].label,"thisLable");
-            assert.equal(bookmarks[0].time,255);
+            assert.equal(user.bookmarks[0].label,"thisLable");
+            assert.equal(user.bookmarks[0].time,255);
             done();
         });
     });
@@ -148,12 +148,12 @@ describe('Testing User collection:', function() {
      * Tests whether a a bookmark is properly retrieved.
      */
     it('retrieves bookmark by ObjectId: ObjectId', function(done) {
-        db_api.user.bookmark.getBookmarksById(testUser._id, function(err, bookmarks) {
+        db_api.user.bookmark.getBookmarksById(testUser._id, function(err, user) {
             assert.equal(err, null);
-            assert.notEqual(bookmarks, null);
-            assert.equal(bookmarks.length, 1);
-            assert.equal(bookmarks[0].label,"thisLable");
-            assert.equal(bookmarks[0].time,255);
+            assert.notEqual(user.bookmarks, null);
+            assert.equal(user.bookmarks.length, 1);
+            assert.equal(user.bookmarks[0].label,"thisLable");
+            assert.equal(user.bookmarks[0].time,255);
             done();
         });
     });

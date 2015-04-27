@@ -64,9 +64,9 @@ exports.createUserAndLogin = function(callback)
 
 var test_course = {
     "department" : "Computer Science",
-    "course_name" : "Web Scalability",
+    "course_title" : "Web Scalability",
     "course_number" : "497s",
-    "term" : "Spring",
+    "semester" : "Spring",
     "year" : "2015",
     "instructor_email" : "instructor@umass.edu"
 }

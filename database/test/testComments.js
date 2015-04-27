@@ -5,7 +5,7 @@ var assert = require('assert');
  *
  */
 describe('Test Comment Collection', function() {
-    this.timeout(10000);
+    this.timeout(20000);
     var testCourse = null;
     before(function(done) {
         db_api.course.dropCoursesDatabase(function() {
@@ -23,7 +23,7 @@ describe('Test Comment Collection', function() {
     var testLecture = null;
     before(function(done) {
         db_api.lecture.dropLecturesDatabase(function() {
-            db_api.lecture.createLecture(testCourse, new Date().getDate(), "thisvideo", true, ["WhiteBoard1", "WhiteBoad2"], ["screen1", "screen2"], function(err, lecture) {
+            db_api.lecture.createLecture(testCourse, "title", "description", new Date().getDate(), "thisvideo", true, ["WhiteBoard1", "WhiteBoad2"], ["screen1", "screen2"], function(err, lecture) {
                 testLecture = lecture;
                 assert.equal(err, null);
                 assert.notEqual(lecture, null);
