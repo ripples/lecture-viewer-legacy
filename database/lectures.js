@@ -47,7 +47,7 @@ exports.getLectureVisibilityById = function(lectureId, callback) {
  * Adds a comment to a lecture
  */
 exports.addCommentToLecture = function(lectureId, comment, callback) {
-   Lecture.findByIdAndUpdate(lectureId, {
+    Lecture.findByIdAndUpdate(lectureId, {
         $push: {
             comments: {
                 lecture: lectureId,
@@ -56,22 +56,10 @@ exports.addCommentToLecture = function(lectureId, comment, callback) {
                 time: comment.time,
                 date: comment.date,
                 content: comment.content
-
             }
         }
     }, callback);
 };
-
-/*
-   Comment.create({
-                lecture: lecture_id,
-                author: user_id,
-                poster_name: firstandlast,
-                time: time,
-                date: post_date,
-                content: content
-
-
 /*
  * This method creates a lecture linked to a course
  */
@@ -93,8 +81,8 @@ exports.createLecture = function(course, title, description, date, video, visibl
                 whiteboardImages: whiteboardImages,
                 screenImages: screenImages,
                 visible: visible,
-                title : title,
-                description : description
+                title: title,
+                description: description
             }, function(err, lecture) {
                 callback(err, lecture);
             });
@@ -121,8 +109,8 @@ exports.updateLectureByID = function(lecture_id, title, description, visible, ca
     Lecture.findByIdAndUpdate(lecture_id, {
         $set: {
             visible: visible,
-            title : title,
-            description : description
+            title: title,
+            description: description
         }
     }, function(err, lecture) {
         if (err) {
@@ -131,6 +119,20 @@ exports.updateLectureByID = function(lecture_id, title, description, visible, ca
             callback("lecture does not exist");
         } else {
             callback(err, lecture);
+        }
+    });
+};
+/*
+ * Deletes a single lecture by its id.
+ */
+exports.deleteLectureByID = function(lecture_id, callback) {
+    Lecture.findByIdAndRemove(lecture_id, function(err, lecture) {
+        if (err) {
+            callback(err);
+        } else if (!lecture) {
+            callback("Lectures does not exist");
+        } else {
+            callback(undefined, lecture);
         }
     });
 };

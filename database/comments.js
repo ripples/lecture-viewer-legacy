@@ -1,11 +1,9 @@
 var Comment = require('./models/comment');
 var Lecture = require('./models/lecture');
-
 /*
  * Method that creates a comment
  */
 exports.createComment = function(lecture_id, user_id, firstandlast, time, content, post_date, callback) {
-    
     var comment = new Comment();
     comment.content = content;
     comment.lecture = lecture_id;
@@ -13,39 +11,15 @@ exports.createComment = function(lecture_id, user_id, firstandlast, time, conten
     comment.poster_name = firstandlast;
     comment.time = time;
     comment.post_date = post_date;
-
-
-    console.log(comment);
-
+    // console.log(comment);
     Lecture.findByIdAndUpdate(lecture_id, {
         $push: {
             comments: comment
         }
-    }, function(err, lecture)
-    {
-        callback(err,comment);
+    }, function(err, lecture) {
+        callback(err, comment);
     });
 };
-/*
-var commentSchema = new Schema({
-  semester: String,
-  course: {
-    type: Schema.Types.ObjectId,
-    ref: 'Course'
-  },
-  lecture: {
-    type: Schema.Types.ObjectId,
-    ref: 'Lecture'
-  },
-  author: {
-    type: Schema.Types.ObjectId,
-    ref: 'User'
-  },
-  poster_name: String,
-  content: String,
-  time: Number,
-  date: Date
-});
 /*
  * Method that delectes the whole database for comments
  */
@@ -62,13 +36,17 @@ exports.dropCommentsDatabase = function(callback) {
 /*
  * delete a comment using id
  */
-exports.deleteComment = function(comment_id, callback) {
-    Comment.findByIdAndRemove(comment_id, function(err, comment) {
-        if (err) {
-            callback(err);
-        } else {
-            callback(undefined, comment);
+exports.deleteComment = function(lecture_id, comment, callback) {
+    Lecture.findByIdAndUpdate({
+        _id: lecture_id
+    }, {
+        $pull: {
+            comments: {
+                _id: comment._id
+            }
         }
+    }, function(err, comment) {
+        callback(err, comment);
     });
 };
 /*

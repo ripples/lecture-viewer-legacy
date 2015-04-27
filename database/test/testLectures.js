@@ -36,7 +36,13 @@ describe('Testing Lectures collection:', function() {
     var testLecture = null;
     before(function(done) {
         db_api.lecture.dropLecturesDatabase(function() {
-            db_api.lecture.createLecture(testCourse, "title", "description", new Date().getDate(), "thisvideo", true, [{url:"WhiteBoard1",time:"1"}], [{url:"screen1", time:"2"}], function(err, lecture) {
+            db_api.lecture.createLecture(testCourse, "title", "description", new Date().getDate(), "thisvideo", true, [{
+                url: "WhiteBoard1",
+                time: "1"
+            }], [{
+                url: "screen1",
+                time: "2"
+            }], function(err, lecture) {
                 testLecture = lecture;
                 assert.equal(err, null);
                 assert.notEqual(lecture, null);
@@ -93,16 +99,15 @@ describe('Testing Lectures collection:', function() {
     /*
      * Tests that a comment is added to the lecture properly
      */
-    it('add comment to lecture: lectureID', function(done) {
-        db_api.lecture.addCommentToLecture(testLecture._id, testComment, function(err, lecture) {
-            //console.log(lecture);
-            assert.equal(err, null);
-            assert.notEqual(lecture, null);
-            // assert.equal(lecture.comments[0], testComment._id);
-
-            done();
-        });
-    });
+    // it('add comment to lecture: lectureID', function(done) {
+    //     db_api.lecture.addCommentToLecture(testLecture._id, testComment, function(err, lecture) {
+    //         //console.log(lecture);
+    //         assert.equal(err, null);
+    //         assert.notEqual(lecture, null);
+    //         // assert.equal(lecture.comments[0], testComment._id);
+    //         done();
+    //     });
+    // });
     /*
      * Tests that an array of comments is being retreived properly
      */
@@ -131,10 +136,21 @@ describe('Testing Lectures collection:', function() {
      * test that a comment is being deleted properly
      */
     it('deletes a comment using id', function(done) {
-        db_api.comment.deleteComment(testComment._id, function(err, comment) {
+        db_api.comment.deleteComment(testLecture._id, testComment, function(err, lecture) {
             assert.equal(err, null);
-            assert.notEqual(comment, null);
-            comment._id.should.eql(testComment._id);
+            assert.notEqual(lecture, null);
+            assert.equal(lecture.comments.length, 0);
+            done();
+        });
+    });
+    /*
+     * Test that a single lecture is delete by its id.
+     */
+    it('deletes lecture by ID', function(done) {
+        db_api.lecture.deleteLectureByID(testLecture._id, function(err, lecture) {
+            assert.equal(err, null);
+            assert.notEqual(lecture, null);
+            testLecture._id.should.eql(lecture._id);
             done();
         });
     });
