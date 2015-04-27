@@ -117,14 +117,9 @@ exports.dropLecturesDatabase = function(callback) {
 /*
  * updates a given lecture
  */
-exports.updateLectureByID = function(lecture_id, course, title, description, date, video, visible, whiteboardImages, screenImages, callback) {
+exports.updateLectureByID = function(lecture_id, title, description, visible, callback) {
     Lecture.findByIdAndUpdate(lecture_id, {
         $set: {
-            course: course,
-            date: date,
-            video: video,
-            whiteboardImages: whiteboardImages,
-            screenImages: screenImages,
             visible: visible,
             title : title,
             description : description
