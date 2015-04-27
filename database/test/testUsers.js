@@ -144,10 +144,23 @@ describe('Testing User collection:', function() {
         });
     });
     /*
-     * Tests whether a a bookmark is properly retrieved.
+     * Tests whether a bookmark is properly retrieved.
      */
     it('retrieves bookmark by ObjectId: ObjectId', function(done) {
         db_api.bookmark.getBookmarksById(testUser._id, function(err, bookmarks) {
+            assert.equal(err, null);
+            assert.notEqual(bookmarks, null);
+            assert.equal(bookmarks.length, 1);
+            assert.equal(bookmarks[0].label, "thisLable");
+            assert.equal(bookmarks[0].time, 255);
+            done();
+        });
+    });
+    /*
+     * Test whether a bookmark is properly retrieved or not.
+     */
+    it('retreives bookmars by userid and lectureid', function(done) {
+        db_api.bookmark.getBookmarksByLectureId(testUser._id, testLecture._id, function(err, bookmarks) {
             assert.equal(err, null);
             assert.notEqual(bookmarks, null);
             assert.equal(bookmarks.length, 1);

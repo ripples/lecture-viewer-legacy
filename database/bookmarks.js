@@ -35,8 +35,12 @@ exports.getBookmarksById = function(userid, callback) {
 /*
  * Get Bookmark by lectureID
  */
-exports.getBookmarksByLectureId = function(lectureid, callback) {
-    // User.findOne({_id: });
+exports.getBookmarksByLectureId = function(userid, lectureid, callback) {
+    User.findOne({
+        _id: userid
+    }, function(err, user) {
+        callback(err, user.bookmarks)
+    });
 };
 /*
  * Deletes a bookmark by userid and bookmarkid
@@ -54,3 +58,9 @@ exports.deleteBookmark = function(userid, bookmarkid, callback) {
         callback(err, user);
     });
 };
+/*
+ * Gets bookmark by userid and lectureid
+ */
+// exports.getBookmarksByLectureId = function(userid, lectureid, callback){
+//   User
+// };
