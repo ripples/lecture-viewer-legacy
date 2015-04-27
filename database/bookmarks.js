@@ -36,19 +36,13 @@ exports.getBookmarksById = function(userid, callback) {
  * Get Bookmark by lectureID
  */
 exports.getBookmarksByLectureId = function(userid, lectureid, callback) {
-    User.findOne(userid, bookmarks: {
-        $elemMatch: {
-            lecture: lectureid
-        }
-    }, function(err, user) {
-        callback(err, user.bookmarks)
-    });
+    
 };
 /*
  * Gets bookmark by userid and lectureid
  */
 exports.getBookmarksByCourseId = function(userid, lectureid, callback) {
-    // User
+    
 };
 /*
  * Deletes a bookmark by userid and bookmarkid
