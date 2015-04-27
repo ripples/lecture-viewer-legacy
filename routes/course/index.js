@@ -31,7 +31,7 @@ var database = require("../../database/index.js");
 					resCourse.course_title = course.courseTitle;
 					resCourse.semester = course.semester;
 					resCourse.year = course.year;
-					resCourse.instructor_email = course.instructor;	
+					resCourse.instructor_emails = course.instructors;	
 					resCourse.course_id = course._id;
 					resCourse.lectures = course.lectures;
 
@@ -74,7 +74,6 @@ router.get('/:course_id', function(req,res) {
 				res.sendFail(err);
 
 			} else {
-				console.log(course);
 				var resCourse = {};
 
 				resCourse.department = course.department;
@@ -82,7 +81,7 @@ router.get('/:course_id', function(req,res) {
 				resCourse.course_title = course.courseTitle;
 				resCourse.semester = course.semester;
 				resCourse.year = course.year;
-				resCourse.instructor_email = course.instructor;	
+				resCourse.instructor_emails = course.instructors;	
 				resCourse.course_id = course._id;
 				resCourse.lectures = course.lectures;
 
@@ -124,7 +123,7 @@ router.put('/:course_id', function(req,res) {
 					resCourse.course_title = course.courseTitle;
 					resCourse.semester = course.semester;
 					resCourse.year = course.year;
-					resCourse.instructor_email = course.instructor;	
+					resCourse.instructor_emails = course.instructors;	
 					resCourse.course_id = course._id;
 
 					res.sendSuccess(resCourse);
@@ -167,7 +166,7 @@ router.delete('/:course_id', function(req,res) {
 				resCourse.course_title = course.courseTitle;
 				resCourse.semester = course.semester;
 				resCourse.year = course.year;
-				resCourse.instructor_email = course.instructor;	
+				resCourse.instructor_emails = course.instructors;	
 				resCourse.course_id = course._id;
 
 				res.sendSuccess(resCourse);

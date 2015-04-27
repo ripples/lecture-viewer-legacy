@@ -1,5 +1,6 @@
 var should = require('should');
 var request = require('supertest');
+var assert = require('assert');
 
 var database = require('../../database/index.js');
 
@@ -22,7 +23,7 @@ describe('Course', function() {
 		course_title : "Web Scalability",
 		semester : "Spring",
 		year : 2015,
-		instructor_email : "instructor@umass.edu"
+		instructor_email : "Joe@umass.edu"
 	};
 
 	var course_info3 = {
@@ -31,7 +32,7 @@ describe('Course', function() {
 		course_title : "Investment",
 		semester : "Spring",
 		year : 2007,
-		instructor_email : "instructor@umass.edu"
+		instructor_email : "Martin@umass.edu"
 	};
 
 	var empty_parameter_course_info = {
@@ -40,7 +41,7 @@ describe('Course', function() {
 		course_title : "Investment",
 		semester : "Spring",
 		year : 2007,
-		instructor_email : "instructor@umass.edu"
+		instructor_email : "Test@umass.edu"
 	};
 
 	var missing_parameter_course_info = {
@@ -48,7 +49,7 @@ describe('Course', function() {
 		course_title : "Investment",
 		semester : "Spring",
 		year : 2007,
-		instructor_email : "instructor@umass.edu"
+		instructor_email : "Steve@umass.edu"
 	};
 
 	var course_id = "";
@@ -71,8 +72,8 @@ describe('Course', function() {
 					res.body.data.course_title.should.equal('Web Scalability');
 					res.body.data.semester.should.equal('Spring');
 					res.body.data.year.should.equal(2015);
-					// res.body.data.lectures.to.have.length(0);							// Need to fix lectures selection in schema
-					// res.body.data.instructor_email.should.equal();						// Need to fix adding an instructor into the db
+					assert.deepEqual(res.body.data.instructor_emails, ['Joe@umass.edu'])
+					assert.deepEqual(res.body.data.lectures, []);
 					done();
 				}
 			});
@@ -94,14 +95,14 @@ describe('Course', function() {
 						res.body.data.course_title.should.equal('Intro to Psychology');
 						res.body.data.semester.should.equal('Fall');
 						res.body.data.year.should.equal(2003);
-						// res.body.data.lectures.to.have.length(0);						// Need to fix lectures selection in schema
-						// res.body.data.instructor_email.should.equal();					// Need to fix adding an instructor into the db
+						assert.deepEqual(res.body.data.instructor_emails, ['instructor@umass.edu']);
+						assert.deepEqual(res.body.data.lectures, []);
 						done();
 					}
 				});
 		});
 
-		it('Creating a course that already exists', function(done) {						// NEEDS WORK
+		it('Creating a course that already exists', function(done) {						// NEEDS WORK - doesn't find duplicates!!!
 			request(url)
 				.post('/course')
 				.send(course_info2)
@@ -115,9 +116,9 @@ describe('Course', function() {
 						res.body.data.course_title.should.equal('Web Scalability');
 						res.body.data.semester.should.equal('Spring');
 						res.body.data.year.should.equal(2015);
-						// res.body.data.lectures.to.have.length(0);						// Need to fix lectures selection in schema
+						assert.deepEqual(res.body.data.instructor_emails, ['Joe@umass.edu']);
+						assert.deepEqual(res.body.data.lectures, []);
 						// res.body.data.course_id.should.equal(course_id);					// this creates 2 of the same courses - eed to fix this in the db 
-						// res.body.data.instructor_email.should.equal();					// Need to fix adding an instructor into the db
 						done();
 					}
 				});
@@ -134,8 +135,7 @@ describe('Course', function() {
 					res.body.data.semester.should.equal('Fall');
 					res.body.data.year.should.equal(2003);					
 					res.body.data.course_id.should.equal(new_course_id);
-					// res.body.data.lectures.to.have.length(0);						// Need to fix lectures selection in schema
-					// res.body.data.instructor.should.equal();							// Need to fix adding an instructor into the db
+					assert.deepEqual(res.body.data.instructor_emails, ['instructor@umass.edu']);
 					done();
 				});
 		});
@@ -154,8 +154,8 @@ describe('Course', function() {
 						res.body.data.semester.should.equal('Spring');
 						res.body.data.year.should.equal(2015);
 						res.body.data.course_id.should.equal(course_id);
-						// res.body.data.lectures.to.have.length(0);						// Need to fix lectures selection in schema
-						// res.body.data.instructor.should.equal();							// Need to fix adding an instructor into the db
+						assert.deepEqual(res.body.data.instructor_emails, ['Joe@umass.edu']);
+						assert.deepEqual(res.body.data.lectures, []);
 						done();
 					}
 				});
@@ -173,7 +173,7 @@ describe('Course', function() {
 		// 			res.body.data.semester.should.equal('Spring');
 		// 			res.body.data.year.should.equal(2007);
 		// 			res.body.data.course_id.should.equal(course_id);
-		// 			// res.body.data.instructor.should.equal();								// Need to fix adding an instructor into the db
+		// 			// res.body.data.instructor_emails.should.equal();								// Need to fix adding an instructor into the db
 		// 			done();
 		// 		});
 		// });
