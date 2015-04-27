@@ -97,18 +97,6 @@ describe('Testing Lectures collection:', function() {
         });
     });
     /*
-     * Tests that a comment is added to the lecture properly
-     */
-    // it('add comment to lecture: lectureID', function(done) {
-    //     db_api.lecture.addCommentToLecture(testLecture._id, testComment, function(err, lecture) {
-    //         //console.log(lecture);
-    //         assert.equal(err, null);
-    //         assert.notEqual(lecture, null);
-    //         // assert.equal(lecture.comments[0], testComment._id);
-    //         done();
-    //     });
-    // });
-    /*
      * Tests that an array of comments is being retreived properly
      */
     it('get comments from lecture', function(done) {

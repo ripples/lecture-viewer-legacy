@@ -44,23 +44,6 @@ exports.getLectureVisibilityById = function(lectureId, callback) {
     });
 };
 /*
- * Adds a comment to a lecture
- */
-exports.addCommentToLecture = function(lectureId, comment, callback) {
-    Lecture.findByIdAndUpdate(lectureId, {
-        $push: {
-            comments: {
-                lecture: lectureId,
-                author: comment.author,
-                poster_name: comment.poster_name,
-                time: comment.time,
-                date: comment.date,
-                content: comment.content
-            }
-        }
-    }, callback);
-};
-/*
  * This method creates a lecture linked to a course
  */
 exports.createLecture = function(course, title, description, date, video, visible, whiteboardImages, screenImages, callback) {
