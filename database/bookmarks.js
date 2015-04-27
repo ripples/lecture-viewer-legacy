@@ -29,13 +29,7 @@ exports.getBookmarksById = function(userid, callback) {
     User.findOne({
         _id: userid
     }, function(err, user) {
-        if (err) {
-            callback(err);
-        } else if (!user) {
-            callback("email does not exist.");
-        } else {
-            callback(undefined, user.bookmarks);
-        }
+        callback(undefined, user.bookmarks);
     });
 };
 /*

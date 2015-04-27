@@ -147,12 +147,12 @@ describe('Testing User collection:', function() {
      * Tests whether a a bookmark is properly retrieved.
      */
     it('retrieves bookmark by ObjectId: ObjectId', function(done) {
-        db_api.bookmark.getBookmarksById(testUser._id, function(err, user) {
+        db_api.bookmark.getBookmarksById(testUser._id, function(err, bookmarks) {
             assert.equal(err, null);
-            assert.notEqual(user.bookmarks, null);
-            assert.equal(user.bookmarks.length, 1);
-            assert.equal(user.bookmarks[0].label, "thisLable");
-            assert.equal(user.bookmarks[0].time, 255);
+            assert.notEqual(bookmarks, null);
+            assert.equal(bookmarks.length, 1);
+            assert.equal(bookmarks[0].label, "thisLable");
+            assert.equal(bookmarks[0].time, 255);
             done();
         });
     });
