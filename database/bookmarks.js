@@ -36,14 +36,22 @@ exports.getBookmarksById = function(userid, callback) {
  * Get Bookmark by lectureID
  */
 exports.getBookmarksByLectureId = function(userid, lectureid, callback) {
-    
+    User.find({
+        _id: userid
+    }, {
+        bookmarks: {
+            $elemMatch: {
+                lecture: lectureid
+            }
+        }
+    }, callback);
 };
+/*
+PatientsModel.find({patientId: '123'}, {diet: {$elemMatch: {'status': 'A'}}}, cb)
 /*
  * Gets bookmark by userid and lectureid
  */
-exports.getBookmarksByCourseId = function(userid, lectureid, callback) {
-    
-};
+exports.getBookmarksByCourseId = function(userid, lectureid, callback) {};
 /*
  * Deletes a bookmark by userid and bookmarkid
  */
@@ -60,3 +68,9 @@ exports.deleteBookmark = function(userid, bookmarkid, callback) {
         callback(err, user);
     });
 };
+/*
+ * Method that updates bookmark.
+ */
+// exports.editBookmark = function(userid, bookmarkid, callback) {
+//     User.findByIdAndUpdate(userid, );
+// };
