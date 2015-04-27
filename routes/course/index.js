@@ -33,6 +33,7 @@ var database = require("../../database/index.js");
 					resCourse.year = course.year;
 					resCourse.instructor_email = course.instructor;	
 					resCourse.course_id = course._id;
+					resCourse.lectures = course.lectures;
 
 					res.sendSuccess(resCourse);
 
@@ -73,7 +74,7 @@ router.get('/:course_id', function(req,res) {
 				res.sendFail(err);
 
 			} else {
-				
+				console.log(course);
 				var resCourse = {};
 
 				resCourse.department = course.department;
@@ -83,6 +84,7 @@ router.get('/:course_id', function(req,res) {
 				resCourse.year = course.year;
 				resCourse.instructor_email = course.instructor;	
 				resCourse.course_id = course._id;
+				resCourse.lectures = course.lectures;
 
 				res.sendSuccess(resCourse);
 			}

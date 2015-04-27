@@ -71,6 +71,7 @@ describe('Course', function() {
 					res.body.data.course_title.should.equal('Web Scalability');
 					res.body.data.semester.should.equal('Spring');
 					res.body.data.year.should.equal(2015);
+					// res.body.data.lectures.to.have.length(0);							// Need to fix lectures selection in schema
 					// res.body.data.instructor_email.should.equal();						// Need to fix adding an instructor into the db
 					done();
 				}
@@ -93,6 +94,7 @@ describe('Course', function() {
 						res.body.data.course_title.should.equal('Intro to Psychology');
 						res.body.data.semester.should.equal('Fall');
 						res.body.data.year.should.equal(2003);
+						// res.body.data.lectures.to.have.length(0);						// Need to fix lectures selection in schema
 						// res.body.data.instructor_email.should.equal();					// Need to fix adding an instructor into the db
 						done();
 					}
@@ -113,6 +115,7 @@ describe('Course', function() {
 						res.body.data.course_title.should.equal('Web Scalability');
 						res.body.data.semester.should.equal('Spring');
 						res.body.data.year.should.equal(2015);
+						// res.body.data.lectures.to.have.length(0);						// Need to fix lectures selection in schema
 						// res.body.data.course_id.should.equal(course_id);					// this creates 2 of the same courses - eed to fix this in the db 
 						// res.body.data.instructor_email.should.equal();					// Need to fix adding an instructor into the db
 						done();
@@ -131,6 +134,7 @@ describe('Course', function() {
 					res.body.data.semester.should.equal('Fall');
 					res.body.data.year.should.equal(2003);					
 					res.body.data.course_id.should.equal(new_course_id);
+					// res.body.data.lectures.to.have.length(0);						// Need to fix lectures selection in schema
 					// res.body.data.instructor.should.equal();							// Need to fix adding an instructor into the db
 					done();
 				});
@@ -150,6 +154,7 @@ describe('Course', function() {
 						res.body.data.semester.should.equal('Spring');
 						res.body.data.year.should.equal(2015);
 						res.body.data.course_id.should.equal(course_id);
+						// res.body.data.lectures.to.have.length(0);						// Need to fix lectures selection in schema
 						// res.body.data.instructor.should.equal();							// Need to fix adding an instructor into the db
 						done();
 					}
