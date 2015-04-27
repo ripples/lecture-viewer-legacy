@@ -191,7 +191,7 @@ module.exports = {
                                     //Creates a date based off of the start time provided to the API (times 100 to make milliseconds)
                                     var date = new Date(start_time * 1000);
 
-                                    var video = unzipPath + "video.mp4";
+                                    var videoPath = unzipPath + "video.mp4";
 
                                     //Create lecture. No title, description and is invisible until modified by instructor
                                     database.lecture.createLecture(course_id, "","", date, videoPath, false, whiteboard_images, screen_images, function(err, lecture)
