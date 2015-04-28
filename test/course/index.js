@@ -102,7 +102,7 @@ describe('Course', function() {
 				});
 		});
 
-		it('Creating a course that already exists', function(done) {						// NEEDS WORK - doesn't find duplicates!!!
+		it('Creating a course that already exists', function(done) {									// NEEDS WORK - doesn't find duplicates!!! - need to fix courses db call
 			request(url)
 				.post('/course')
 				.send(course_info2)
@@ -118,7 +118,7 @@ describe('Course', function() {
 						res.body.data.year.should.equal(2015);
 						assert.deepEqual(res.body.data.instructor_emails, ['Joe@umass.edu']);
 						assert.deepEqual(res.body.data.lectures, []);
-						// res.body.data.course_id.should.equal(course_id);					// this creates 2 of the same courses - eed to fix this in the db 
+						// res.body.data.course_id.should.equal(course_id);								// this creates 2 of the same courses - eed to fix this in the db 
 						done();
 					}
 				});

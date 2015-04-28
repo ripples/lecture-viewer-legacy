@@ -4,13 +4,42 @@ var csv = require('csv');
 var validator = require('validator');
 var sleep = require('sleep');
 
+var database = require("../../database/index.js");
+
 //Roster API
 module.exports = {
     setup: function(router) {
+        
         //Get the roster of a specific course
-        router.get('/:course_id/roster', function(req,res) {
+        router.get('/:course_id/roster', function(req, res) {
             
-            //Testing timeout w/ no response
+            if(req.params.course_id == undefined) {
+                
+                res.sendFail("No valid course_id parameter");
+
+            } 
+            else if(validator.isMongoId(req.params.course_id) == false) {
+
+                res.sendFail("Course ID is not a valid MongoID");
+
+            }
+            else {
+
+                database.course.getRegisteredUsersById(req.params.course_id, function(err, roster) {
+                    
+                    if(err) {
+
+                        res.sendFail(err);
+
+                    } else {
+
+                        console.log(roster);
+
+                    }
+
+                });
+
+            } 
             
         });
 
