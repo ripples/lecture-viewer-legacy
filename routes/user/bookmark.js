@@ -11,7 +11,7 @@ module.exports = {
         router.post('/bookmark', auth.verify ,function(req,res) {
             //Check that all required parameters are present
 
-            console.log(req.body);
+            //console.log(req.body);
 
             if(req.body.course_id && req.body.lecture_id && req.body.label && req.body.time) {
 
@@ -39,8 +39,8 @@ module.exports = {
 
                 var user_id = req.user._id;
 
-                console.log("BOOKMARK DB");
-                console.log(bookmark);
+                //console.log("BOOKMARK DB");
+                //console.log(bookmark);
 
                 database.bookmark.addBookmarkById(user_id, bookmark.lecture_id, bookmark.course_id, bookmark.label, bookmark.time, function(err, user){
 
@@ -55,11 +55,11 @@ module.exports = {
 
                     var newBookmark = user.bookmarks[user.bookmarks.length-1];
 
-                    console.log(newBookmark);
+                    //console.log(newBookmark);
 
                     bookmark.bookmark_id = newBookmark._id;
 
-                    console.log("Sending Success");
+                    //console.log("Sending Success");
 
                     return res.sendSuccess(bookmark);
                 });
@@ -70,7 +70,7 @@ module.exports = {
         });
 
         //Get user's bookmarks for specific course
-        router.get('/bookmark/course/:course_id', function(req,res) {
+        router.get('/bookmark/course/:course_id', auth.verify, function(req,res) {
 
             if(!validator.isMongoId(req.params.course_id))
             {
@@ -83,7 +83,10 @@ module.exports = {
         });
 
         //Get user's bookmarks for specific lecture of a course
-        router.get('/bookmark/course/:course_id/lecture/:lecture_id', function(req,res) {
+        router.get('/bookmark/course/:course_id/lecture/:lecture_id', auth.verify, function(req,res) {
+
+            var course_id = req.params.course_id;
+            var lecture_id = req.params.lecture_id;
 
             if(!validator.isMongoId(req.params.course_id))
             {
@@ -94,27 +97,40 @@ module.exports = {
                 return res.sendFail("lecture_id parameter is not a valid MongoId");
             }
 
-            //Get bookmarks from the db
+            var user_id = req.user._id;
 
-            return res.sendSuccess({});
+            //Get bookmarks from the db
+            database.bookmark.getBookmarksByLectureId(user_id, lecture_id, function(err, bookmarks) 
+            {
+                if(bookmarks)
+                    return res.sendSuccess(bookmarks);
+                else
+                    return res.sendFail("User does not exist");
+            });
         });
 
         //Delete specific bookmark
-        router.delete('/bookmark/:bookmark_id', function(req,res) {
+        router.delete('/bookmark/:bookmark_id', auth.verify, function(req,res) {
 
-            if(!validator.isMongoId(req.params.bookmark_id))
+            var user_id = req.user._id;
+            var bookmark_id = req.params.bookmark_id;
+
+            if(!validator.isMongoId(bookmark_id))
             {
                 return res.sendFail("bookmark_id parameter is not a valid MongoId");
             }
             //Delete the bookmark
 
-            //Database call
+            database.bookmark.deleteBookmark(user_id, bookmark_id, function(err, user)
+            {
+                return res.sendSuccess(user);
+            });
 
-            return res.sendSuccess({});
+            //Database call
         });
 
         //Edit specific bookmark
-        router.put('/bookmark/:bookmark_id', function(req,res) {
+        router.put('/bookmark/:bookmark_id', auth.verify, function(req,res) {
 
             if(req.body.label) {
 

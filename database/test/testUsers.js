@@ -131,6 +131,9 @@ describe('Testing User collection:', function() {
      */
     var testBookmark = null;
     it('Add bookmark by ObjectId:', function(done) {
+
+        console.log(testLecture);
+
         db_api.bookmark.addBookmarkById(testUser._id, testLecture._id, testCourse._id, "thisLable", 255, function(err, user) {
             // console.log(user.bookmarks);
             testBookmark = user.bookmarks[0];
@@ -161,9 +164,13 @@ describe('Testing User collection:', function() {
      */
     it('retreives bookmars by userid and lectureid', function(done) {
         db_api.bookmark.getBookmarksByLectureId(testUser._id, testLecture._id, function(err, bookmarks) {
+
+            console.log();
+
             assert.equal(err, null);
             assert.notEqual(bookmarks, null);
             assert.equal(bookmarks.length, 1);
+
             assert.equal(bookmarks[0].label, "thisLable");
             assert.equal(bookmarks[0].time, 255);
             done();

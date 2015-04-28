@@ -1,22 +1,19 @@
 var User = require('./models/user');
 var Bookmark = require('./models/bookmark.js');
+var mongoose = require('mongoose');
+
 /*
   Method to add a bookmark to the user account with given email.
  */
 exports.addBookmarkById = function(user_id, lecture_id, course_id, label, time, callback) {
     var bookmark = new Bookmark();
-    bookmark.lecture_id = lecture_id;
-    bookmark.course_id = course_id;
+    bookmark.lecture = lecture_id;
+    bookmark.course = course_id;
     bookmark.label = label;
     bookmark.time = time;
     User.findByIdAndUpdate(user_id, {
         $push: {
-            bookmarks: {
-                lecture_id: lecture_id,
-                course_id: course_id,
-                label: label,
-                time: time
-            }
+            bookmarks: bookmark
         }
     }, function(err, user) {
         callback(err, user);
@@ -26,9 +23,7 @@ exports.addBookmarkById = function(user_id, lecture_id, course_id, label, time, 
   Method to get a user's bookmarks by user's id.
  */
 exports.getBookmarksById = function(userid, callback) {
-    User.findById({
-        _id: userid
-    }, function(err, user) {
+    User.findById(userid, function(err, user) {
         callback(undefined, user.bookmarks);
     });
 };
@@ -36,15 +31,19 @@ exports.getBookmarksById = function(userid, callback) {
  * Get Bookmark by lectureID
  */
 exports.getBookmarksByLectureId = function(userid, lectureid, callback) {
-    User.find({
-        _id: userid
-    }, {
+    User.findById(userid, {
         bookmarks: {
             $elemMatch: {
                 lecture: lectureid
             }
         }
-    }, callback);
+    }, function(err, user)
+    {
+        if(user)
+            callback(err, user.bookmarks);
+        else
+            callback(err, user);
+    });
 };
 /*
 PatientsModel.find({patientId: '123'}, {diet: {$elemMatch: {'status': 'A'}}}, cb)
