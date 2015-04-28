@@ -74,6 +74,7 @@ router.get('/:course_id', function(req,res) {
 				res.sendFail(err);
 
 			} else {
+				
 				var resCourse = {};
 
 				resCourse.department = course.department;
