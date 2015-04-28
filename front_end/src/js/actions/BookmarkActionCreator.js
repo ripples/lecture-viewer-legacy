@@ -8,6 +8,12 @@ var BookmarkActionCreator = {
   createBookmark: function(courseId, lectureId, content, time) {
     var bookmark = API.create_bookmark(courseId, lectureId, content, time);
     log('CREATE_BOOKMARK', 'bookmark', bookmark);
+
+    //bookmark.then( function (resolve){
+      //dispatch this crap
+    //},
+    //function(error){ Doin' error stuff }
+
     Dispatcher.dispatch({
       actionType: ActionConstants.CREATE_BOOKMARK,
       courseId: courseId,

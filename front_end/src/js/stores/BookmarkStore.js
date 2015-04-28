@@ -32,6 +32,11 @@ var updateBookmarks = function(courseId, lectureId, bookmarks) {
   }
 }
 
+// var getErr = function(error) {
+//   log('BOOKMARK_ERROR', 'error', error);
+//   do something with error
+// }
+
 /*============================== @PUBLIC ==============================*/
 
 var BookmarkStore = createStore({
@@ -63,7 +68,10 @@ BookmarkStore.dispatcher = Dispatcher.register(function(payload) {
     case ActionConstants.DELETE_BOOKMARK:
       deleteBookmark(payload.courseId, payload.lectureId, payload.bookmarkId);
       break;
-    defaut:
+    case ActionConstants.ERROR_BOOKMARK:
+      //call the error function
+      break;
+    default:
       break;
   }
   BookmarkStore.emitChange();
