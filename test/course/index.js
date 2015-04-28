@@ -161,22 +161,22 @@ describe('Course', function() {
 				});
 		});
 
-		// it('Edit course', function(done) {												// think there is something wrong with the db call
-		// 	request(url)
-		// 		.put('/course/' + course_id)
-		// 		.send(course_info3)
-		// 		.end(function(err, res) {
-		// 			res.body.status.should.equal('success');
-		// 			res.body.data.department.should.equal('Finance');
-		// 			res.body.data.course_number.should.equal('301');
-		// 			res.body.data.course_title.should.equal('Investment');
-		// 			res.body.data.semester.should.equal('Spring');
-		// 			res.body.data.year.should.equal(2007);
-		// 			res.body.data.course_id.should.equal(course_id);
-		// 			// res.body.data.instructor_emails.should.equal();								// Need to fix adding an instructor into the db
-		// 			done();
-		// 		});
-		// });
+		it('Edit course', function(done) {											
+			request(url)
+				.put('/course/' + course_id)
+				.send(course_info3)
+				.end(function(err, res) {
+					res.body.status.should.equal('success');
+					res.body.data.department.should.equal('Finance');
+					res.body.data.course_number.should.equal('301');
+					res.body.data.course_title.should.equal('Investment');
+					res.body.data.semester.should.equal('Spring');
+					res.body.data.year.should.equal(2007);
+					res.body.data.course_id.should.equal(course_id);
+					assert.deepEqual(res.body.data.instructor_emails, ['Martin@umass.edu']);
+					done();
+				});
+		});
 	});
 
 	describe('Invalid calls', function() {

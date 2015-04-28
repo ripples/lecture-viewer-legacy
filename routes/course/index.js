@@ -111,7 +111,7 @@ router.put('/:course_id', function(req,res) {
 			database.course.updateCourse(req.params.course_id, req.body.department, req.body.course_number, req.body.course_title, req.body.semester, req.body.year, req.body.instructor_email, function(err, course) {
 				
 				if(err) {
-					// Need to work on this
+
 					res.sendFail(err);
 
 				} else {

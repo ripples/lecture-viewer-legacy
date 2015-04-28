@@ -231,7 +231,7 @@ exports.updateCourse = function(course_ID, newDepartment, newCourseNumber, newCo
             courseNumber: newCourseNumber,
             courseTitle: newCourseTitle,
             year: newYear,
-            instructor: newInstructor
+            instructors: newInstructor
         }
     }, callback);
 };
