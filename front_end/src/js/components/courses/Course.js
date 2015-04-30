@@ -23,12 +23,6 @@ var Course = React.createClass({
     onClick: React.PropTypes.func.isRequired
   },
 
-  /*============================== @HANDLING ==============================*/
-
-  handleCourseClick: function() {
-    // TODO : LINK to this Course's Context (ROUTER)
-  },
-
   /*============================== @FORMATTING ==============================*/
 
   getFormattedIdentifier: function() {

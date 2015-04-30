@@ -64,18 +64,14 @@ var Lecture = React.createClass({
       lecture_id: this.props.lecture.id
     }
 
-    // TODO : Put back in when prepared for linking
-    // <Link to="main" params={linkParams}>
-    //   {this.props.lecture.title}
-    // </Link>
-
-    // TODO : Modify LINK to route to view-lecture/...
     return (
       <div className='lecture' onClick={this.handleLectureClick}>
         <h4 className='lecture__identifier'>{this.getFormattedIdentifier()}</h4>
         <h4 className='lecture__date'>{this.getFormattedDatePosted()}</h4>
         <h2 className='lecture__title'>
-          {this.props.lecture.title}
+          <Link to="WATCH_LECTURE" params={linkParams}>
+            {this.props.lecture.title}
+          </Link>
         </h2>
         {this.renderToggleDescriptionButton()}
         <h4 className='lecture__time'>{this.getFormattedTimeLength()}</h4>

@@ -33,13 +33,13 @@ var CreateAccount = React.createClass({
     }
     else{
       localStorage.setItem(this.state.email,this.state.password);
-      this.transitionTo('login');
+      this.transitionTo('LOGIN');
     }
   },
 
   handleLogin: function(e){
     e.preventDefault();
-    this.transitionTo('login');
+    this.transitionTo('LOGIN');
   },
 
   /*============================== @RENDERING ==============================*/

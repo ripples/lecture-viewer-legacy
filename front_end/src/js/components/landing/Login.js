@@ -8,7 +8,7 @@ var Login = React.createClass({
 
   componentDidMount: function(){
     if(localStorage.token != undefined) {
-      this.transitionTo("/main");
+      this.transitionTo("MAIN");
     }
   },
 
@@ -36,13 +36,13 @@ var Login = React.createClass({
 
   handleCreate: function(e){
     e.preventDefault();
-    this.transitionTo('CreateAccount');
+    this.transitionTo('SIGNUP');
   },
 
   handleLogin: function (e) {
     var self = this;
     e.preventDefault();
-    var nextPath = '/main';
+    var nextPath = 'MAIN';
     var email = this.refs.email.getDOMNode().value;
     var password = this.refs.pass.getDOMNode().value;
     Auth.login(email, password, function (loggedIn) {
@@ -52,7 +52,7 @@ var Login = React.createClass({
       if(nextPath) {
         self.transitionTo(nextPath);
       } else {
-        self.transitionTo('/main');
+        self.transitionTo('MAIN');
       }
     }.bind(this));
   },

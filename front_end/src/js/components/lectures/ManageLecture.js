@@ -14,7 +14,7 @@ var ManageLecture = React.createClass({
     lecture_id: React.PropTypes.number.isRequired
   },
 
-  mixins : [CreateStoreMixin([LectureStore])],
+  mixins : [CreateStoreMixin([LectureStore]), Router.Navigation],
 
   getDefaultProps : function() {
     return {
@@ -73,9 +73,9 @@ var ManageLecture = React.createClass({
     // TODO : Unmount component? Close modal? This will prbably be handled by the parent component.
     // Or you will likely transitionTo a new route.
   },
-  
+
   handleCancel : function(e) {
-    
+    this.transitionTo("MAIN"); // TODO : Should use Router History...
   },
 
   /*============================== @RENDERING ==============================*/

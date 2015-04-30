@@ -7,20 +7,11 @@ var LectureActionCreator  = require('../../actions/LectureActionCreator');
 
 var LectureContext = React.createClass({
 
-  // TODO : Refactor into multiple modules.
-
   propTypes: {
     course_id:  React.PropTypes.number.isRequired,
-    lecture_id: React.PropTypes.number.isRequired
+    lecture_id: React.PropTypes.number.isRequired,
+    time:       React.PropTypes.number,
     // lecture:    React.PropTypes.object.isRequired TODO : Should have the selected lecture...
-  },
-
-  // TODO : Remove after handling props via Routing
-  getDefaultProps: function() {
-    return {
-      course_id: 1,
-      lecture_id: 1
-    };
   },
 
   mixins: [CreateStoreMixin([MediaStore])],
@@ -33,6 +24,7 @@ var LectureContext = React.createClass({
 
   componentWillReceiveProps: function(nextProps) {
     if(this.props != nextProps) {
+      this.contextDidChange(nextProps);
       this.setState(this.getStateFromStores(nextProps));
     }
   },
@@ -43,7 +35,9 @@ var LectureContext = React.createClass({
   },
 
   contextDidChange: function(props) {
-    LectureActionCreator.requestMedia(props.course_id, props.lecture_id);
+    if((props.course_id != -1) && (props.lecture_id != -1)) {
+      LectureActionCreator.requestMedia(props.course_id, props.lecture_id);
+    }
   },
 
   /*============================== @HANDLING ==============================*/
@@ -56,24 +50,28 @@ var LectureContext = React.createClass({
   /*============================== @RENDERING ==============================*/
 
   render: function() {
+    var content = (this.state.media) ?
+                    this.renderContent() :
+                    this.renderPlaceholder();
+    return <div className='lecture-context'>{content}</div>;
+  },
 
-    // TODO : Pass any necessary callbacks or data to children.
-    if(this.state.media) {
-      return (
-        <div className='lecture-context'>
-          <div className='lecture-context-content'>
-            <MediaPlayer media={this.state.media}/>
-          </div>
-          <LectureContextSidebar {...this.props}/>
+  renderContent: function() {
+    return (
+      <div>
+        <div className='lecture-context-content'>
+          {/*TODO : Render the lecture information*/}
+          <MediaPlayer media={this.state.media} time={this.props.time}/>
         </div>
-      );
-    } else {
-      return (
-        <div className='lecture-context'>
-          <LectureContextSidebar {...this.props}/>
-        </div>
-      );
-    }
+        <LectureContextSidebar
+          course_id={this.props.course_id}
+          lecture_id={this.props.lecture_id}/>
+      </div>
+    );
+  },
+
+  renderPlaceholder: function() {
+    return <div>Placeholder</div>
   }
 
 });

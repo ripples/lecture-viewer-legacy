@@ -2,6 +2,7 @@ var React               = require('react');
 var LectureList         = require('../lectures/LectureList');
 var CourseList          = require('../courses/CourseList');
 var Router              = require('react-router');
+var Link                = Router.Link;
 
 var NavigationSidebar = React.createClass({
 
@@ -19,15 +20,18 @@ var NavigationSidebar = React.createClass({
   handleLogout: function (e) {
 
     // TODO : Use a real Logout mechanism
-
     e.preventDefault();
-    console.log("Logging out...");
     delete localStorage.token;
-    this.transitionTo('login', null, {loggedOut: true});
+    this.transitionTo('LOGIN', null, {loggedOut: true});
   },
 
   handleNotificationsClick: function (e) {
     e.preventDefault();
+  },
+
+  handleSettingsClick: function (e) {
+    e.preventDefault();
+    this.transitionTo('SETTINGS');
   },
 
   handleCourseSelected: function (course) {
@@ -41,9 +45,7 @@ var NavigationSidebar = React.createClass({
   /*============================== @RENDERING ==============================*/
 
   render: function() {
-
     // TODO : Render Notification Items if VIEWING_NOTIFICATION == TRUE
-
     return (
       <div className='navigation-sidebar'>
         {this.renderHeader()}
@@ -54,9 +56,7 @@ var NavigationSidebar = React.createClass({
   },
 
   renderHeader: function() {
-
-    // TODO : Use real Logo
-
+    // TODO : Good place to include a logo
     return (
       <div className='navigation-sidebar__header'>
         <button className='notifications-button' onClick={this.handleNotificationsClick}>Notifications</button>
@@ -65,13 +65,10 @@ var NavigationSidebar = React.createClass({
   },
 
   renderFooter: function() {
-
-    // TODO : Link to the settings Route
-
     return (
       <div className='navigation-sidebar__footer'>
         <button className='logout-button' onClick={this.handleLogout}>Logout</button>
-        <button className='settings-button'>Settings</button>
+        <button className='settings-button' onClick={this.handleSettingsClick}>Settings</button>
       </div>
     );
   },

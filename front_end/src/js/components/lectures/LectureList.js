@@ -56,10 +56,10 @@ var LectureList = React.createClass({
     var lectures = this.state.lectures.map(function(lecture, i) {
       return (
         <li key={i}>
-          <Lecture lecture={lecture}/>
+          <Lecture lecture={lecture} course_id={this.props.course.id}/>
         </li>
       )
-    });
+    }.bind(this));
 
     return (
       <div className='lecture-list-container'>
