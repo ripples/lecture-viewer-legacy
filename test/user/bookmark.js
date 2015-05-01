@@ -177,6 +177,8 @@ describe('Bookmarks', function() {
             .set('Authorization', user_token)
             .end(function(err, res) {
 
+                console.log("DELETE");
+                console.log(err);
                 console.log(res.body);
 
                 res.body.status.should.equal('success', res.body.data.message);

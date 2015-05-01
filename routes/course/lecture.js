@@ -6,6 +6,8 @@ var DecompressZip = require('decompress-zip');
 var validator = require('validator');
 var database = require("../../database/index.js");
 
+var config = require("../../config");
+
 //Lecture API
 module.exports = {
     setup: function(router) {
@@ -62,10 +64,12 @@ module.exports = {
 
 
                     //Create a new random, unique, folder to save lecture video file
-                    var videoPath = "media/" + req.params.course_id + "/" + uuid.v1() + "/video.mp4";
+                    var videoPath = req.params.course_id + "/" + uuid.v1() + "/video.mp4";
+                    var localVideo = "media/" + videoPath;
+                    var remoteVideo = config.FILE_SERVER_URL + videoPath;
 
                     //Moves file from tmp to media
-                    fs.move(tempPath, videoPath, function (err) 
+                    fs.move(tempPath, localVideo, function (err) 
                     {
                         if (err){
                             return res.sendFail(err);  
@@ -75,7 +79,7 @@ module.exports = {
                         var date = (new Date());
 
                         //Call database api to create lecture
-                        database.lecture.createLecture(course_id, fields['title'], fields['description'], date, videoPath, true, [], [], function(err, lecture)
+                        database.lecture.createLecture(course_id, fields['title'], fields['description'], date, remoteVideo, true, [], [], function(err, lecture)
                         {
                             if(err)
                                 return res.sendFail(err);
@@ -103,13 +107,15 @@ module.exports = {
                     //Verifies start time was provided
                     if(!fields['start_time']) 
                     {
-                        return res.sendFail("Invalid parameters. Missing start_time(seconds)");
+                        return res.sendFail("Invalid parameters. Missing start_time(seconds since epoch)");
                     }
 
                     var start_time = fields['start_time'];
 
                     //Create a new random, unique, folder to save all unzipped lecture files
-                    var unzipPath = "media/" + req.params.course_id + "/" + uuid.v1() + "/";
+                    var path = req.params.course_id + "/" + uuid.v1() + "/";
+                    var localPath = "media/" + path;
+                    var remotePath = config.FILE_SERVER_URL + path;
 
                     //Extracts files from temp zip file
                     var unzipper = new DecompressZip(tempPath);
@@ -126,7 +132,7 @@ module.exports = {
                     unzipper.on('extract', function(end)
                     {   
                         //Read files in root of unzipped file
-                        fs.readdir(unzipPath, function(err, files)
+                        fs.readdir(localPath, function(err, files)
                         {   
                             if(files.indexOf("computer") == -1)
                             {
@@ -147,7 +153,7 @@ module.exports = {
                             var screen_images = [];
 
                             //Reads all whiteboard images into an array of objects w/ relative time
-                            fs.readdir(unzipPath + "/whiteboard/", function(err, files)
+                            fs.readdir(localPath + "whiteboard/", function(err, files)
                             {
                                 if(err)
                                     return res.sendFail(err);
@@ -162,13 +168,13 @@ module.exports = {
 
                                     var fileObj = {};
                                     fileObj.time = time;
-                                    fileObj.url = files[i];
+                                    fileObj.url = remotePath + "whiteboard/" + files[i];
 
                                     whiteboard_images.push(fileObj);
                                 }
 
                                 //Reads all computer images into an array of objects w/ relative time
-                                fs.readdir(unzipPath + "/computer/", function(err, files)
+                                fs.readdir(localPath + "computer/", function(err, files)
                                 {
                                     if(err)
                                         return res.sendFail(err);
@@ -183,7 +189,7 @@ module.exports = {
 
                                         var fileObj = {};
                                         fileObj.time = time;
-                                        fileObj.url = files[i];
+                                        fileObj.url = remotePath + "computer/" + files[i];
 
                                         screen_images.push(fileObj);
                                     }
@@ -191,7 +197,7 @@ module.exports = {
                                     //Creates a date based off of the start time provided to the API (times 100 to make milliseconds)
                                     var date = new Date(start_time * 1000);
 
-                                    var videoPath = unzipPath + "video.mp4";
+                                    var videoPath = remotePath + "video.mp4";
 
                                     //Create lecture. No title, description and is invisible until modified by instructor
                                     database.lecture.createLecture(course_id, "","", date, videoPath, false, whiteboard_images, screen_images, function(err, lecture)
@@ -216,7 +222,7 @@ module.exports = {
 
                     //Idk what this is doing honestly... Maybe a blacklist of what not to extract?
                     unzipper.extract({
-                        path: unzipPath,
+                        path: localPath,
                         filter: function (file) {
                             return file.type !== "SymbolicLink";
                         }
