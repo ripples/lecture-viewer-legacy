@@ -1,7 +1,6 @@
 var User = require('./models/user');
 var Bookmark = require('./models/bookmark.js');
 var mongoose = require('mongoose');
-
 /*
   Method to add a bookmark to the user account with given email.
  */
@@ -37,33 +36,22 @@ exports.getBookmarksByLectureId = function(userid, lectureid, callback) {
                 lecture: lectureid
             }
         }
-    }, function(err, user)
-    {
-        if(user)
-            callback(err, user.bookmarks);
-        else
-            callback(err, user);
+    }, function(err, user) {
+        if (user) callback(err, user.bookmarks);
+        else callback(err, user);
     });
 };
 /*
  * Gets Bookmark by Courseid
  */
-exports.getBookmarksByCourseId = function(userid, courseid, callback) {
-    User.findById(userid, {
-        bookmarks: {
-            $elemMatch: {
-                course: courseid
-            }
-        }
-    }, function(err, user)
-    {
-        if(user)
-            callback(err, user.bookmarks);
-        else
-            callback(err, user);
+exports.getBookmarksByCourseId = function(courseid, callback) {
+    User.find({
+         'bookmarks.course': courseid
+    }, function(err, user) {
+     
+         callback(err, user[0].bookmarks);
+        
     });
-
-
 };
 /*
  * Deletes a bookmark by userid and bookmarkid
@@ -84,6 +72,31 @@ exports.deleteBookmark = function(userid, bookmarkid, callback) {
 /*
  * Method that updates bookmark.
  */
-// exports.editBookmark = function(userid, bookmarkid, callback) {
-//     User.findByIdAndUpdate(userid, );
-// };
+exports.editBookmark = function(bookmarkid, user_id, lecture_id, course_id, label, time, callback) {
+     
+    
+    User.find({
+        'bookmarks._id': bookmarkid
+    }, 
+    // {
+    //     $set: {
+    //         lecture : lecture_id,
+    //       course : course_id,
+    //       label : label,
+    //       time : time
+    //     }
+    // },
+    function(err, user){
+
+  callback(err, user);
+        
+    });
+};
+/*
+
+Person.update({'items.id': 2}, {'$set': {
+    'items.$.name': 'updated item2',
+    'items.$.value': 'two updated'
+}},   
+
+*/

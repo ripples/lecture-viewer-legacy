@@ -130,8 +130,7 @@ describe('Testing User collection:', function() {
      * Tests whether a bookmark is properly added by the function.
      */
     var testBookmark = null;
-    it('Add bookmark by ObjectId:', function(done) {
-
+    it('Add bookmark to a lecture: userid, lectureid, lable, time', function(done) {
         db_api.bookmark.addBookmarkById(testUser._id, testLecture._id, testCourse._id, "thisLable", 255, function(err, user) {
             // console.log(user.bookmarks);
             testBookmark = user.bookmarks[0];
@@ -140,10 +139,11 @@ describe('Testing User collection:', function() {
             user.bookmarks.length.should.eql(1);
             assert.equal(user.bookmarks[0].label, "thisLable");
             assert.equal(user.bookmarks[0].time, 255);
-            // console.log(user);
+            // console.log(user); 
             done();
         });
     });
+    
     /*
      * Tests whether a bookmark is properly retrieved.
      */
@@ -171,10 +171,10 @@ describe('Testing User collection:', function() {
         });
     });
     /*
-     * Test whether a bookmark is properly retrieved or not.
+     * Test whether a bookmark is properly retrieved or not by courseid.
      */
-    it('retreives bookmarks properly: userid, courseid', function(done) {
-        db_api.bookmark.getBookmarksByLectureId(testUser._id, testLecture._id, function(err, bookmarks) {
+    it('retreives bookmarks properly: courseid', function(done) {
+        db_api.bookmark.getBookmarksByCourseId(testCourse._id, function(err, bookmarks) {
             assert.equal(err, null);
             assert.notEqual(bookmarks, null);
             assert.equal(bookmarks.length, 1);
@@ -182,7 +182,8 @@ describe('Testing User collection:', function() {
             assert.equal(bookmarks[0].time, 255);
             done();
         });
-    });    
+    }); 
+
     /*
      * Test whether the user returned is correct.
      * Test ObjectID must be a 12-byte string.
@@ -250,6 +251,21 @@ describe('Testing User collection:', function() {
             done();
         });
     });
+        //(bookmarkid, user_id, lecture_id, course_mid, label, time, callback)
+    it('edit bookmark:', function(done) {
+        db_api.bookmark.editBookmark(testBookmark._id,testUser._id, testLecture._id, testCourse._id, "thatLable", 258, function(err, user) {
+            // console.log(user);
+           
+            // testBookmark = user.bookmarks[0];
+            assert.equal(err, null);
+            assert.notEqual(user.bookmarks, null);
+            user.bookmarks.length.should.eql(1);
+            assert.equal(user.bookmarks[0].label, "thatLable");
+            assert.equal(user.bookmarks[0].time, 258);
+             
+            done();
+        });
+    });   
     /* 
      * Tests taht deletes a bookmark properly
      */
