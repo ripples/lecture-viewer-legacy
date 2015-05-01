@@ -160,7 +160,7 @@ describe('Testing User collection:', function() {
     /*
      * Test whether a bookmark is properly retrieved or not.
      */
-    it('retreives bookmars by userid and lectureid', function(done) {
+    it('retreives bookmarks properly: userid, lectureid', function(done) {
         db_api.bookmark.getBookmarksByLectureId(testUser._id, testLecture._id, function(err, bookmarks) {
             assert.equal(err, null);
             assert.notEqual(bookmarks, null);
@@ -170,6 +170,19 @@ describe('Testing User collection:', function() {
             done();
         });
     });
+    /*
+     * Test whether a bookmark is properly retrieved or not.
+     */
+    it('retreives bookmarks properly: userid, courseid', function(done) {
+        db_api.bookmark.getBookmarksByLectureId(testUser._id, testLecture._id, function(err, bookmarks) {
+            assert.equal(err, null);
+            assert.notEqual(bookmarks, null);
+            assert.equal(bookmarks.length, 1);
+            assert.equal(bookmarks[0].label, "thisLable");
+            assert.equal(bookmarks[0].time, 255);
+            done();
+        });
+    });    
     /*
      * Test whether the user returned is correct.
      * Test ObjectID must be a 12-byte string.

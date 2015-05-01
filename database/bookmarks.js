@@ -46,11 +46,25 @@ exports.getBookmarksByLectureId = function(userid, lectureid, callback) {
     });
 };
 /*
-PatientsModel.find({patientId: '123'}, {diet: {$elemMatch: {'status': 'A'}}}, cb)
-/*
- * Gets bookmark by userid and lectureid
+ * Gets Bookmark by Courseid
  */
-exports.getBookmarksByCourseId = function(userid, lectureid, callback) {};
+exports.getBookmarksByCourseId = function(userid, courseid, callback) {
+    User.findById(userid, {
+        bookmarks: {
+            $elemMatch: {
+                course: courseid
+            }
+        }
+    }, function(err, user)
+    {
+        if(user)
+            callback(err, user.bookmarks);
+        else
+            callback(err, user);
+    });
+
+
+};
 /*
  * Deletes a bookmark by userid and bookmarkid
  */
