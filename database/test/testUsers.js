@@ -143,7 +143,6 @@ describe('Testing User collection:', function() {
             done();
         });
     });
-    
     /*
      * Tests whether a bookmark is properly retrieved.
      */
@@ -182,8 +181,7 @@ describe('Testing User collection:', function() {
             assert.equal(bookmarks[0].time, 255);
             done();
         });
-    }); 
-
+    });
     /*
      * Test whether the user returned is correct.
      * Test ObjectID must be a 12-byte string.
@@ -251,21 +249,15 @@ describe('Testing User collection:', function() {
             done();
         });
     });
-        //(bookmarkid, user_id, lecture_id, course_mid, label, time, callback)
+    //(bookmarkid, user_id, lecture_id, course_mid, label, time, callback)
     it('edit bookmark:', function(done) {
-        db_api.bookmark.editBookmark(testBookmark._id,testUser._id, testLecture._id, testCourse._id, "thatLable", 258, function(err, user) {
-            // console.log(user);
-           
-            // testBookmark = user.bookmarks[0];
+        db_api.bookmark.editBookmark(testBookmark._id, testUser._id, testLecture._id, testCourse._id, "thatLable", 258, function(err, update) {
             assert.equal(err, null);
-            assert.notEqual(user.bookmarks, null);
-            user.bookmarks.length.should.eql(1);
-            assert.equal(user.bookmarks[0].label, "thatLable");
-            assert.equal(user.bookmarks[0].time, 258);
-             
+            assert.notEqual(update, null);
+            update.should.eql(1);            
             done();
         });
-    });   
+    });
     /* 
      * Tests taht deletes a bookmark properly
      */

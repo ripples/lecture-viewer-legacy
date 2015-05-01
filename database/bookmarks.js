@@ -75,17 +75,17 @@ exports.deleteBookmark = function(userid, bookmarkid, callback) {
 exports.editBookmark = function(bookmarkid, user_id, lecture_id, course_id, label, time, callback) {
      
     
-    User.find({
+    User.update({
         'bookmarks._id': bookmarkid
     }, 
-    // {
-    //     $set: {
-    //         lecture : lecture_id,
-    //       course : course_id,
-    //       label : label,
-    //       time : time
-    //     }
-    // },
+    {//items.$.name
+        $set: {
+            'bookmarks.$.lecture' : lecture_id,
+          'bookmarks.$.course' : course_id,
+          'bookmarks.$.label' : label,
+          'bookmarks.$.time' : time
+        }
+    },
     function(err, user){
 
   callback(err, user);
