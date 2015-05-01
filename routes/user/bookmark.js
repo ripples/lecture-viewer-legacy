@@ -103,7 +103,23 @@ module.exports = {
             database.bookmark.getBookmarksByLectureId(user_id, lecture_id, function(err, bookmarks) 
             {
                 if(bookmarks)
-                    return res.sendSuccess(bookmarks);
+                {
+                    var resBookmarks = [];
+
+                    for(var i = 0;i<bookmarks.length;i++)
+                    {  
+                        var newBookmark = {};
+                        newBookmark.bookmark_id = bookmarks[i]._id;
+                        newBookmark.time = bookmarks[i].time;
+                        newBookmark.lecture_id = bookmarks[i].lecture;
+                        newBookmark.course_id = bookmarks[i].course_id;
+                        newBookmark.label = bookmarks[i].label;
+                        resBookmarks.push(newBookmark);
+                    }
+
+
+                    return res.sendSuccess(resBookmarks);
+                }
                 else
                     return res.sendFail("User does not exist");
             });
@@ -121,12 +137,21 @@ module.exports = {
             }
             //Delete the bookmark
 
-            database.bookmark.deleteBookmark(user_id, bookmark_id, function(err, user)
+            database.bookmark.getBookmarkById(user_id, bookmark_id, function(err, bookmark)
             {
-                return res.sendSuccess(user);
-            });
+                var resBookmark = {};
 
-            //Database call
+                resBookmark.bookmark_id = bookmark._id;
+                resBookmark.time = bookmark.time;
+                resBookmark.lecture_id = bookmark.lecture;
+                resBookmark.course_id = bookmark.course_id;
+                resBookmark.label = bookmark.label;
+
+                database.bookmark.deleteBookmark(user_id, bookmark_id, function(err, user)
+                {
+                    return res.sendSuccess(resBookmark);
+                });
+            });
         });
 
         //Edit specific bookmark

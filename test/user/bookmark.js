@@ -97,13 +97,11 @@ describe('Bookmarks', function() {
 
                 res.body.status.should.equal('success', res.body.data.message);
 
-                console.log(res.body.data);
-
                 res.body.data.should.length(1);
 
                 res.body.data[0].bookmark_id.should.equal(bookmark_id);
                 res.body.data[0].label.should.equal(test_bookmark.label);
-                res.body.data[0].time.should.equal(test_bookmark.time);
+                res.body.data[0].time.toString().should.equal(test_bookmark.time);
 
                 done();
             });

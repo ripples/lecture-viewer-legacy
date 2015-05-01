@@ -293,8 +293,7 @@ module.exports = {
                 res.sendFail("course_id is not a valid MongoID");
             }
             else {
-                //TODO DELETE
-                /*database.course.lecture.updateLectureByID(req.params.lecture_id, title, description, visible,  function(err, lecture) {
+                database.course.lecture.deleteLectureByID(req.params.lecture_id,  function(err, lecture) {
                     if(err) {
                         res.sendFail(err);  
                     } else {
@@ -302,7 +301,7 @@ module.exports = {
                         var resCourse = createResponseLecture(lecture);
                         return res.sendSuccess(resCourse);  
                     }
-                });*/
+                });
             }
         });
     }

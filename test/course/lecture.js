@@ -166,8 +166,8 @@ describe('Lecture', function() {
 		it('Delete lecture', function(done) {
 			
 			//Route not implpemented yet
-			this.skip();
-			return;
+			//this.skip();
+			//return;
 
 			request(url)
 			   .delete('/course/' + course_id + '/lecture/' + lecture_id)
