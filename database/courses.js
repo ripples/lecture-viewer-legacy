@@ -80,7 +80,7 @@ exports.createCourse = function(department, courseNumber, courseTitle, semester,
     }, function(err, course) {
         if (err) {
             callback(err);
-        } else if (!course) {
+        } else if (course) {
             callback(department + " " + courseNumber + " " + semester + " " + year + " already exists.")
         } else {
             Course.create({
@@ -94,7 +94,7 @@ exports.createCourse = function(department, courseNumber, courseTitle, semester,
                 // console.log(err);
                 // console.log(course);
                 // console.log(callback);
-                callback(err, course);
+                callback(undefined, course);
             });
         }
     })
@@ -175,11 +175,10 @@ exports.deleteCourseById = function(courseID, callback) {
 exports.dropCoursesDatabase = function(callback) {
     Course.remove({}, function(err) {
         if (err) {
-            console.log(err);
+            callback(err);
         } else {
-            //console.log("Course database dropped");
+            callback();
         }
-        callback();
     });
 };
 /*

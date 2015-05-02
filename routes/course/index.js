@@ -9,9 +9,10 @@ require('./comment').setup(router);
 require('./attachment').setup(router);
 
 var database = require("../../database/index.js");
+var auth = require('../../authentication');
 
 	//Create a course
-	router.post('/', function(req,res) {
+	router.post('/', auth.verify, function(req,res) {
 		//Check if all required parameters are present
 	
 		if(req.body.department && req.body.course_number && req.body.course_title && req.body.semester && req.body.year && req.body.instructor_email) {
@@ -51,7 +52,7 @@ var database = require("../../database/index.js");
 });
 
 //Get course
-router.get('/:course_id', function(req,res) {
+router.get('/:course_id', auth.verify, function(req,res) {
 	
 	//Get course info from database
 
@@ -93,7 +94,7 @@ router.get('/:course_id', function(req,res) {
 });
 
 //Edit course
-router.put('/:course_id', function(req,res) {
+router.put('/:course_id', auth.verify, function(req,res) {
 	
 	if(req.params.course_id == undefined) {
 
@@ -141,7 +142,7 @@ router.put('/:course_id', function(req,res) {
 });
 
 //Delete course
-router.delete('/:course_id', function(req,res) {
+router.delete('/:course_id', auth.verify, function(req,res) {
 	
 	if(req.params.course_id == undefined) {
 

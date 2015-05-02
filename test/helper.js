@@ -59,7 +59,11 @@ exports.createUserAndLogin = function(callback)
 
 
 //COURSES
-
+exports.dropCourseDatabase = function(callback) {
+	database.course.dropCourseDatabase(function() {
+		callback();
+	});
+}
 
 
 var test_course = {
