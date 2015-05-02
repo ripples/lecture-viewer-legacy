@@ -55,12 +55,10 @@ exports.deleteComment = function(lecture_id, comment, callback) {
 exports.editComment = function(comment_id, lecture_id, user_id, firstandlast, time, content, post_date, callback) {
     Comment.findByIdAndUpdate(comment_id, {
         $set: {
-            lecture: lecture_id,
-            author: user_id,
-            poster_name: firstandlast,
-            time: time,
-            date: post_date,
             content: content
         }
-    }, callback);
+    }, function(err, comment){
+        console.log(comment);
+        callback(err,comment);
+    });
 };
