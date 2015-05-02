@@ -23,7 +23,7 @@ exports.addBookmarkById = function(user_id, lecture_id, course_id, label, time, 
  */
 exports.getBookmarksById = function(userid, callback) {
     User.findById(userid, function(err, user) {
-        callback(undefined, user.bookmarks);
+        callback(err, user.bookmarks);
     });
 };
 /*
@@ -72,7 +72,7 @@ exports.deleteBookmark = function(userid, bookmarkid, callback) {
 /*
  * Method that updates bookmark.
  */
-exports.editBookmark = function(bookmarkid, user_id, lecture_id, course_id, label, time, callback) {
+exports.editBookmark = function(bookmarkid,  label, callback) {
      
     
     User.update({
@@ -80,14 +80,10 @@ exports.editBookmark = function(bookmarkid, user_id, lecture_id, course_id, labe
     }, 
     {//items.$.name
         $set: {
-            'bookmarks.$.lecture' : lecture_id,
-          'bookmarks.$.course' : course_id,
-          'bookmarks.$.label' : label,
-          'bookmarks.$.time' : time
+          'bookmarks.$.label' : label
         }
     },
     function(err, user){
-
   callback(err, user);
         
     });
