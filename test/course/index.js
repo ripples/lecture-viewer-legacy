@@ -18,14 +18,14 @@ describe('Course', function() {
 		instructor_email : "instructor@umass.edu"
 	};
 
-	// var course_info2 = {
-	// 	department : "Computer Science",
-	// 	course_number : "497s",
-	// 	course_title : "Web Scalability",
-	// 	semester : "Spring",
-	// 	year : 2015,
-	// 	instructor_email : "Joe@umass.edu"
-	// };
+	var course_info2 = {
+		department : "Computer Science",
+		course_number : "497s",
+		course_title : "Web Scalability",
+		semester : "Spring",
+		year : 2015,
+		instructor_email : "Joe@umass.edu"
+	};
 
 	// var course_info3 = {
 	// 	department : "Finance",
@@ -133,6 +133,24 @@ describe('Course', function() {
 				});
 		}); 
 
+		it('Edit a course', function(done) {
+			request(url)
+				.put('/course/' + course_id)
+				.set('Authorization', login_admin_auth)
+				.send(course_info2)
+				.end(function(err, res) {
+					res.body.status.should.equal('success');
+					res.body.data.course_id.should.equal(course_id);
+					res.body.data.department.should.equal('Computer Science');
+					res.body.data.course_number.should.equal('497s');
+					res.body.data.course_title.should.equal('Web Scalability');
+					res.body.data.semester.should.equal('Spring');
+					res.body.data.year.should.equal(2015);
+					assert.deepEqual(res.body.data.instructor_emails, ['Joe@umass.edu'])
+					done();
+				});
+		});
+
 		it('Delete a course', function(done) {
 			request(url)
 				.delete('/course/' + course_id)
@@ -142,43 +160,42 @@ describe('Course', function() {
 						return done(err);
 					} else {
 						res.body.status.should.equal('success');
-						res.body.data.department.should.equal('Psychology');
-						res.body.data.course_number.should.equal('101');
-						res.body.data.course_title.should.equal('Intro to Psychology');
-						res.body.data.semester.should.equal('Fall');
-						res.body.data.year.should.equal(2003);
-						assert.deepEqual(res.body.data.instructor_emails, ['instructor@umass.edu'])
+						res.body.data.department.should.equal('Computer Science');
+						res.body.data.course_number.should.equal('497s');
+						res.body.data.course_title.should.equal('Web Scalability');
+						res.body.data.semester.should.equal('Spring');
+						res.body.data.year.should.equal(2015);
+						assert.deepEqual(res.body.data.instructor_emails, ['Joe@umass.edu'])
 						res.body.data.course_id.should.equal(course_id);
 						done();
 					}
 				});
 		});
+	});
 
+	describe("Invalid call", function() {
+		
+		it('Create a course with student auth', function(done) {
+			//TODO
+			done();
+		});
 
+		it('Create a course with empty parameters', function(done) {
+			//TODO
+			done();
+		});
+
+		it('Create a course with missing parameter', function(done) {
+			//TODO
+			done();
+		});
 
 	});
+
 });
 
 // invalid tests - you have to try to do all courses stuff with student_auth - should fail
 // invalid tests - you have to try passing in back parameters
-
-	// 	it('Edit course', function(done) {											
-	// 		request(url)
-	// 			.put('/course/' + course_id)
-	// 			.send(course_info3)
-	// 			.end(function(err, res) {
-	// 				res.body.status.should.equal('success');
-	// 				res.body.data.department.should.equal('Finance');
-	// 				res.body.data.course_number.should.equal('301');
-	// 				res.body.data.course_title.should.equal('Investment');
-	// 				res.body.data.semester.should.equal('Spring');
-	// 				res.body.data.year.should.equal(2007);
-	// 				res.body.data.course_id.should.equal(course_id);
-	// 				assert.deepEqual(res.body.data.instructor_emails, ['Martin@umass.edu']);
-	// 				done();
-	// 			});
-	// 	});
-	// });
 
 	// describe('Invalid calls', function() {
 	// 	it('Creating a new course with empty parameter', function(done) {									
