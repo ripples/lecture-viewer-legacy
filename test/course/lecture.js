@@ -1,5 +1,6 @@
 var should = require('should');
 var request = require('supertest');
+var request_agent = require('superagent').agent();
 
 var database = require('../../database/index.js');
 
@@ -58,7 +59,6 @@ describe('Lecture', function() {
 			   .end(function(err, res)
 			   {
 			   		res.body.status.should.equal('success', "Failed to create auto lecture : " + JSON.stringify(res.body.data.message));
-
 			   		res.body.data.video_url.indexOf("video.mp4").should.not.equal(-1);
 			   		res.body.data.title.should.equal("");
 			   		res.body.data.description.should.equal("");
@@ -67,10 +67,30 @@ describe('Lecture', function() {
 			   		res.body.data.visible.should.equal(false);
 			   		res.body.data.course_id.should.equal(course_id);
 			   		res.body.data.should.have.properties("lecture_id");
-
 			   		lecture_id = res.body.data.lecture_id;
 
-			   		done();
+			   		//Tests to verify images and video are accessable
+			   		request_agent.get(res.body.data.screen_image_urls[0].url)
+			   		.end(function(err, resNew)
+			   		{
+			   			resNew.status.should.equal(200);
+			   			resNew.type.should.equal("image/png");
+			   			
+			   			request_agent.get(res.body.data.whiteboard_image_urls[0].url)
+				   		.end(function(err, resNew)
+				   		{
+				   			resNew.status.should.equal(200);
+				   			resNew.type.should.equal("image/png");
+				   			
+				   			request_agent.get(res.body.data.video_url)
+					   		.end(function(err, resNew)
+					   		{
+					   			resNew.status.should.equal(200);
+					   			resNew.type.should.equal("video/mp4");
+					   			done();
+					   		});	
+				   		});	
+			   		});			   		
 			   });
 		});
 
@@ -97,7 +117,14 @@ describe('Lecture', function() {
 
 			   		lecture_id = res.body.data.lecture_id;
 
-			   		done();
+			   		//Tests to verify images and video are accessable	   			
+		   			request_agent.get(res.body.data.video_url)
+			   		.end(function(err, resNew)
+			   		{
+			   			resNew.status.should.equal(200);
+			   			resNew.type.should.equal("video/mp4");
+			   			done();
+			   		});	
 			   });
 		});
 

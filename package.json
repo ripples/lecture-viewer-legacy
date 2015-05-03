@@ -51,7 +51,8 @@
     "sleep": "~2.0.0",
     "supertest": "0.15.0",
     "unzip": "~0.1.11",
-    "validator": "~3.36.0"
+    "validator": "~3.36.0",
+    "superagent": "~1.2.0"
   },
   "devDependencies": {
     "gulp": "^3.8.10",

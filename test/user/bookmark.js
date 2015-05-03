@@ -39,28 +39,31 @@ describe('Bookmarks', function() {
 
         helper.dropUserDatabase(function()
         {
-            helper.createUserAndLogin(function(err, user)
+            helper.dropCourseDatabase(function()
             {
-                should.equal(err, undefined, JSON.stringify(err));
-
-                user_id = user.user_id;
-                user_token = user.token;
-
-                helper.createCourse(function(err,course)
+                helper.createUserAndLogin(function(err, user)
                 {
-                    course_id = course.course_id;
+                    should.equal(err, undefined, JSON.stringify(err));
 
-                    test_bookmark.course_id = course_id;
+                    user_id = user.user_id;
+                    user_token = user.token;
 
-                    helper.createLecture(course_id, function(err,lecture)
+                    helper.createCourse(function(err,course)
                     {
-                        lecture_id = lecture.lecture_id;
+                        course_id = course.course_id;
 
-                        test_bookmark.lecture_id = lecture_id;
+                        test_bookmark.course_id = course_id;
 
-                        done();
-                    });
-                }); 
+                        helper.createLecture(course_id, function(err,lecture)
+                        {
+                            lecture_id = lecture.lecture_id;
+
+                            test_bookmark.lecture_id = lecture_id;
+
+                            done();
+                        });
+                    }); 
+                });
             });
         });
     });

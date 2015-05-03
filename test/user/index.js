@@ -2,7 +2,7 @@ var should  = require('should');
 var assert  = require('assert');
 var request = require('supertest');
 
-var bcrypt = require('bcrypt-nodejs');
+var helper = require('../helper.js');
 
 var database = require("../../database/index.js");
 
@@ -37,29 +37,11 @@ describe('User', function() {
     {
         database.user.dropUserDatabase(function()
         {
-            bcrypt.hash(login_admin.password, null, null, function(err, hashedPassword) {
-                
-                database.user.createUser(login_admin.email,hashedPassword,login_admin.first_name,login_admin.last_name, "admin", function(err, user)
-                {
-                    if(err)
-                        console.log(err);
-
-                    login_admin_id = user._id;
-
-                    request(url)
-                        .post('/auth/login')
-                        .send({
-                            "email" : login_admin.email,
-                            "password" : login_admin.password
-                        })
-                        .end(function(err, res) {
-
-                            res.body.status.should.equal('success');
-
-                            login_admin_auth = res.body.data.token;
-                            done();
-                        });
-                });
+            helper.createAdminAndLogin(function(err, user)
+            {
+                login_admin_auth = user.token;
+                login_admin_id = user.user_id;
+                done();
             });
         });
     });

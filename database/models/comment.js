@@ -18,7 +18,8 @@ var commentSchema = new Schema({
   poster_name: String,
   content: String,
   time: Number,
-  date: Date
+  date: Date,
+  replies: [this]
 });
 
 module.exports = mongoose.model("Comment", commentSchema);

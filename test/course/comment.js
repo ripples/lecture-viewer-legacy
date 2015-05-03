@@ -21,36 +21,39 @@ describe('Comments', function() {
 
     before(function(done) 
     {
-        //TODO drop courses database
 
     	helper.dropUserDatabase(function()
     	{
-    		helper.createUserAndLogin(function(err, user)
-			{
-				should.equal(err, undefined, JSON.stringify(err));
+            helper.dropCourseDatabase(function()
+            {
+                helper.dropLectureDatabase(function()
+                {
+            		helper.createUserAndLogin(function(err, user)
+        			{
+        				should.equal(err, undefined, JSON.stringify(err));
 
-				user_id = user.user_id;
-				user_token = user.token;
+        				user_id = user.user_id;
+        				user_token = user.token;
 
-				helper.createCourse(function(err,course)
-				{
-					course_id = course.course_id;
+        				helper.createCourse(function(err,course)
+        				{
+        					course_id = course.course_id;
 
-					helper.createLecture(course_id, function(err,lecture)
-					{
-						lecture_id = lecture.lecture_id;
-						done();
-					});
-				});	
-			});
+        					helper.createLecture(course_id, function(err,lecture)
+        					{
+        						lecture_id = lecture.lecture_id;
+        						done();
+        					});
+        				});	
+        			});
+                });
+            });
     	});
     });
 
     it("Test", function(done)
     {
-    	helper.createLecture("1",function(err, res){
-    		done();   
-    	}); 	
+    	done();	
     });
 
 });
