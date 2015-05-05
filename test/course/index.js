@@ -36,30 +36,32 @@ describe('Course', function() {
 	// 	instructor_email : "Martin@umass.edu"
 	// };
 
-	// var empty_parameter_course_info = {
-	// 	department : "",
-	// 	course_number : "301",
-	// 	course_title : "Investment",
-	// 	semester : "Spring",
-	// 	year : 2007,
-	// 	instructor_email : "Test@umass.edu"
-	// };
+	var empty_parameter_course_info = {
+		department : "",
+		course_number : "301",
+		course_title : "Investment",
+		semester : "Spring",
+		year : 2007,
+		instructor_email : "Test@umass.edu"
+	};
 
-	// var missing_parameter_course_info = {
-	// 	course_number : "301",
-	// 	course_title : "Investment",
-	// 	semester : "Spring",
-	// 	year : 2007,
-	// 	instructor_email : "Steve@umass.edu"
-	// };
+	var missing_parameter_course_info = {
+		course_number : "301",
+		course_title : "Investment",
+		semester : "Spring",
+		year : 2007,
+		instructor_email : "Steve@umass.edu"
+	};
 
-	// var course_id = "";
-	// var new_course_id = "";
-	// var invalid_course_id = "test";
+	var invalid_course_id = "test";
 
 	var course_id = "";
+    
     var login_admin_id = "";
     var login_admin_auth = "";
+ 	
+ 	var login_student_id = "";
+    var login_student_auth = "";
 
 	before(function(done) {
 		database.course.dropCoursesDatabase(function() {
@@ -67,7 +69,11 @@ describe('Course', function() {
 				helper.createAdminAndLogin(function(err, user) {
 					login_admin_auth = user.token;
 	                login_admin_id = user.user_id;
-	                done();
+	                helper.createUserAndLogin(function(err, user) {
+	                	login_student_auth = user.token;
+	                	login_student_id = user.user_id;
+	                	done();
+	                });
 				});
 			});
 		});
@@ -112,6 +118,16 @@ describe('Course', function() {
 						res.body.data.message.should.equal('Psychology 101 Fall 2003 already exists.');
 						done();
 					}
+				});
+		});
+
+		it('Get all courses', function(done) {
+			// TODO
+			request(url)
+				.get('/course')
+				.end(function(err, res) {
+					console.log(res.body.data);
+					done();
 				});
 		});
 
@@ -176,134 +192,152 @@ describe('Course', function() {
 	describe("Invalid call", function() {
 		
 		it('Create a course with student auth', function(done) {
-			//TODO
-			done();
+			request(url)
+				.post('/course')
+				.set('Authorization', login_student_auth)
+				.send(course_info)
+				.end(function(err, res) {
+					if(err) {
+						return done(err);
+					} else {
+						res.body.status.should.equal('fail');
+						res.body.data.message.should.equal('Not an admin');
+						done();
+					}
+				});
 		});
 
 		it('Create a course with empty parameters', function(done) {
-			//TODO
-			done();
+			request(url)
+				.post('/course')
+				.set('Authorization', login_admin_auth)
+				.send(empty_parameter_course_info)
+				.end(function(err, res) {
+					if(err) {
+						return done(err);
+					} else {
+						res.body.status.should.equal('fail');
+						res.body.data.message.should.equal('Incorrect parameters');
+						done();
+					}
+				});
 		});
 
 		it('Create a course with missing parameter', function(done) {
-			//TODO
-			done();
+			request(url)
+				.post('/course')
+				.set('Authorization', login_admin_auth)
+				.send(missing_parameter_course_info)
+				.end(function(err, res) {
+					if(err) {
+						return done(err);
+					} else {
+						res.body.status.should.equal('fail');
+						res.body.data.message.should.equal('Incorrect parameters');
+						done();
+					}
+				});
+		});
+
+		it('Get a course with student auth', function(done) {
+			request(url)
+				.get('/course/' + course_id)
+				.set('Authorization', login_student_auth)
+				.end(function(err, res) {
+					res.body.status.should.equal('fail');
+					res.body.data.message.should.equal('Not an admin');
+					done();
+				});
+		});
+
+		it('Get a course with an invalid course id', function(done) {
+			request(url)
+				.get('/course/' + invalid_course_id)
+				.set('Authorization', login_admin_auth)
+				.end(function(err, res) {
+					res.body.status.should.equal('fail');
+					res.body.data.message.should.equal('Course ID is not a valid MongoID');
+					done();
+				});
+		});
+
+		it('Edit a course as with student auth', function(done) {
+			request(url)
+				.put('/course/' + course_id)
+				.set('Authorization', login_student_auth)
+				.send(course_info2)
+				.end(function(err, res) {
+					res.body.status.should.equal('fail');
+					res.body.data.message.should.equal('Not an admin');
+					done();
+				});
+		});
+
+		it('Edit a course with invalid course id', function(done) {
+			request(url)
+				.put('/course/' + invalid_course_id)
+				.set('Authorization', login_admin_auth)
+				.send(course_info2)
+				.end(function(err, res) {
+					res.body.status.should.equal('fail');
+					res.body.data.message.should.equal('Course ID is not a valid MongoID');
+					done();
+				});
+		});
+
+		it('Edit a course with empty parameter', function(done) {
+			request(url)
+				.put('/course/' + course_id)
+				.set('Authorization', login_admin_auth)
+				.send(empty_parameter_course_info)
+				.end(function(err, res) {
+					res.body.status.should.equal('fail');
+					res.body.data.message.should.equal('Incorrect parameters');
+					done();
+				});
+		});
+
+		it('Edit a course with missing parameters', function(done) {
+			request(url)
+				.put('/course/' + course_id)
+				.set('Authorization', login_admin_auth)
+				.send(missing_parameter_course_info)
+				.end(function(err, res) {
+					res.body.status.should.equal('fail');
+					res.body.data.message.should.equal('Incorrect parameters');
+					done();
+				});
+		});
+
+		it('Delete course with student auth', function(done) {
+			request(url)
+				.delete('/course/' + course_id)
+				.set('Authorization', login_student_auth)
+				.end(function(err, res) {
+					if(err) {
+						return done(err);
+					} else {
+						res.body.status.should.equal('fail');
+						res.body.data.message.should.equal('Not an admin');
+						done();
+					}
+				});
+		});
+
+		it('Delete course with invalid course id', function(done) {
+			request(url)
+				.delete('/course/' + invalid_course_id)
+				.set('Authorization', login_admin_auth)
+				.end(function(err, res) {
+					if(err) {
+						return done(err);
+					} else {
+						res.body.status.should.equal('fail');
+						res.body.data.message.should.equal('Course ID is not a valid MongoID');
+						done();
+					}
+				});
 		});
 
 	});
-
 });
-
-// invalid tests - you have to try to do all courses stuff with student_auth - should fail
-// invalid tests - you have to try passing in back parameters
-
-	// describe('Invalid calls', function() {
-	// 	it('Creating a new course with empty parameter', function(done) {									
-	// 		request(url)
-	// 			.post('/course')
-	// 			.send(empty_parameter_course_info)
-	// 			.end(function(err, res) {
-	// 				if(err) {
-	// 					return done(err);
-	// 				} else {
-	// 					res.body.status.should.equal('fail');
-	// 					res.body.data.message.should.equal('Incorrect parameters');
-	// 					done();
-	// 				}
-	// 			});
-	// 	});
-
-	// 	it('Creating a new course with missing parameter', function(done) {									
-	// 		request(url)
-	// 			.post('/course')
-	// 			.send(missing_parameter_course_info)
-	// 			.end(function(err, res) {
-	// 				if(err) {
-	// 					return done(err);
-	// 				} else {
-	// 					res.body.status.should.equal('fail');
-	// 					res.body.data.message.should.equal('Incorrect parameters');
-	// 					done();
-	// 				}
-	// 			});
-	// 	});
-
-	// 	// it('Delete course with empty course id', function(done) {
-	// 	// 	request(url)
-	// 	// 		.delete('/course/' + empty_course_id)
-	// 	// 		.end(function(err, res) {
-	// 	// 			console.log(res.body);
-	// 	// 			done();
-	// 	// 		});
-	// 	// });
-
-	// 	it('Delete course with invalid course id', function(done) {
-	// 			request(url)
-	// 			.delete('/course/' + invalid_course_id)
-	// 			.end(function(err, res) {
-	// 				res.body.status.should.equal('fail');
-	// 				res.body.data.message.should.equal('Course ID is not a valid MongoID');
-	// 				done();
-	// 			});
-	// 	});
-
-	// 	it('Get course with invalid course id', function(done) {
-	// 		request(url)
-	// 			.get('/course/' + invalid_course_id)
-	// 			.end(function(err, res) {
-	// 				if(err) {
-	// 					return done(err);
-	// 				} else {
-	// 					res.body.status.should.equal('fail');
-	// 					res.body.data.message.should.equal('Course ID is not a valid MongoID');
-	// 					done();
-	// 				}
-	// 			});
-	// 	});
-
-	// 	it('Edit course with invalid course id', function(done) {
-	// 		request(url)
-	// 			.put('/course/' + invalid_course_id)
-	// 			.send(course_info)
-	// 			.end(function(err, res) {
-	// 				if(err) {
-	// 					return done(err);
-	// 				} else {
-	// 					res.body.status.should.equal('fail');
-	// 					res.body.data.message.should.equal('Course ID is not a valid MongoID');
-	// 					done();
-	// 				}
-	// 			});
-	// 	});
-
-	// 	it('Edit course with empty parameter', function(done) {
-	// 		request(url)
-	// 			.put('/course/' + course_id)
-	// 			.send(empty_parameter_course_info)
-	// 			.end(function(err, res) {
-	// 				if(err) {
-	// 					return done(err);
-	// 				} else {
-	// 					res.body.status.should.equal('fail');
-	// 					res.body.data.message.should.equal('Incorrect parameters');
-	// 					done();
-	// 				}
-	// 			});
-	// 	});
-
-	// 	it('Edit course with missing parameters', function(done) {
-	// 		request(url)
-	// 			.put('/course/' + course_id)
-	// 			.send(missing_parameter_course_info)
-	// 			.end(function(err, res) {
-	// 				if(err) {
-	// 					return done(err);
-	// 				} else {
-	// 					res.body.status.should.equal('fail');
-	// 					res.body.data.message.should.equal('Incorrect parameters');
-	// 					done();
-	// 				}
-	// 			});
-	// 	});
-	// });
-// });
