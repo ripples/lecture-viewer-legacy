@@ -2,10 +2,14 @@ var should = require('should');
 var request = require('supertest');
 
 var database = require('../../database/index.js');
+var helper = require('../helper.js');
 
 var url = 'http://localhost:3000';
 
 describe('Roster', function() {
+
+	var login_instructor_auth = "";
+	var login_instructor_id = "";
 
 	before(function(done) {
 		// create course
@@ -13,8 +17,11 @@ describe('Roster', function() {
 
 		database.course.dropCoursesDatabase(function() {
 			database.user.dropUserDatabase(function() {
-
-				done();
+				helper.createInstructorAndLogin(function(err, user) {
+					login_instructor_auth = user.token;
+	                login_instructor_id = user.user_id;
+	                done();
+				});
 			});
 		});
 	});

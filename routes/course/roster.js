@@ -42,6 +42,10 @@ module.exports = {
 
                             console.log(roster);
 
+                            var resRoster = {};
+
+                            
+
                         }
 
                     });
@@ -184,8 +188,8 @@ module.exports = {
 
             } else {
 
-                
-                
+
+
             }
         });
     }
