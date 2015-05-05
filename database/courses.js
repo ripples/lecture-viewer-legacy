@@ -251,3 +251,20 @@ exports.getAllCoursesBySemester = function(semester, callback) {
         }
     });
 };
+
+/*
+ * This method gets all courses by semester
+ */
+exports.getAllCourses = function(callback) {
+    Course.find({
+    
+    }, function(err, course) {
+        if (err) {
+            callback(err);
+        } else if (!course) {
+            callback("No courses");
+        } else {
+            callback(undefined, course);
+        }
+    });
+};

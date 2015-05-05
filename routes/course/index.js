@@ -179,4 +179,43 @@ router.delete('/:course_id', auth.verify, function(req,res) {
 	}
 });
 
+//Get course
+router.get('/', function(req,res) {
+	
+	//Get course info from database
+		
+		database.course.getAllCourses(function(err, courses) {
+			
+			if(err) 
+			{
+				res.sendFail(err);
+			}
+			else {
+				console.log(courses);
+
+				var resCourses = [];
+
+				for(var i = 0;i< courses.length;i++)
+				{
+					var tempCourse = {};
+					tempCourse.course_id = courses[i]._id;
+					tempCourse.department = courses[i].department;
+					tempCourse.course_number = courses[i].courseNumber;
+					tempCourse.course_title = courses[i].courseTitle;
+					tempCourse.section = courses[i].section;
+					tempCourse.description = courses[i].description;
+					tempCourse.term = courses[i].semester;
+					tempCourse.year = courses[i].year;
+
+					//TODO FIX
+					tempCourse.instructors = courses[i].instructors;
+
+					resCourses.push(tempCourse);
+				}
+
+				res.sendSuccess(resCourses);
+			}
+		});
+});
+
 module.exports = router;
