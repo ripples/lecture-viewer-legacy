@@ -39,6 +39,7 @@ function createAndStoreToken(user, cb) {
 }
 
 /*
+    !--------DEPRECATED--------!
     To protect a route, simply add verify as the second parameter
     ex: router.get('/example', auth.verify, function(req, res) { ... });
 */
