@@ -3,7 +3,6 @@ var Schema = mongoose.Schema;
 
 // Schema definition for comments
 var commentSchema = new Schema({
-  semester: String,
   course: {
     type: Schema.Types.ObjectId,
     ref: 'Course'
@@ -16,8 +15,11 @@ var commentSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User'
   },
+  poster_name: String,
   content: String,
-  date: Date
+  time: Number,
+  date: Date,
+  replies: [this]
 });
 
 module.exports = mongoose.model("Comment", commentSchema);

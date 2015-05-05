@@ -12,6 +12,13 @@ var addCourse = function(course) {
   courses[course.id] = course;
 }
 
+var updateCourse = function(course_id, course) {
+  log('UPDATE_COURSE', 'updatedCourse', course);
+  if (course_id){
+    courses[course_id] = course;
+  }
+}
+
 var updateCourses = function(updatedCourses) {
   log('UPDATE_COURSES', 'updatedCourses', updatedCourses);
   for(var i=0; i<updatedCourses.length; i++) {
@@ -22,6 +29,13 @@ var updateCourses = function(updatedCourses) {
 /*============================== @PUBLIC ==============================*/
 
 var CourseStore = createStore({
+  getCourse: function(course_id){
+    if (course_id){
+      return courses[course_id];
+    }
+    return null;
+  },
+
   getCourses: function() {
     return Object.keys(courses).map(function(key) {
       return courses[key];
@@ -36,8 +50,14 @@ CourseStore.dispatcher = Dispatcher.register(function(payload) {
     case ActionConstants.CREATE_COURSE:
       addCourse(payload.course);
       break;
+    case ActionConstants.REQUEST_COURSE:
+      updateCourse(payload.course_id, payload.course);
+      break;
     case ActionConstants.REQUEST_COURSES:
       updateCourses(payload.courses);
+      break;
+    case ActionConstants.SAVE_COURSE:
+      updateCourse(payload.course_id, payload.course);
       break;
     defaut:
       break;

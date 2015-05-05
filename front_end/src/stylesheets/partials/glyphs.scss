@@ -31,3 +31,14 @@
   border-bottom: 7px solid transparent;
   content: '';
 }
+
+@mixin arrow-right() {
+  margin-right: 5px;
+  top: -7px;
+  left: 9px;
+  display: inline-block;
+  border-top: 7px solid transparent;
+  border-left: 7px solid $ultralight-gray-text;
+  border-bottom: 7px solid transparent;
+  content: '';
+}

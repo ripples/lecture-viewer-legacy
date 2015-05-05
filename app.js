@@ -10,6 +10,8 @@ app.get('/', function(req,res)
     res.sendFile(__dirname + "/production/index.html");
 });
 
+//Allows for media files (video, images) to be accessed statically
+app.use("/media",express.static(__dirname+"/media/"));
 app.use(express.static(__dirname+"/production/"));
 
 // Route locations

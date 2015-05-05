@@ -4,18 +4,59 @@ var csv = require('csv');
 var validator = require('validator');
 var sleep = require('sleep');
 
+var database = require("../../database/index.js");
+var auth = require('../../authentication');
+
 //Roster API
 module.exports = {
     setup: function(router) {
+        
         //Get the roster of a specific course
-        router.get('/:course_id/roster', function(req,res) {
+        router.get('/:course_id/roster', auth.verify, function(req, res) {
+           
+            if(req.user.role != "instructor") {
+
+                res.sendFail("Not an instructor");
             
-            //Testing timeout w/ no response
+            } else {
+
+                if(req.params.course_id == undefined) {
+                    
+                    res.sendFail("No valid course_id parameter");
+
+                } 
+                else if(validator.isMongoId(req.params.course_id) == false) {
+
+                    res.sendFail("Course ID is not a valid MongoID");
+
+                }
+                else {
+
+                    database.course.getRegisteredUsersById(req.params.course_id, function(err, roster) {
+                        
+                        if(err) {
+
+                            res.sendFail(err);
+
+                        } else {
+
+                            console.log(roster);
+
+                            var resRoster = {};
+
+                            
+
+                        }
+
+                    });
+
+                } 
+            }
             
         });
 
         //Add a single or a bunch of users to the course's roster
-        router.post('/:course_id/roster', function(req,res) {
+        router.post('/:course_id/roster', auth.verify, function(req,res) {
 
             //Checks for email, if it does not exist, we assume a file is here
             if(req.body.email == undefined)
@@ -139,8 +180,17 @@ module.exports = {
         });
 
         //Delete a user from a course's roster
-        router.delete('/:course_id/roster/:uid', function(req,res) {
+        router.delete('/:course_id/roster/:uid', auth.verify, function(req,res) {
             // TODO no deletion of specific user from roster db call?
+            if(req.user.role != "instructor") {
+
+                res.sendFail("Not an instructor");
+
+            } else {
+
+
+
+            }
         });
     }
 };

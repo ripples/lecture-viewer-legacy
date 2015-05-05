@@ -10,6 +10,7 @@
 @import './partials/managelecture';
 @import './partials/managecourse';
 @import './partials/mediaplayer';
+@import './partials/lecturecontent';
 
 /*============================== @BASE ==============================*/
 
@@ -28,6 +29,11 @@ html, body {
   font-family: $font-stack;
   background: $light-gray;
   @include word-wrap();
+}
+
+.app-container {
+  height: 100vh;
+  display: flex;
 }
 
 ul, ol {
@@ -92,6 +98,19 @@ button, input[type=submit], input[type=button], input[type=text] {
   &.closed {
     &:after {
       @include arrow-down();
+    }
+  }
+  &.play {
+    width: 50px;
+    &:after {
+      @include arrow-right();
+      border-left-color: #000;
+    }
+  }
+  &.pause {
+    width: 50px;
+    &:after {
+      content: '❚❚';
     }
   }
 }

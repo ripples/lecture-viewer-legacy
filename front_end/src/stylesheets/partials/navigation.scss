@@ -50,28 +50,3 @@
     @include fixed-header-and-footer--scrollable-content--content-wrapper(); // Works for the moment. May need uncommented
   }
 }
-
-.app-container {
-  height: 100vh;
-  display: flex;
-}
-
-.lecture-context {
-  flex: 1;
-  display: flex;
-  height: 100%;
-  background: $light-gray;
-
-  &-content {
-    flex: 1;
-  }
-
-  &-sidebar {
-    flex: 0 0 300px;
-    height: 100%; width: 300px;
-    background: white;
-    &-header {
-      // @include fixed-header-and-footer--scrollable-content--fixed-component();
-    }
-  }
-}

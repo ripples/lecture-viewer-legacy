@@ -4,7 +4,8 @@ var MediaController = require('./MediaController');
 var MediaPlayer = React.createClass({
 
   propTypes: {
-    media: React.PropTypes.object
+    media: React.PropTypes.object,
+    time: React.PropTypes.number
   },
 
   /*============================== @LIFECYCLE ==============================*/
@@ -23,10 +24,28 @@ var MediaPlayer = React.createClass({
   },
 
   componentDidMount: function() {
-    // TODO : Put this in a better spot... Perhaps create a video component
     var video = document.getElementById("video");
     video.ontimeupdate = this.handleTimeChange.bind(null, video);
     video.onended = function() {this.setState({paused: true, currentWhiteboardIndex: 0});}.bind(this);
+
+    this.contextDidChange(this.props);
+  },
+
+  componentWillReceiveProps: function(nextProps) {
+    if((this.props.course_id != nextProps.course_id) || (this.props.lecture_id != nextProps.lecture_id)) {
+      var video = document.getElementById("video");
+      video.load();
+      this.setState(this.getInitialState());
+      this.contextDidChange(nextProps);
+    }
+  },
+
+  contextDidChange: function(props) {
+    if(props.time) {
+      var video = document.getElementById("video");
+      video.currentTime = props.time;
+      this.setState({currentTime: props.time});
+    }
   },
 
   /*============================== @CONTROLLER-HANDLING ==============================*/

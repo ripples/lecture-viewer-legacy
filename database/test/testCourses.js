@@ -2,10 +2,9 @@ var db_api = require('../../database');
 var should = require('chai').should();
 var assert = require('assert');
 
+
 describe('Testing Courses collection:', function() {
-
     this.timeout(10000);
-
     /*
      * Preconditions.
      */
@@ -26,7 +25,6 @@ describe('Testing Courses collection:', function() {
     });
     //required for a test user.
     before(function(done) {
-
         db_api.user.dropUserDatabase(function() {
             db_api.user.createUser('test20@test.com', 'password', 'first', 'last', 'role', function(err, usr) {
                 testUser = usr;
@@ -37,13 +35,10 @@ describe('Testing Courses collection:', function() {
                 assert.equal(testUser.name.first, 'first');
                 assert.equal(testUser.name.last, 'last');
                 assert.equal(testUser.role, 'role');
-
                 done();
             });
         });
     });
-
-
     /*
      * Post-condition
      */
@@ -55,7 +50,6 @@ describe('Testing Courses collection:', function() {
             done();
         });
     });
-
     /*
      * Tests the createCourse method creates a course properly.
      */
@@ -71,7 +65,6 @@ describe('Testing Courses collection:', function() {
             done();
         });
     });
-
     /*
      * Tests that getCourseById returns the right course.
      */
@@ -85,7 +78,6 @@ describe('Testing Courses collection:', function() {
             done();
         });
     });
-
     /*
      * Test that the email list is added properly to the course.
      */
@@ -100,7 +92,6 @@ describe('Testing Courses collection:', function() {
             done();
         });
     });
-
     /*
      * Tests that the course retreived by course id is correct.
      */
@@ -115,7 +106,6 @@ describe('Testing Courses collection:', function() {
             done();
         });
     });
-
     /*
      * Test that the the functions adds a list of users properly.
      */
@@ -127,7 +117,6 @@ describe('Testing Courses collection:', function() {
             done();
         });
     });
-
     /*
      * Test that the function gets user properly.
      */
@@ -139,14 +128,11 @@ describe('Testing Courses collection:', function() {
             done();
         });
     });
-
     //addListOfLecturesById
     // it('adds list of lectures by id:', function(done){
-    // 	db_api.courses.addListOfLecturesById(testCourse._id, [testCourse], function(err, course){
-
-    // 	});
+    //  db_api.courses.addListOfLecturesById(testCourse._id, [testCourse], function(err, course){
+    //  });
     // });
-
     /*
      * Tests that the users emails returned are correct.
      */
@@ -160,11 +146,9 @@ describe('Testing Courses collection:', function() {
             done();
         });
     });
-
     /*
      * Tests that all the emails are deleted
      */
-
     it('deletes all emails of a course: courseID', function(done) {
         db_api.course.deleteAllEmailsById(testCourse._id, function(err, course) {
             assert.equal(err, null);
@@ -173,8 +157,6 @@ describe('Testing Courses collection:', function() {
             done();
         });
     });
-
-
     /*
      * Tests that all the lectures are deleted properly.
      */
@@ -186,7 +168,6 @@ describe('Testing Courses collection:', function() {
             done();
         });
     });
-
     /*
      * Test that all the users of a course a deleted properly.
      */
@@ -198,7 +179,6 @@ describe('Testing Courses collection:', function() {
             done();
         });
     });
-
     /*
      * Test that deleteCourseById deletes the course properly.
      */
@@ -209,23 +189,36 @@ describe('Testing Courses collection:', function() {
             count._id.should.eql(newCourse._id);
             done();
         });
- 	});
-
+    });
     /*
-     *
+     * tests that a course is updated properly
      */
-   it('Updates a course by ID: ID', function(done) {
-   	          
-       db_api.course.updateCourse(testCourse._id, 'Mathematics', 'Math101','Intro to Algebra','Spring','2013','Eliot', function(err, course) {
-           assert.equal(err, null);
-           assert.notEqual(course, null);
-           course.semester.should.eql('Spring');
-           course.department.should.eql('Mathematics');
-           course.courseNumber.should.eql('Math101');
-           course.courseTitle.should.eql('Intro to Algebra');
-           course.year.should.eql(2013);
-           done();
-       });
-   });
-   
+    it('Updates a course by ID: ID', function(done) {
+        db_api.course.updateCourse(testCourse._id, 'Mathematics', 'Math101', 'Intro to Algebra', 'Spring', '2013', 'Eliot', function(err, course) {
+            assert.equal(err, null);
+            assert.notEqual(course, null);
+            course.semester.should.eql('Spring');
+            course.department.should.eql('Mathematics');
+            course.courseNumber.should.eql('Math101');
+            course.courseTitle.should.eql('Intro to Algebra');
+            course.year.should.eql(2013);
+            done();
+        });
+    });
+    /*
+     * tests that a courses get retreived by semester
+     */
+    it('retreives courses by semester',function(done){
+        db_api.course.getAllCoursesBySemester("Spring", function(err, course){
+            assert.equal(err, null);
+            assert.notEqual(course, null);
+            course[0].semester.should.eql('Spring');
+            course[0].semester.should.eql('Spring');
+            course[0].department.should.eql('Mathematics');
+            course[0].courseNumber.should.eql('Math101');
+            course[0].courseTitle.should.eql('Intro to Algebra');
+            course[0].year.should.eql(2013);
+            done();
+        });
+    });
 });

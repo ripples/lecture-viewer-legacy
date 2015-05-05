@@ -2,10 +2,11 @@ var should  = require('should');
 var assert  = require('assert');
 var request = require('supertest');
 
+var helper = require('../helper.js');
+
 var database = require("../../database/index.js");
 
 var url = 'http://localhost:3000';
-var uidreq = 2359;
 
 describe('User', function() {
 
@@ -35,24 +36,12 @@ describe('User', function() {
     before(function(done) 
     {
         database.user.dropUserDatabase(function()
-        {              
-            database.user.createUser(login_admin.email,login_admin.password,login_admin.first_name,login_admin.last_name, "admin", function(err, user)
+        {
+            helper.createAdminAndLogin(function(err, user)
             {
-                if(err)
-                    console.log(err);
-
-                login_admin_id = user._id;
-
-                request(url)
-                    .post('/auth/login')
-                    .send({
-                        "email" : login_admin.email,
-                        "password" : login_admin.password
-                    })
-                    .end(function(err, res) {
-                        login_admin_auth = res.body.data.token;
-                        done();
-                    });
+                login_admin_auth = user.token;
+                login_admin_id = user.user_id;
+                done();
             });
         });
     });

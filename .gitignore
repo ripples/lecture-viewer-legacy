@@ -1,5 +1,5 @@
 
-./media
+/media/**
 .idea
 .DS_Store
 

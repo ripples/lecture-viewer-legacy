@@ -42,10 +42,10 @@ router.post('/', function(req,res) {
                         /*---------------------------------------
                         Send verification email to req.body.email
                         ---------------------------------------*/
-                        mailer.sendVerificationEmail(resUser.user_id, resUser.email, function(err) {
-                            if(err) return res.sendFail(err);
-                            else return res.sendSuccess(resUser);
-                        });
+                        //mailer.sendVerificationEmail(resUser.user_id, resUser.email, function(err) {
+                        //    if(err) return res.sendFail(err);
+                            return res.sendSuccess(resUser);
+                        //});
                     } else {
                         //I will need to know why it failed... Logic problem or a legit error
                         res.sendFail(err);

@@ -14,3 +14,5 @@ exports.CRYPTO_ALGORITHM = 'aes-256-ctr';
 
 // Crypto Secret (used for encryption and decryption of various elements)
 exports.CRYPTO_SECRET = 'awesomesauce';
+
+exports.FILE_SERVER_URL = "localhost:3000/media/";
