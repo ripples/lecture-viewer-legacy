@@ -29,6 +29,15 @@ var login_admin_auth = "";
 var login_admin_id = "";
 
 
+var login_instructor = {
+	email : "instructor@umass.edu",
+	password : "password", 
+	first_name : "first",
+	last_name : "last"
+}
+
+var login_instructor_auth = "";
+var login_instructor_id = "";
 
 
 exports.dropUserDatabase = function(callback)
@@ -72,6 +81,49 @@ exports.createUserAndLogin = function(callback)
 			callback(undefined, user);
 		});
     });
+}
+
+exports.createInstructorAndLogin = function(callback)
+{
+	if(!login_instructor_auth)
+	{
+		bcrypt.hash(login_admin.password, null, null, function(err, hashedPassword) {
+	                
+	        database.user.createUser(login_instructor.email,hashedPassword,login_instructor.first_name,login_instructor.last_name, "instructor", function(err, user)
+	        {
+	            if(err)
+	                return callback(err);
+
+	            login_instructor_id = user._id;
+
+	            request(url)
+	                .post('/auth/login')
+	                .send({
+	                    "email" : login_instructor.email,
+	                    "password" : login_instructor.password
+	                })
+	                .end(function(err, res) {
+
+	                    if(err)
+	                    	return callback(err);
+
+	                    login_instructor_auth = res.body.data.token;
+	                    
+	                    user = {};
+						user.user_id = login_instructor_id;
+						user.token = res.body.data.token;
+
+						callback(undefined, user);
+	                });
+	        });
+	    });
+	 }else{
+		user = {};
+		user.user_id = login_instructor_id;
+		user.token = login_instructor_auth;
+
+		callback(undefined, user);
+	 }  
 }
 
 exports.createAdminAndLogin = function(callback)

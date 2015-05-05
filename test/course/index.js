@@ -27,15 +27,6 @@ describe('Course', function() {
 		instructor_email : "Joe@umass.edu"
 	};
 
-	// var course_info3 = {
-	// 	department : "Finance",
-	// 	course_number : "301",
-	// 	course_title : "Investment",
-	// 	semester : "Spring",
-	// 	year : 2007,
-	// 	instructor_email : "Martin@umass.edu"
-	// };
-
 	var empty_parameter_course_info = {
 		department : "",
 		course_number : "301",
@@ -118,16 +109,6 @@ describe('Course', function() {
 						res.body.data.message.should.equal('Psychology 101 Fall 2003 already exists.');
 						done();
 					}
-				});
-		});
-
-		it('Get all courses', function(done) {
-			// TODO
-			request(url)
-				.get('/course')
-				.end(function(err, res) {
-					console.log(res.body.data);
-					done();
 				});
 		});
 

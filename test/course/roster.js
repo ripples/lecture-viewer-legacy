@@ -10,7 +10,13 @@ describe('Roster', function() {
 	before(function(done) {
 		// create course
 		// add to roster
-		done();
+
+		database.course.dropCoursesDatabase(function() {
+			database.user.dropUserDatabase(function() {
+
+				done();
+			});
+		});
 	});
 
 	describe('Valid Calls', function() {

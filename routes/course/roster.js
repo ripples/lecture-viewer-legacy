@@ -13,34 +13,41 @@ module.exports = {
         
         //Get the roster of a specific course
         router.get('/:course_id/roster', auth.verify, function(req, res) {
+           
+            if(req.user.role != "instructor") {
+
+                res.sendFail("Not an instructor");
             
-            if(req.params.course_id == undefined) {
-                
-                res.sendFail("No valid course_id parameter");
+            } else {
 
-            } 
-            else if(validator.isMongoId(req.params.course_id) == false) {
-
-                res.sendFail("Course ID is not a valid MongoID");
-
-            }
-            else {
-
-                database.course.getRegisteredUsersById(req.params.course_id, function(err, roster) {
+                if(req.params.course_id == undefined) {
                     
-                    if(err) {
+                    res.sendFail("No valid course_id parameter");
 
-                        res.sendFail(err);
+                } 
+                else if(validator.isMongoId(req.params.course_id) == false) {
 
-                    } else {
+                    res.sendFail("Course ID is not a valid MongoID");
 
-                        console.log(roster);
+                }
+                else {
 
-                    }
+                    database.course.getRegisteredUsersById(req.params.course_id, function(err, roster) {
+                        
+                        if(err) {
 
-                });
+                            res.sendFail(err);
 
-            } 
+                        } else {
+
+                            console.log(roster);
+
+                        }
+
+                    });
+
+                } 
+            }
             
         });
 
@@ -171,6 +178,15 @@ module.exports = {
         //Delete a user from a course's roster
         router.delete('/:course_id/roster/:uid', auth.verify, function(req,res) {
             // TODO no deletion of specific user from roster db call?
+            if(req.user.role != "instructor") {
+
+                res.sendFail("Not an instructor");
+
+            } else {
+
+                
+                
+            }
         });
     }
 };
