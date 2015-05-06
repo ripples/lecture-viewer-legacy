@@ -33,7 +33,7 @@ describe('User', function() {
     var login_student_auth = "";
 
 
-    before(function(done) 
+    before(function(done)
     {
         database.user.dropUserDatabase(function()
         {
@@ -49,7 +49,7 @@ describe('User', function() {
     describe('Valid calls', function()
     {
         var updateUser = {
-            first_name: 'Updated', 
+            first_name: 'Updated',
             last_name: 'Names'
         }
 
@@ -104,7 +104,7 @@ describe('User', function() {
                 .put('/user')
                 .set('Authorization', login_student_auth)
                 .send(updateUser)
-                .end(function(err, res) 
+                .end(function(err, res)
                 {
                     if(err) return done(err);
 
@@ -117,7 +117,7 @@ describe('User', function() {
                     user.last_name.should.equal(updateUser.last_name);
                     user.user_id.should.equal(login_student_id);
                     user.email.should.equal(login_student.email);
-                    
+
                     done();
                 });
         });
@@ -175,7 +175,7 @@ describe('User', function() {
                 .set('Authorization', login_admin_auth)
                 .end(function(err, res) {
                     if(err) return done(err);
-                    
+
                     res.body.status.should.equal('success');
 
                     var user = res.body.data;
@@ -221,9 +221,9 @@ describe('User', function() {
 
         describe('Create', function()
         {
-            var test_user = {email: 'good@email.com', 
-                     password: 'pw123', 
-                     first_name: 'Tim', 
+            var test_user = {email: 'good@email.com',
+                     password: 'pw123',
+                     first_name: 'Tim',
                      last_name: 'Richards'};
 
             var bad_email_user = JSON.parse(JSON.stringify(test_user));
@@ -270,12 +270,12 @@ describe('User', function() {
                     });
             });
         });
-    
+
 
         describe('Update', function()
         {
             var updateUser = {
-                first_name: 'Updated', 
+                first_name: 'Updated',
                 last_name: 'Names'
             }
 
@@ -285,13 +285,13 @@ describe('User', function() {
                     .put('/user/')
                     .set('Authorization', login_admin_auth)
                     .send({})
-                    .end(function(err, res) 
+                    .end(function(err, res)
                     {
                         if(err) return done(err);
 
                         res.body.status.should.equal('fail');
                         res.body.data.message.should.equal("Did not supply a first_name and last_name");
-                        
+
                         done();
                     });
             });
@@ -352,7 +352,7 @@ describe('User', function() {
         });
     });
 
-    
+
 
     /*
     it('/:user_id [PUT]', function(done) {

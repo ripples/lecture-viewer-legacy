@@ -8,6 +8,8 @@ var database = require('../../database/index.js');
 var auth = require('../../authentication');
 var mailer = require('../../mailer');
 
+var config = require('../../config');
+
 //Add module routes
 require('./bookmark').setup(router);
 require('./notification').setup(router);
@@ -27,7 +29,7 @@ router.post('/', function(req,res) {
                 res.sendFail(err);
             } else {
                 // Attempts to create user record in database
-                database.user.createUser(req.body.email, hashedPassword, req.body.first_name, req.body.last_name, "student", function(err, user) {
+                database.user.createUser(req.body.email, hashedPassword, req.body.first_name, req.body.last_name, config.ROLE_STUDENT, function(err, user) {
                     //If no error, send back user data
                     if(!err) {
                         var resUser = {}
@@ -114,18 +116,9 @@ router.delete('/', auth.verify, function(req,res) {
 });
 
 //Delete a user
-router.delete('/:user_id', auth.verify, function(req,res) {
+router.delete('/:user_id', auth.verifyAdmin, function(req,res) {
 
     //Delete user in database
-
-    //TODO check for admin rights
-    console.log(req.user);
-
-    if(req.user.role != "admin")
-    {
-        res.sendFail("Not an admin");
-        return;
-    }
 
     var user_id = req.params.user_id;
 
