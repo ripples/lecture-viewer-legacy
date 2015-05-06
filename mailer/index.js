@@ -2,6 +2,7 @@ var nodemailer = require('nodemailer');
 
 var auth = require('../authentication');
 var config = require('../config');
+var utility = require('../utility');
 
 // Gmail service transporter allows for both Google Mail and Google Apps accounts
 var transporter = nodemailer.createTransport({
@@ -12,15 +13,18 @@ var transporter = nodemailer.createTransport({
     }
 });
 
-function send(mailOptions, cb) {
-    if(process.env.env != 'development') {
+function send(mailOptions, cb, dev_override) {
+    if(process.env.env != 'development' || dev_override) {
         transporter.sendMail(mailOptions, function(err, res) {
             if(err) cb(err);
             else cb(undefined, res);
         });
     } else {
         // Will create utility function to better output object data
-        console.log('[Development]: Would have sent mail: \n' + mailOptions);
+        console.log('[Development]: Would have sent mail: \n-------------------------------------------');
+        utility.printObject(mailOptions);
+        console.log('-------------------------------------------');
+        cb();
     }
 }
 
