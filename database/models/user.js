@@ -15,7 +15,7 @@ var userSchema = new Schema({
         first: String,
         last: String
     },
-    role: String,
+    role: Number,
     // list of references to registered courses, element should be ObjectIds in Course collection.
     courses: [{
         type: Schema.Types.ObjectId,
