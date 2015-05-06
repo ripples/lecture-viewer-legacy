@@ -27,9 +27,9 @@ var redisClient = redis.createClient();
 
 var auth = require('./authentication');
 
-// require('./mailer').sendVerificationEmail('jyanyuk@umass.edu', 'jyanyuk', function(err, res) {
-//     if(!err) console.log(res);
-// });
+require('./mailer').sendVerificationEmail('jyanyuk@umass.edu', 'jyanyuk', function(err, res) {
+    if(!err) console.log(res + 'dddd');
+});
 
 // Tell node to interpret post data as JSON
 app.use(bodyParser.json());

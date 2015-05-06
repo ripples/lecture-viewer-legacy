@@ -16,3 +16,8 @@ exports.CRYPTO_ALGORITHM = 'aes-256-ctr';
 exports.CRYPTO_SECRET = 'awesomesauce';
 
 exports.FILE_SERVER_URL = "localhost:3000/media/";
+
+// User roles (Hierarchial structure)
+exports.ROLE_STUDENT = 1;
+exports.ROLE_INSTRUCTOR = 2;
+exports.ROLE_ADMIN = 3;

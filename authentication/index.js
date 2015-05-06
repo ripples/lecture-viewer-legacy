@@ -39,13 +39,13 @@ function createAndStoreToken(user, cb) {
 }
 
 /*
-    !--------DEPRECATED--------!
+    --> User must be at least a student
     To protect a route, simply add verify as the second parameter
     ex: router.get('/example', auth.verify, function(req, res) { ... });
 */
 function verify(req, res, next) {
     var token = req.headers.authorization || req.body.token;
-    if(!token) return res.sendFail("No authorization supplied");
+    if(!token) return res.sendFail('No authorization token supplied.');
 
     var tokenUUID = jwt.decode(token, tokenSecret);
 
@@ -54,6 +54,56 @@ function verify(req, res, next) {
         else {
             req.user = JSON.parse(data);
             next();
+        }
+    });
+}
+
+/*
+    --> User must be at least an instructor
+    To protect a route for students, simply add verifyStudent as the second parameter
+    ex: router.get('/example', auth.verifyStudent, function(req, res) { ... });
+*/
+function verifyInstructor(req, res, next) {
+    var token = req.headers.authorization || req.body.token;
+    if(!token) return res.sendFail('No authorization token supplied.');
+
+    var tokenUUID = jwt.decode(token, tokenSecret);
+
+    redis.get(tokenUUID, function(err, data) {
+        if(err || !data) return res.sendFail(err);
+
+        var userObj = JSON.parse(data);
+
+        if(userObj.role >= config.ROLE_INSTRUCTOR) {
+            req.user = userObj;
+            next();
+        } else {
+            return res.sendFail('Unauthorized user role.')
+        }
+    });
+}
+
+/*
+    --> User must be at least an admin
+    To protect a route for students, simply add verifyStudent as the second parameter
+    ex: router.get('/example', auth.verifyStudent, function(req, res) { ... });
+*/
+function verifyAdmin(req, res, next) {
+    var token = req.headers.authorization || req.body.token;
+    if(!token) return res.sendFail('No authorization token supplied.');
+
+    var tokenUUID = jwt.decode(token, tokenSecret);
+
+    redis.get(tokenUUID, function(err, data) {
+        if(err || !data) return res.sendFail(err);
+
+        var userObj = JSON.parse(data);
+
+        if(userObj.role >= config.ROLE_ADMIN) {
+            req.user = userObj;
+            next();
+        } else {
+            return res.sendFail('Unauthorized user role.')
         }
     });
 }

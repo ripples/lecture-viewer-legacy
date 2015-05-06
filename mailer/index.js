@@ -13,10 +13,15 @@ var transporter = nodemailer.createTransport({
 });
 
 function send(mailOptions, cb) {
-    transporter.sendMail(mailOptions, function(err, res) {
-        if(err) cb(err);
-        else cb(undefined, res);
-    });
+    if(process.env.env != 'development') {
+        transporter.sendMail(mailOptions, function(err, res) {
+            if(err) cb(err);
+            else cb(undefined, res);
+        });
+    } else {
+        // Will create utility function to better output object data
+        console.log('[Development]: Would have sent mail: \n' + mailOptions);
+    }
 }
 
 function sendVerificationEmail(emailAddress, userID, cb) {
