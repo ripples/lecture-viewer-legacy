@@ -9,7 +9,7 @@ describe('Testing User collection:', function() {
     var testUser = null;
     before(function(done) {
         db_api.user.dropUserDatabase(function() {
-            db_api.user.createUser('test@test.com', 'password', 'first', 'last', 'role', function(err, doc) {
+            db_api.user.createUser('test@test.com', 'password', 'first', 'last', 1, function(err, doc) {
                 testUser = doc;
                 assert.equal(err, null);
                 assert.notEqual(testUser, null);
@@ -17,7 +17,7 @@ describe('Testing User collection:', function() {
                 assert.equal(testUser.password, 'password');
                 assert.equal(testUser.name.first, 'first');
                 assert.equal(testUser.name.last, 'last');
-                assert.equal(testUser.role, 'role');
+                assert.equal(testUser.role, 1);
                 done();
             });
         });
@@ -67,7 +67,7 @@ describe('Testing User collection:', function() {
         db_api.user.getUserRoleById(testUser._id, function(err, role) {
             assert.equal(err, null);
             assert.notEqual(role, null);
-            role.should.eql('role');
+            role.should.eql(1);
             done();
         });
     });
@@ -146,8 +146,8 @@ describe('Testing User collection:', function() {
     /*
      * Tests whether a bookmark is properly retrieved.
      */
-    it('retrieves bookmark by ObjectId: ObjectId', function(done) {
-        db_api.bookmark.getBookmarksById(testUser._id, function(err, bookmarks) {
+    it('retrieves bookmark by UserID: Userid', function(done) {
+        db_api.bookmark.getBookmarksByUserId(testUser._id, function(err, bookmarks) {
             assert.equal(err, null);
             assert.notEqual(bookmarks, null);
             assert.equal(bookmarks.length, 1);
@@ -198,10 +198,10 @@ describe('Testing User collection:', function() {
      * Test role update by id
      */
     it('Role update by ID: ID', function(done) {
-        db_api.user.setUserRoleById(testUser._id, "student", function(err, user) {
+        db_api.user.setUserRoleById(testUser._id, 3, function(err, user) {
             assert.equal(err, null);
             assert.notEqual(user, null);
-            user.role.should.eql('student');
+            user.role.should.eql(3);
             done();
         });
     });
@@ -209,10 +209,10 @@ describe('Testing User collection:', function() {
      * Tests role update by Email
      */
     it('Role update by Email: Email', function(done) {
-        db_api.user.setUserRoleByEmail(testUser.email, "prof", function(err, user) {
+        db_api.user.setUserRoleByEmail(testUser.email, 2, function(err, user) {
             assert.equal(err, null);
             assert.notEqual(user, null);
-            user.role.should.eql('prof');
+            user.role.should.eql(2);
             done();
         });
     });

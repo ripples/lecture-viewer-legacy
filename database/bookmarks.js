@@ -19,12 +19,18 @@ exports.addBookmarkById = function(user_id, lecture_id, course_id, label, time, 
     });
 };
 /*
-  Method to get a user's bookmarks by user's id.
+ * Method to get a user's bookmarks by user's id.
  */
-exports.getBookmarksById = function(userid, callback) {
+exports.getBookmarksByUserId = function(userid, callback) {
     User.findById(userid, function(err, user) {
         callback(err, user.bookmarks);
     });
+};
+/*
+ * Method used to retreive a specific bookmark.
+ */
+ exports.getBookmarkById = function(bookmarkid, callback) {
+    
 };
 /*
  * Get Bookmark by lectureID
