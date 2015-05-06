@@ -163,6 +163,8 @@ function createVerificationID(userID, cb) {
 
 exports.createAndStoreToken = createAndStoreToken
 exports.verify = verify;
+exports.verifyInstructor = verifyInstructor;
+exports.verifyAdmin = verifyAdmin;
 exports.expireToken = expireToken;
 exports.refreshToken = refreshToken;
 exports.createVerificationID = createVerificationID;
