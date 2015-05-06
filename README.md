@@ -25,8 +25,10 @@ Running
 1. Type `gulp` to run the Gulpfile which compiles, minifies, and copies `front_end` source files to the `production` directory.
 **NOTE: You must run `gulp` each time you wish to view new changes from the `front-end` source.**
 2.
-a. (Option 1) Enter the command 'npm start' to launch the app at 'localhost:3000' in a development environment
-b. (Option 2) Enter the command 'npm production' to launch the app at 'localhost:3000' in a production environment
+To run:
+
+1. (Option 1) Enter the command 'npm start' to launch the app at 'localhost:3000' in a development environment
+2. (Option 2) Enter the command 'npm production' to launch the app at 'localhost:3000' in a production environment
 
 Local Build Server (For Front-End folks!)
 ================
