@@ -26,7 +26,7 @@ describe('Testing Courses collection:', function() {
     //required for a test user.
     before(function(done) {
         db_api.user.dropUserDatabase(function() {
-            db_api.user.createUser('test20@test.com', 'password', 'first', 'last', 'role', function(err, usr) {
+            db_api.user.createUser('test20@test.com', 'password', 'first', 'last', 1, function(err, usr) {
                 testUser = usr;
                 assert.equal(err, null);
                 assert.notEqual(testUser, null);
@@ -34,7 +34,7 @@ describe('Testing Courses collection:', function() {
                 assert.equal(testUser.password, 'password');
                 assert.equal(testUser.name.first, 'first');
                 assert.equal(testUser.name.last, 'last');
-                assert.equal(testUser.role, 'role');
+                assert.equal(testUser.role, 1);
                 done();
             });
         });
@@ -55,13 +55,13 @@ describe('Testing Courses collection:', function() {
      */
     var newCourse = null; //for deletion.
     it('creates a new course: semester, department courseNumber', function(done) {
-        db_api.course.createCourse('CS', 'CS121', 'Intro to CS', 'Fall', '2015', 'Tim', function(err, course) {
+        db_api.course.createCourse('CS', 'CS250', 'Intro to Computation', 'Fall', '2015', 'Tim', function(err, course) {
             newCourse = course;
             assert.equal(err, null);
             assert.notEqual(course, null);
             assert.equal(course.semester, 'Fall');
             assert.equal(course.department, 'CS');
-            assert.equal(course.courseNumber, 'CS121');
+            assert.equal(course.courseNumber, 'CS250');
             done();
         });
     });
