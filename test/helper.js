@@ -2,6 +2,8 @@ var should  = require('should');
 var assert  = require('assert');
 var request = require('supertest');
 
+var config = require('../config');
+
 var bcrypt = require('bcrypt-nodejs');
 
 var database = require("../database/index.js");
@@ -89,7 +91,7 @@ exports.createInstructorAndLogin = function(callback)
 	{
 		bcrypt.hash(login_admin.password, null, null, function(err, hashedPassword) {
 	                
-	        database.user.createUser(login_instructor.email,hashedPassword,login_instructor.first_name,login_instructor.last_name, "instructor", function(err, user)
+	        database.user.createUser(login_instructor.email,hashedPassword,login_instructor.first_name,login_instructor.last_name, config.ROLE_INSTRUCTOR, function(err, user)
 	        {
 	            if(err)
 	                return callback(err);
@@ -132,7 +134,7 @@ exports.createAdminAndLogin = function(callback)
 	{
 		bcrypt.hash(login_admin.password, null, null, function(err, hashedPassword) {
 	                
-	        database.user.createUser(login_admin.email,hashedPassword,login_admin.first_name,login_admin.last_name, "admin", function(err, user)
+	        database.user.createUser(login_admin.email,hashedPassword,login_admin.first_name,login_admin.last_name, config.ROLE_ADMIN, function(err, user)
 	        {
 	            if(err)
 	                return callback(err);

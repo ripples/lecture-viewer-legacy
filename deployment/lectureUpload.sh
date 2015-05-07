@@ -6,8 +6,11 @@
 #sh lectureUpload.sh 554851833aaa6db448c58c2a /home/ryan/Desktop/New 1421938502
 
 #Just get all course info for you so you can get a course id. Doesnt do it if you supply arguments
+
+url="localhost:3000"
+
 if test -z "$3"; then
-	curl localhost:3000/course 
+	curl $url/course 
 fi
 
 if test -z "$1"; then
@@ -45,17 +48,21 @@ if [ -d $filename ]; then
 	done
 
 	echo $filename
-
+	isFolder=1
 elif [ -f $filename ]; then
     echo "$filename is a file"
+    isFolder=0
 else
-    echo "$filename is not valid"
+    echo "$filename is not a valid file/folder"
     exit 1
 fi
 
 
-curl -F "start_time="+$start_time -F "upload=@"$filename localhost:3000/course/$course_id/lecture
+curl -F "start_time="+$start_time -F "upload=@"$filename $url/course/$course_id/lecture
 
-echo "Removing zipped folder "$filename
-
-rm $filename
+if [ $isFolder -eq 1 ] ; then
+	echo "Removing newly zipped folder "$filename
+	rm $filename
+else
+	echo "Not Removing zip"
+fi

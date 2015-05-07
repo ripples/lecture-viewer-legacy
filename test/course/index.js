@@ -182,7 +182,7 @@ describe('Course', function() {
 						return done(err);
 					} else {
 						res.body.status.should.equal('fail');
-						res.body.data.message.should.equal('Not an admin');
+						res.body.data.message.should.equal('Unauthorized user role.');
 						done();
 					}
 				});
@@ -226,7 +226,7 @@ describe('Course', function() {
 				.set('Authorization', login_student_auth)
 				.end(function(err, res) {
 					res.body.status.should.equal('fail');
-					res.body.data.message.should.equal('Not an admin');
+					res.body.data.message.should.equal('Unauthorized user role.');
 					done();
 				});
 		});
@@ -249,7 +249,7 @@ describe('Course', function() {
 				.send(course_info2)
 				.end(function(err, res) {
 					res.body.status.should.equal('fail');
-					res.body.data.message.should.equal('Not an admin');
+					res.body.data.message.should.equal('Unauthorized user role.');
 					done();
 				});
 		});
@@ -299,7 +299,7 @@ describe('Course', function() {
 						return done(err);
 					} else {
 						res.body.status.should.equal('fail');
-						res.body.data.message.should.equal('Not an admin');
+						res.body.data.message.should.equal('Unauthorized user role.');
 						done();
 					}
 				});

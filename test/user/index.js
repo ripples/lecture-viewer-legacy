@@ -318,7 +318,7 @@ describe('User', function() {
                     .set('Authorization', login_student_auth)
                     .end(function(err, res) {
                         res.body.status.should.equal('fail');
-                        res.body.data.message.should.equal('Not an admin');
+                        res.body.data.message.should.equal('Unauthorized user role.');
                         done();
                     });
             });
