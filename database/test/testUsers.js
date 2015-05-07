@@ -249,6 +249,18 @@ describe('Testing User collection:', function() {
             done();
         });
     });
+    /*
+     * Test that gets bookmark by its ID
+     */
+     it('retreives bookmark by its id: bookmakrID', function(done) {
+        db_api.bookmark.getBookmarkById(testBookmark._id, function(err, bookmark) {
+            assert.equal(err, null);
+            assert.notEqual(bookmark, null);
+            assert.equal(bookmark.label, "thisLable");
+            assert.equal(bookmark.time, 255);
+            done();
+        });
+    });
     //(bookmarkid, user_id, lecture_id, course_mid, label, time, callback)
     it('edit bookmark:', function(done) {
         db_api.bookmark.editBookmark(testBookmark._id, "thatLable", function(err, update) {

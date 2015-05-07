@@ -30,7 +30,12 @@ exports.getBookmarksByUserId = function(userid, callback) {
  * Method used to retreive a specific bookmark.
  */
  exports.getBookmarkById = function(bookmarkid, callback) {
-    
+    User.find({
+         'bookmarks._id': bookmarkid
+    }, function(err, user) {
+         callback(err, user[0].bookmarks[0]);
+        
+    });
 };
 /*
  * Get Bookmark by lectureID
