@@ -29,12 +29,11 @@ exports.getBookmarksByUserId = function(userid, callback) {
 /*
  * Method used to retreive a specific bookmark.
  */
- exports.getBookmarkById = function(bookmarkid, callback) {
+exports.getBookmarkById = function(bookmarkid, callback) {
     User.find({
-         'bookmarks._id': bookmarkid
+        'bookmarks._id': bookmarkid
     }, function(err, user) {
-         callback(err, user[0].bookmarks[0]);
-        
+        callback(err, user[0].bookmarks[0]);
     });
 };
 /*
@@ -57,11 +56,9 @@ exports.getBookmarksByLectureId = function(userid, lectureid, callback) {
  */
 exports.getBookmarksByCourseId = function(courseid, callback) {
     User.find({
-         'bookmarks.course': courseid
+        'bookmarks.course': courseid
     }, function(err, user) {
-     
-         callback(err, user[0].bookmarks);
-        
+        callback(err, user[0].bookmarks);
     });
 };
 /*
@@ -83,27 +80,14 @@ exports.deleteBookmark = function(userid, bookmarkid, callback) {
 /*
  * Method that updates bookmark.
  */
-exports.editBookmark = function(bookmarkid,  label, callback) {
-     
-    
+exports.editBookmark = function(bookmarkid, label, callback) {
     User.update({
         'bookmarks._id': bookmarkid
-    }, 
-    {//items.$.name
+    }, { 
         $set: {
-          'bookmarks.$.label' : label
+            'bookmarks.$.label': label
         }
-    },
-    function(err, user){
-  callback(err, user);
-        
+    }, function(err, user) {
+        callback(err, user);
     });
 };
-/*
-
-Person.update({'items.id': 2}, {'$set': {
-    'items.$.name': 'updated item2',
-    'items.$.value': 'two updated'
-}},   
-
-*/

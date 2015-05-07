@@ -53,12 +53,14 @@ exports.deleteComment = function(lecture_id, comment, callback) {
  * Method to update Comment by id
  */
 exports.editComment = function(comment_id, content, callback) {
-    Comment.findByIdAndUpdate(comment_id, {
+    Lecture.update({
+        'comments._id': comment_id
+    }, {
         $set: {
-            content: content
+            'comments.$.content': content
         }
-    }, function(err, comment){
-        console.log(comment);
-        callback(err,comment);
+    }, function(err, comment) {
+        callback(err, comment);
     });
 };
+

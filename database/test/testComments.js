@@ -61,6 +61,7 @@ describe('Test Comment Collection', function() {
             assert.equal(comment.content, "comment");
             assert.equal(comment.author, testUser._id);
             assert.equal(comment.lecture, testLecture._id);
+            console.log(testLecture);
             done();
         });
     });
@@ -68,12 +69,10 @@ describe('Test Comment Collection', function() {
      * Tests that a comment is updated properly
      */               //
     it('updates a comment: comment_id', function(done){
-    	db_api.comment.editComment(testComment._id,testLecture._id, testUser._id, "Ryan Mullens" ,277,  "lorem ipsum", new Date().getDate(), function(err, comment){
-    		console.log(comment);
+    	db_api.comment.editComment(testComment._id, "lorem ipsum", function(err, comment){
+    		console.log(testLecture.comments);
     		assert.equal(err, null);
-    		assert.notEqual(comment, null);
-    		assert.equal(comment.poster_name, "Ryan Mullens");
-    		assert.equal(comment.time, 277);
+    		assert.notEqual(comment,null);
 
     		done();
     	});
