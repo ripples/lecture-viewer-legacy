@@ -52,7 +52,7 @@ exports.deleteComment = function(lecture_id, comment, callback) {
 /*
  * Method to update Comment by id
  */
-exports.editComment = function(comment_id, lecture_id, user_id, firstandlast, time, content, post_date, callback) {
+exports.editComment = function(comment_id, content, callback) {
     Comment.findByIdAndUpdate(comment_id, {
         $set: {
             content: content

@@ -36,7 +36,7 @@ describe('Test Comment Collection', function() {
     var testUser = null;
     before(function(done) {
         db_api.user.dropUserDatabase(function() {
-            db_api.user.createUser('test@test.com', 'password', 'first', 'last', 'role', function(err, doc) {
+            db_api.user.createUser('test@test.com', 'password', 'first', 'last', 1, function(err, doc) {
                 testUser = doc;
                 assert.equal(err, null);
                 assert.notEqual(testUser, null);
@@ -44,7 +44,7 @@ describe('Test Comment Collection', function() {
                 assert.equal(testUser.password, 'password');
                 assert.equal(testUser.name.first, 'first');
                 assert.equal(testUser.name.last, 'last');
-                assert.equal(testUser.role, 'role');
+                assert.equal(testUser.role, 1);
                 done();
             });
         });

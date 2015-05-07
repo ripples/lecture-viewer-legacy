@@ -20,7 +20,7 @@ describe('Testing Lectures collection:', function() {
     var testUser = null;
     before(function(done) {
         db_api.user.dropUserDatabase(function() {
-            db_api.user.createUser('test@test.com', 'password', 'John', 'Doe', 'role', function(err, doc) {
+            db_api.user.createUser('test@test.com', 'password', 'John', 'Doe', 1, function(err, doc) {
                 testUser = doc;
                 assert.equal(err, null);
                 assert.notEqual(testUser, null);
@@ -28,7 +28,7 @@ describe('Testing Lectures collection:', function() {
                 assert.equal(testUser.password, 'password');
                 assert.equal(testUser.name.first, 'John');
                 assert.equal(testUser.name.last, 'Doe');
-                assert.equal(testUser.role, 'role');
+                assert.equal(testUser.role, 1);
                 done();
             });
         });
